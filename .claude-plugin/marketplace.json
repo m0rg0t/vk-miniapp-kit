@@ -1,0 +1,30 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "vk-miniapp-kit",
+  "owner": {
+    "name": "antonlenev"
+  },
+  "metadata": {
+    "description": "Tools for shipping VK Mini Apps faster: catalog screenshots, icon/splash assets, animated Lottie launch icon, project scaffold, vk-bridge recipes, and catalog publishing."
+  },
+  "plugins": [
+    {
+      "name": "vk-miniapp-kit",
+      "source": "./",
+      "description": "Ship VK Mini Apps faster: scaffold the official stack, capture catalog screenshots at the exact required size, generate/resize icons & splashscreens, build animated Lottie launch icons, wire up vk-bridge features (ads/analytics/theme/share/storage), and prep for VK catalog submission.",
+      "author": {
+        "name": "antonlenev"
+      },
+      "category": "development",
+      "keywords": [
+        "vk",
+        "vk-mini-apps",
+        "vkui",
+        "vk-bridge",
+        "screenshots",
+        "icons",
+        "lottie"
+      ]
+    }
+  ]
+}
