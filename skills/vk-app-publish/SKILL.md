@@ -1,6 +1,6 @@
 ---
 name: vk-app-publish
-description: Prepare and ship a VK Mini App to the VK catalog — build, package build.zip (index.html at the zip root), deploy via vk-miniapps-deploy, verify vk-hosting-config.json, and run a full pre-submission checklist of required assets and settings. Use this skill whenever the user wants to publish, deploy, release, ship, or submit a VK Mini App, build the upload artifact, or says "выложить/опубликовать приложение", "залить в каталог", "собрать build.zip". Prefer this over ad-hoc build steps whenever the goal is a VK release.
+description: Prepare and ship a VK Mini App to the VK catalog — build, package build.zip (index.html at the zip root), deploy via vk-miniapps-deploy, verify vk-hosting-config.json, and run a full pre-submission checklist of required assets and settings. Use this skill whenever the user wants to publish, deploy, release, ship, or submit a VK Mini App, build the upload artifact, or says "выложить/опубликовать приложение", "залить в каталог", "собрать build.zip". This covers releasing/deploying an existing app, not creating one — use vk-app-scaffold for a new app. Prefer this over ad-hoc build steps whenever the goal is a VK release.
 ---
 
 # Publish a VK Mini App

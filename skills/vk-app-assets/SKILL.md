@@ -1,6 +1,6 @@
 ---
 name: vk-app-assets
-description: Generate and resize VK Mini App icons and splashscreens to every required size from a single source image. Use this skill whenever the user needs app icons, иконки приложения, a catalog icon (576×576), a 1024 master icon, splashscreens, заставки/сплэш-экраны, or has an icon at the wrong size for VK. It produces correctly-sized PNGs into public/resources/app/ following VK's naming, and verifies each output dimension. Prefer this over hand-resizing whenever the goal is VK icon/splash assets.
+description: Generate and resize VK Mini App icons and splashscreens to every required size from a single source image. Use this skill whenever the user needs app icons, иконки приложения, a catalog icon (576×576), a 1024 master icon, splashscreens, заставки/сплэш-экраны, or has an icon at the wrong size for VK. It produces correctly-sized PNGs into public/resources/app/ following VK's naming, and verifies each output dimension. These are static assets — for an animated launch icon use vk-lottie-launch-icon, and for catalog screenshots use vk-catalog-screenshots. Prefer this over hand-resizing whenever the goal is VK icon/splash assets.
 ---
 
 # VK Mini App icons & splashscreens

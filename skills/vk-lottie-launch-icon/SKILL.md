@@ -1,6 +1,6 @@
 ---
 name: vk-lottie-launch-icon
-description: Create or validate a Lottie (bodymovin) animated launch/loading icon for a VK Mini App within the platform budget — 96×96 px, ≤24 KB, seamless loop. Use this skill whenever the user wants an animated app icon, a Lottie/bodymovin JSON, a loading/launch animation, or says "анимированная иконка", "лотти", "анимация загрузки" for a VK app. It writes valid Lottie JSON and verifies size, dimensions, and that the loop is seamless. Prefer this over generic animation help whenever the target is a VK launch icon.
+description: Create or validate a Lottie (bodymovin) animated launch/loading icon for a VK Mini App within the platform budget — 96×96 px, ≤24 KB, seamless loop. Use this skill whenever the user wants an animated app icon, a Lottie/bodymovin JSON, a loading/launch animation, or says "анимированная иконка", "лотти", "анимация загрузки" for a VK app. It writes valid Lottie JSON and verifies size, dimensions, and that the loop is seamless. This is the animated icon specifically — for static icon sizing (576/1024) or splashscreens use vk-app-assets. Prefer this over generic animation help whenever the target is a VK launch icon.
 ---
 
 # VK animated launch icon (Lottie)

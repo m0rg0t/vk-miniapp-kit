@@ -1,6 +1,6 @@
 ---
 name: vk-bridge-recipes
-description: Integrate vk-bridge features into a VK Mini App — app init, banner ads, native/rewarded ads, analytics, theme/appearance sync, sharing, and cloud storage — through a centralized service with a dev-mock fallback and prod-visible diagnostic logging. Use this skill whenever the user wants to add ads, баннер/реклама, a share button, dark/light theme syncing, cloud storage/настройки пользователя, app init, or call any VKWebApp* bridge method. Prefer this over raw bridge.send calls whenever wiring VK features.
+description: Integrate vk-bridge features into a VK Mini App — app init, banner ads, native/rewarded ads, analytics, theme/appearance sync, sharing, and cloud storage — through a centralized service with a dev-mock fallback and prod-visible diagnostic logging. Use this skill whenever the user wants to add ads, баннер/реклама, a share button, dark/light theme syncing, cloud storage/настройки пользователя, app init, or call any VKWebApp* bridge method. This adds features to an existing app — to create a brand-new one use vk-app-scaffold. Prefer this over raw bridge.send calls whenever wiring VK features.
 ---
 
 # vk-bridge recipes

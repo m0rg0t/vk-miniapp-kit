@@ -1,6 +1,6 @@
 ---
 name: vk-app-scaffold
-description: Scaffold a new VK Mini App on the official stack — React 18 + VKUI 7 + vk-bridge + vk-mini-apps-router + Vite (+ Vitest), via the official create-vk-mini-app generator — then optionally layer on proven conventions (centralized bridge service with dev mock, env-aware logger, ESLint no-console, Testing Library setup). Use this skill whenever the user wants to start, create, bootstrap, or set up a new VK Mini App / VK мини-приложение / VK app project. Prefer this over a generic React setup whenever the target runs inside VK.
+description: Scaffold a new VK Mini App on the official stack — React 18 + VKUI 7 + vk-bridge + vk-mini-apps-router + Vite (+ Vitest), via the official create-vk-mini-app generator — then optionally layer on proven conventions (centralized bridge service with dev mock, env-aware logger, ESLint no-console, Testing Library setup). Use this skill whenever the user wants to start, create, bootstrap, or set up a new VK Mini App / VK мини-приложение / VK app project. For adding features to an existing app use vk-bridge-recipes, and for releasing one use vk-app-publish — this skill is for creating a new app. Prefer this over a generic React setup whenever the target runs inside VK.
 ---
 
 # Scaffold a new VK Mini App
