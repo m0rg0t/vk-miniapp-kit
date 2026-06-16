@@ -15,7 +15,9 @@ afternoon.
 | **vk-bridge-recipes** | Add vk-bridge features (init, ads, analytics, theme, share, storage) with a dev-mock fallback and prod-visible diagnostics. |
 | **vk-app-publish** | Build, package `build.zip`, deploy via `vk-miniapps-deploy`, and run a catalog submission checklist. |
 
-> Status: **v0.1.0** — `vk-catalog-screenshots` is built first; the rest follow.
+> Status: **v0.1.0** — all six skills built; bundled scripts validated against a
+> real VK Mini App (agent-browser capture → 600×1200, sips resize, Lottie loop
+> check, build.zip packaging, TS drop-ins typecheck).
 
 ## Install
 
