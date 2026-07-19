@@ -1,0 +1,4 @@
+interface:
+  display_name: "VK App Doctor"
+  short_description: "Audit VK Mini Apps readiness with one command"
+  default_prompt: "Use $vk-app-doctor to audit this VK Mini App, explain every failure, and suggest the smallest safe remediation."

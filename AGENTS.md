@@ -35,6 +35,12 @@ Codex, and Claude Code.
   as normal product states.
 - Never let local mocks masquerade as real-client proof. Preserve the final VK
   client smoke-test gate.
+- Keep the bundled runtime mock explicit, allow-listed, and isolated behind a
+  development-only exact Bridge alias. Unknown methods must reject.
+- Keep launch-signature verification backend-only. Require app ID and timestamp
+  checks and constant-time signature comparison; never expose a VK secure key.
+- Keep `vk-app-doctor` and security scans read-only. Add fixture coverage before
+  expanding or weakening a heuristic.
 
 ## Portability
 
@@ -61,6 +67,10 @@ Before committing:
 7. Execute changed scripts and reusable code against representative fixtures.
 8. For Bridge mocks, test success, structured rejection, and receive-only event
    behavior with current Vitest and VK Bridge types.
+9. For launch verification, test valid, tampered, wrong-app, malformed, expired,
+   and future-timestamp inputs.
+10. For doctor/security scripts, run intentionally broken and release-ready
+    fixtures and confirm meaningful exit codes plus JSON output.
 
 Do not weaken a checker merely to make an incomplete fixture pass. A readiness
 check must distinguish declarations from installed dependencies, filenames from

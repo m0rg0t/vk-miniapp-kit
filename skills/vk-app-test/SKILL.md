@@ -1,6 +1,6 @@
 ---
 name: vk-app-test
-description: "Add and run a complete VK Mini App test workflow: standalone local development with the official @vkontakte/vk-bridge-mock package or a service mock, deterministic Vitest success/decline/error/timeout/event scenarios, React Testing Library integration tests, launch-parameter variants, browser journeys, responsive/theme checks, and a real VK client smoke-test handoff. Use whenever the user asks to test, QA, mock VK Bridge, run the app outside VK, debug client-only behavior, add Vitest/Playwright coverage, or says “локальное тестирование VK Mini App / мок vk-bridge”. Apply before publishing and after changing Bridge-dependent behavior."
+description: "Add and run a complete VK Mini App test workflow: standalone local development with a bundled Bridge 3-compatible runtime mock, deterministic Vitest success/decline/error/timeout/event scenarios, React Testing Library integration tests, launch-parameter variants, browser journeys, responsive/theme checks, and a real VK client smoke-test handoff. Use whenever the user asks to test, QA, mock VK Bridge, run the app outside VK, debug client-only behavior, add Vitest/Playwright coverage, or says “локальное тестирование VK Mini App / мок vk-bridge”. Apply before publishing and after changing Bridge-dependent behavior."
 ---
 
 # Test a VK Mini App
@@ -22,10 +22,13 @@ Preserve a working harness. Add only the missing layers.
 
 ## Layer 1: standalone browser development
 
-Read `references/mocking-vk-bridge.md`. Prefer one explicit mock mode:
+Read `references/runtime-mock.md` and `references/mocking-vk-bridge.md`. Prefer
+one explicit mock mode:
 
-- use the official `@vkontakte/vk-bridge-mock` package through a dev-only Vite
-  alias when its method coverage fits;
+- copy the bundled source runtime mock and connect it through a dev-only Vite
+  alias for current Bridge 3 projects;
+- keep the official `@vkontakte/vk-bridge-mock` package only in an existing
+  project whose installed Bridge major and required method coverage match;
 - use the centralized service mock from the sibling `vk-bridge-recipes` skill
   (`../vk-bridge-recipes/SKILL.md` in a full toolkit install) for newer/custom
   methods and scenario-specific application behavior.
@@ -79,6 +82,8 @@ Record results before release.
 ## Done when
 
 - The app starts and completes its core loop in a plain browser mock mode.
+- The runtime mock proves success, structured rejection, storage round-trip,
+  unknown-method rejection, and a receive-only event.
 - Automated tests cover Bridge success and fail-open paths plus the critical
   browser journey.
 - Compact/regular layouts, light/dark appearance, launch variants, and

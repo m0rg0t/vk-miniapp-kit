@@ -36,7 +36,9 @@ For local development, use `npx skills add . --list` or
 | **vk-app-scaffold** | Bootstrap a new VK Mini App on the current official React + VKUI + Bridge + router + Vite stack. |
 | **vk-app-design** | Design and implement native-feeling, adaptive, accessible flows with VKUI. |
 | **vk-bridge-recipes** | Add vk-bridge features (init, ads, analytics, theme, share, storage) with a dev-mock fallback and prod-visible diagnostics. |
-| **vk-app-test** | Run local, unit, integration, and browser tests with controlled VK Bridge mock scenarios. |
+| **vk-app-test** | Run local, unit, integration, and browser tests with a bundled Bridge 3 runtime mock and controlled scenarios. |
+| **vk-app-security** | Verify signed launch identity, protect secrets, harden APIs/permissions/data, and scan common risks. |
+| **vk-app-doctor** | Audit the app, tests, security, hosting, assets, and catalog readiness with one read-only command. |
 | **vk-app-listing** | Produce names, short/full descriptions, privacy text, localization, and a complete catalog asset manifest. |
 | **vk-app-publish** | Build, package `build.zip`, deploy via `vk-miniapps-deploy`, and run a catalog submission checklist. |
 
@@ -71,11 +73,18 @@ See [`AGENTS.md`](AGENTS.md) for repository-wide contribution rules and
   `vk-catalog-screenshots` prefers the `agent-browser` CLI, then falls back to
   Playwright, then puppeteer-core — so it works on whatever browser tooling the
   machine has.
-- **Local development is a first-class release gate.** The test skill supports
-  the official `@vkontakte/vk-bridge-mock` package for standalone browser
-  sessions when its Bridge-major coverage is compatible, plus a current,
-  deterministic Vitest controller for success, decline, timeout, and client
-  events.
+- **Local development is a first-class release gate.** The test skill bundles a
+  source-owned Bridge 3 runtime mock with success, dark-theme,
+  permission-declined, ads-unavailable, and storage-error scenarios, plus a
+  deterministic Vitest controller. The older official mock remains a
+  compatibility option only when Bridge majors match.
+- **Security is part of the lifecycle.** The security skill includes a
+  backend-only Node/TypeScript launch-signature verifier and a read-only scanner
+  for exposed secrets, unverified identity, CORS, unsafe input sinks, and
+  sensitive logging.
+- **One command summarizes readiness.** `vk-app-doctor` checks dependencies,
+  Bridge/mock isolation, real test declarations, launch authentication, hosting
+  config/build output, PNG dimensions, screenshots, privacy, and catalog copy.
 - **VKUI is the default UI layer.** The design skill first reuses VKUI and
   `@vkontakte/icons`, then adds custom CSS only when the product genuinely needs
   it.
@@ -103,15 +112,16 @@ done
 ```
 
 Run executable checks in proportion to the files changed. At minimum, syntax
-check scripts and JSON manifests; for `vk-app-test`, also run its readiness
-checker against both an intentionally incomplete fixture and a complete app
-fixture, then execute the bundled Vitest mock scenarios.
+check scripts and JSON manifests. Exercise the runtime mock, launch verifier,
+security scanner, and doctor against both intentionally broken and complete
+fixtures whenever those resources change.
 
 ## Русский
 
 `vk-miniapp-kit` — набор Agent Skills для полного цикла разработки
 VK Mini Apps: от идеи и продуктового плана до реализации на VKUI, локального
-тестирования с моками VK Bridge, подготовки материалов для каталога и публикации.
+тестирования с runtime-моками VK Bridge, проверки безопасности и готовности,
+подготовки материалов для каталога и публикации.
 Навыки работают с Codex, Claude Code, Cursor и другими агентами, которые
 поддерживает открытый CLI `skills`.
 
@@ -144,7 +154,9 @@ npx skills add m0rg0t/vk-miniapp-kit --skill vk-app-test
 | **vk-app-scaffold** | Создаёт проект на актуальном официальном стеке React + VKUI + VK Bridge. |
 | **vk-app-design** | Проектирует адаптивный и доступный интерфейс на VKUI. |
 | **vk-bridge-recipes** | Добавляет инициализацию, рекламу, темы, шаринг, аналитику и хранилище VK Bridge. |
-| **vk-app-test** | Настраивает локальную разработку, моки VK Bridge, Vitest и браузерные сценарии. |
+| **vk-app-test** | Настраивает локальную разработку, встроенный runtime-мок Bridge 3, Vitest и браузерные сценарии. |
+| **vk-app-security** | Проверяет подпись параметров запуска, защищает секреты, API, разрешения и пользовательские данные. |
+| **vk-app-doctor** | Одной командой проверяет проект, тесты, безопасность, хостинг, ассеты и готовность к каталогу. |
 | **vk-app-assets** | Создаёт и проверяет логотипы, иконки и заставки приложения. |
 | **vk-lottie-launch-icon** | Создаёт или проверяет анимированную Lottie-иконку запуска. |
 | **vk-catalog-screenshots** | Делает и нормализует скриншоты для каталога VK. |

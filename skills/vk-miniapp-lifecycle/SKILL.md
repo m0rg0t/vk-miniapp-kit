@@ -1,6 +1,6 @@
 ---
 name: vk-miniapp-lifecycle
-description: Coordinate an entire VK Mini App delivery from a raw idea through product planning, official scaffolding, VKUI-first design, VK Bridge integration, mocked local testing, publication assets and catalog copy, packaging, and release verification. Use for broad requests such as “build/ship a VK Mini App”, “сделай VK мини-приложение под ключ”, or whenever work spans multiple lifecycle phases. Resume from the current repository state and route focused work to the sibling vk-* skills instead of duplicating their detailed procedures.
+description: Coordinate an entire VK Mini App delivery from a raw idea through project diagnosis, product planning, official scaffolding, VKUI-first design, VK Bridge integration, backend security, mocked local testing, publication assets and catalog copy, packaging, and release verification. Use for broad requests such as “build/ship a VK Mini App”, “сделай VK мини-приложение под ключ”, or whenever work spans multiple lifecycle phases. Resume from the current repository state and route focused work to the sibling vk-* skills instead of duplicating their detailed procedures.
 ---
 
 # VK Mini App lifecycle
@@ -24,24 +24,30 @@ Use one concise delivery tracker in the app repository (for example
 
 ## Route the lifecycle
 
-1. **Shape the product — `vk-app-plan`.** Produce a build-ready brief, MVP
+1. **Establish the baseline — `vk-app-doctor`.** Run the read-only development
+   audit and record findings instead of assuming a greenfield or healthy app.
+2. **Shape the product — `vk-app-plan`.** Produce a build-ready brief, MVP
    boundary, screen map, platform/data requirements, event plan, and acceptance
    criteria.
-2. **Create the base — `vk-app-scaffold`.** Use the current official generator,
+3. **Create the base — `vk-app-scaffold`.** Use the current official generator,
    or preserve the existing app if it already has a healthy stack.
-3. **Build the experience — `vk-app-design`.** Implement flows with VKUI and
+4. **Build the experience — `vk-app-design`.** Implement flows with VKUI and
    `@vkontakte/icons`, including adaptivity, theme, loading/empty/error states,
    and accessibility.
-4. **Add platform capabilities — `vk-bridge-recipes`.** Centralize Bridge calls,
+5. **Add platform capabilities — `vk-bridge-recipes`.** Centralize Bridge calls,
    initialize once, and add only the methods required by the brief.
-5. **Prove behavior — `vk-app-test`.** Exercise standalone local development,
-   controlled Bridge success/failure scenarios, unit/integration tests, and the
+6. **Protect trust boundaries — `vk-app-security`.** Verify signed launch
+   identity on the backend, keep secure keys out of the browser, minimize
+   permissions, and review data/API abuse paths.
+7. **Prove behavior — `vk-app-test`.** Exercise the bundled runtime Bridge mock,
+   controlled success/failure/event scenarios, unit/integration tests, and the
    critical browser journey.
-6. **Prepare publication — `vk-app-assets`, `vk-lottie-launch-icon`,
+8. **Prepare publication — `vk-app-assets`, `vk-lottie-launch-icon`,
    `vk-catalog-screenshots`, and `vk-app-listing`.** Keep visual identity,
    screenshots, and claims consistent with the shipped product.
-7. **Release — `vk-app-publish`.** Build, package or deploy, smoke-test in a real
-   VK client, and complete the current admin checklist.
+9. **Release — `vk-app-publish`.** Run `vk-app-doctor --release --strict`,
+   build, package or deploy, smoke-test in a real VK client, and complete the
+   current admin checklist.
 
 Load a sibling skill's `SKILL.md` before performing that phase. Load only the
 references needed for the current task.
@@ -55,10 +61,11 @@ Do not claim a later gate proves an earlier one:
 | Product | Brief has a testable core loop, exclusions, and acceptance criteria |
 | Build | Typecheck/build passes and primary routes render |
 | Platform | `VKWebAppInit` and required Bridge methods have fail-open handling |
+| Security | Signed launch identity, server-only secrets, authorization, and data handling are evidenced |
 | Local QA | Mocked success, decline/error, and event scenarios pass |
 | UX QA | Main flow works at compact mobile and desktop/web widths, light and dark |
 | Catalog | Copy, policy, icon/splash, and ≥3 screenshots match the actual app |
-| Release | Production build plus real-client smoke test and admin checklist |
+| Release | Strict release doctor, production build, real-client smoke test, and admin checklist |
 
 If a gate needs credentials, admin access, legal approval, or a real device,
 finish all local evidence first and record the exact remaining manual check.
