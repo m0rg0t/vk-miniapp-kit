@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan a VK Mini App"
+  short_description: "Turn an idea into a build-ready VK app brief"
+  default_prompt: "Use $vk-app-plan to turn my VK Mini App idea into a validated, build-ready product brief."

@@ -77,5 +77,5 @@ reward only after `showAd` resolves successfully.
 - `VKWebAppCheckBannerAd` → `{ result: boolean }`
 - `VKWebAppShowBannerAd { banner_location: 'top'|'bottom', banner_align?, layout_type?: 'compact'|'resize', height_type?: 'regular'|'adaptive', can_close? }` → `{ banner_height: number }`
 - `VKWebAppHideBannerAd` → `{ result: boolean }`
-- `VKWebAppCheckNativeAds { ad_format: 'interstitial'|'rewarded' }` → `{ result: boolean }`
+- `VKWebAppCheckNativeAds { ad_format: 'interstitial'|'reward' }` → `{ result: boolean }`
 - `VKWebAppShowNativeAds { ad_format }`

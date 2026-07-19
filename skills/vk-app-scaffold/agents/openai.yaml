@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scaffold a VK Mini App"
+  short_description: "Create an app with the official VK stack"
+  default_prompt: "Use $vk-app-scaffold to create a new VK Mini App with the current official stack."

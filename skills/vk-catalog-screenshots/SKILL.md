@@ -86,7 +86,8 @@ cat > /tmp/steps.json <<'JSON'
   { "clickText": "Рассчитать", "wait": 600 }, { "shot": "03-result" }
 ]
 JSON
-node "$CLAUDE_PLUGIN_ROOT/skills/vk-catalog-screenshots/scripts/capture.mjs" \
+SKILL_DIR="<absolute path to the installed vk-catalog-screenshots skill>"
+node "$SKILL_DIR/scripts/capture.mjs" \
   --url http://localhost:4173 --out ./screenshots \
   --width 600 --height 1200 --scale 2 --steps /tmp/steps.json
 ```
@@ -95,10 +96,8 @@ node "$CLAUDE_PLUGIN_ROOT/skills/vk-catalog-screenshots/scripts/capture.mjs" \
 `shot`; see the header of `capture.mjs`. The script captures at `--scale` and
 leaves resizing to step 4, so all tools share one normalize pass.)
 
-**Last resort:** if neither is available but the Claude-in-Chrome extension is
-connected, drive it via the `mcp__claude-in-chrome__*` tools (navigate →
-resize_window/viewport → computer screenshot), then run step 4. Avoid flooding
-context with inline base64 — save to disk.
+**Last resort:** use the agent's connected browser/Chrome control to navigate,
+set a 600×1200 viewport, and save screenshots to disk, then run step 4.
 
 ### 4. Normalize to exact spec (always run this)
 

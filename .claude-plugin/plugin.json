@@ -1,7 +1,7 @@
 {
   "name": "vk-miniapp-kit",
-  "description": "Ship VK Mini Apps faster: scaffold the official stack, capture catalog screenshots at the exact required size, generate/resize icons & splashscreens, build animated Lottie launch icons, wire up vk-bridge features (ads/analytics/theme/share/storage), and prep for VK catalog submission.",
-  "version": "0.1.0",
+  "description": "Take VK Mini Apps from idea to catalog: plan, scaffold, build with VKUI, integrate and mock VK Bridge, test, create listing assets and copy, then publish.",
+  "version": "0.2.0",
   "author": {
     "name": "antonlenev"
   },
@@ -11,6 +11,8 @@
     "vk-mini-apps",
     "vkui",
     "vk-bridge",
+    "testing",
+    "catalog",
     "screenshots",
     "icons",
     "lottie"

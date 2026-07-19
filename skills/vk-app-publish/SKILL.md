@@ -15,8 +15,8 @@ mobile-only smoke test.
 
 Open `references/checklist.md` and work it top to bottom. It cross-references the
 asset skills (`vk-app-assets`, `vk-lottie-launch-icon`, `vk-catalog-screenshots`)
-for anything not yet produced. Don't skip the **assets** and **app settings**
-sections — those are the usual rejection causes.
+and `vk-app-listing` for anything not yet produced. Don't skip the **assets**,
+**catalog copy**, **privacy**, and **app settings** sections.
 
 ### 2. Verify the build & config
 
@@ -42,7 +42,8 @@ First run prompts for a deploy token (create it in the app admin). It uploads
 **Manual zip (when uploading by hand):**
 
 ```bash
-bash "$CLAUDE_PLUGIN_ROOT/skills/vk-app-publish/scripts/package.sh"
+SKILL_DIR="<absolute path to the installed vk-app-publish skill>"
+bash "$SKILL_DIR/scripts/package.sh"
 # → build.zip, with index.html guaranteed at the zip ROOT
 ```
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add VK Bridge Features"
+  short_description: "Integrate typed Bridge features with dev mocks"
+  default_prompt: "Use $vk-bridge-recipes to add the required VK Bridge capabilities to this app."

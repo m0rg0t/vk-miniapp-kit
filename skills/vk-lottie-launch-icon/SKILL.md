@@ -21,7 +21,8 @@ visibly jumps.
 ### A. Validate an existing Lottie
 
 ```bash
-node "$CLAUDE_PLUGIN_ROOT/skills/vk-lottie-launch-icon/scripts/validate-lottie.mjs" \
+SKILL_DIR="<absolute path to the installed vk-lottie-launch-icon skill>"
+node "$SKILL_DIR/scripts/validate-lottie.mjs" \
   path/to/icon-animation.json
 ```
 

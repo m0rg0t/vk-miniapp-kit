@@ -1,0 +1,4 @@
+interface:
+  display_name: "Test a VK Mini App"
+  short_description: "Test locally with mocked VK Bridge scenarios"
+  default_prompt: "Use $vk-app-test to add local mocked VK Bridge testing and verify this VK Mini App."

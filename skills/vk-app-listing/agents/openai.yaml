@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prepare VK Catalog Listing"
+  short_description: "Create catalog copy, policy, and asset manifest"
+  default_prompt: "Use $vk-app-listing to prepare complete VK catalog copy and submission metadata for this app."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "VK Mini App Lifecycle"
+  short_description: "Take a VK Mini App from idea to catalog"
+  default_prompt: "Use $vk-miniapp-lifecycle to take my VK Mini App idea through planning, build, testing, assets, and release."
