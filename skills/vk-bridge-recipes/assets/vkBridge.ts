@@ -76,9 +76,19 @@ export interface StorageGetKeysResponse {
 export interface ShowBannerAdParams {
   banner_location: 'top' | 'bottom';
   banner_align?: 'left' | 'center' | 'right';
-  layout_type?: 'compact' | 'resize';
-  height_type?: 'regular' | 'adaptive';
-  can_close?: boolean;
+  layout_type?: 'resize' | 'overlay';
+  height_type?: 'compact' | 'regular';
+  orientation?: 'horizontal' | 'vertical';
+}
+export interface BannerAdResponse {
+  result: boolean;
+  banner_width: number;
+  banner_height: number;
+  banner_location: 'top' | 'bottom';
+  banner_align?: 'left' | 'center' | 'right';
+  layout_type: 'resize' | 'overlay';
+  height_type: 'compact' | 'regular';
+  orientation?: 'horizontal' | 'vertical';
 }
 
 // ── High-level API ──────────────────────────────────────────────────────────
@@ -95,13 +105,14 @@ export const vkBridgeService = {
     vkBridgeSend<{ result: boolean }>('VKWebAppShowNativeAds', { ad_format: adFormat }, { timeout: 60000 }),
 
   // Banner ads (persistent host overlay — separate from native ads).
-  checkBannerAd: () => vkBridgeSend<{ result: boolean }>('VKWebAppCheckBannerAd'),
+  checkBannerAd: () => vkBridgeSend<BannerAdResponse>('VKWebAppCheckBannerAd'),
   showBannerAd: (params: ShowBannerAdParams) =>
-    vkBridgeSend<{ banner_height: number }>('VKWebAppShowBannerAd', { ...params }, { timeout: 30000 }),
-  hideBannerAd: () => vkBridgeSend<{ result: boolean }>('VKWebAppHideBannerAd'),
+    vkBridgeSend<BannerAdResponse>('VKWebAppShowBannerAd', { ...params }, { timeout: 30000 }),
+  hideBannerAd: () => vkBridgeSend<BannerAdResponse>('VKWebAppHideBannerAd'),
 
   // Sharing
-  share: (link?: string) => vkBridgeSend<{ type: string }>('VKWebAppShare', link ? { link } : {}),
+  share: (link?: string) =>
+    vkBridgeSend<Array<{ type: string }>>('VKWebAppShare', link ? { link } : {}),
 
   // Cloud storage (per-user key/value)
   storageSet: (key: string, value: string) =>

@@ -46,6 +46,10 @@ code/data flow:
 - analytics and advertising;
 - retention/deletion path and contact.
 
+Cross-check these claims with the `vk-app-security` trust-boundary review and
+scanner output. Privacy copy must describe the secured implementation, not a
+planned control that is absent from the build.
+
 Draft policy text but label jurisdiction-specific legal review as external. Do
 not claim “no data collected” while analytics, identifiers, storage, or a
 backend are active.

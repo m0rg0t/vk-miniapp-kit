@@ -21,9 +21,19 @@ and `vk-app-listing` for anything not yet produced. Don't skip the **assets**,
 ### 2. Verify the build & config
 
 ```bash
+DOCTOR_DIR="<absolute path to the installed vk-app-doctor skill>"
+SECURITY_DIR="<absolute path to the installed vk-app-security skill>"
+node "$SECURITY_DIR/scripts/security-scan.mjs" --strict
+node "$DOCTOR_DIR/scripts/vk-app-doctor.mjs" --strict
 npm run build                 # must succeed with no type errors
+node "$DOCTOR_DIR/scripts/vk-app-doctor.mjs" --release --strict
 cat vk-hosting-config.json    # check app_id, static_path, endpoints
 ```
+
+The pre-build development doctor catches structural warnings without requiring
+output that does not exist on a clean checkout. The post-build release doctor
+records every configured endpoint. Resolve launch-authentication and
+client-secret findings; do not waive them as catalog-only concerns.
 
 `static_path` (usually `dist`) must point at the build output, and each endpoint
 (`mobile` / `mvk` / `web`) should resolve to `index.html`.
@@ -67,6 +77,8 @@ and submit for review.
 ## Done when
 
 - Build succeeds; `vk-hosting-config.json` is valid.
+- The strict security scan and release doctor pass, or remaining external
+  admin/legal/device checks are recorded explicitly.
 - Either the deploy uploaded cleanly, or `build.zip` exists with `index.html` at
   its root.
 - The checklist in `references/checklist.md` is fully ticked, including the

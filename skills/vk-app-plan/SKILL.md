@@ -28,7 +28,11 @@ verify.
 6. Define an analytics funnel with named events and no unnecessary personal
    data.
 7. Record privacy and moderation implications from actual data behavior.
-8. Write measurable acceptance criteria and the minimum test matrix.
+8. Record the trust boundary: which launch fields identify a user, where their
+   signature/app ID/timestamp are verified, session ownership, secret storage,
+   abuse limits, and deletion behavior. Route implementation to
+   `vk-app-security`.
+9. Write measurable acceptance criteria and the minimum test matrix.
 
 Use `references/product-brief-template.md` as the output skeleton. Put the brief
 in the app repository, conventionally `docs/product-brief.md`.
@@ -42,6 +46,8 @@ in the app repository, conventionally `docs/product-brief.md`.
 - Treat a Bridge decline, unavailable client method, timeout, and missing launch
   parameter as normal states.
 - Never invent catalog claims that cannot be demonstrated in the MVP.
+- Never treat client launch parameters, including `vk_user_id`, as authenticated
+  backend identity.
 - Mark external facts that must be confirmed in the current VK admin or official
   documentation.
 

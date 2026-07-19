@@ -22,7 +22,13 @@ the source of truth for required fields and sizes.
 
 ## Build & hosting
 
+- [ ] `vk-app-security` strict scan has no unresolved high/medium finding
+- [ ] Signed launch identity is verified on the backend; secure/deploy keys are
+      absent from browser code and the production bundle
+- [ ] `vk-app-doctor --strict` passes before the build
 - [ ] `npm run build` succeeds with no type errors
+- [ ] `vk-app-doctor --release --strict` passes after the build and finds every
+      configured endpoint file inside `static_path`
 - [ ] Unit/integration/browser gates from `vk-app-test` pass
 - [ ] `vk-hosting-config.json` valid: correct `app_id`, `static_path` (e.g. `dist`),
       and `endpoints` (`mobile` / `mvk` / `web` → `index.html`)
@@ -37,6 +43,8 @@ the source of truth for required fields and sizes.
       features (e.g. banner ads) are mobile-only.
 - [ ] Launch params resolve, theme matches the client, no console errors.
 - [ ] Core flow works end to end on a real device or m.vk.com.
+- [ ] Permission decline, expired/invalid authentication, and unauthorized API
+      access fail safely without leaking sensitive diagnostics.
 
 ## Common rejection causes
 

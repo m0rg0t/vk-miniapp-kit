@@ -5,13 +5,13 @@
     "name": "antonlenev"
   },
   "metadata": {
-    "description": "End-to-end VK Mini Apps toolkit: product planning, VKUI implementation, VK Bridge integration and local mocks, testing, catalog assets and copy, and publishing."
+    "description": "End-to-end VK Mini Apps toolkit: planning, VKUI, Bridge runtime mocks, launch security, readiness audits, tests, catalog assets, and publishing."
   },
   "plugins": [
     {
       "name": "vk-miniapp-kit",
       "source": "./",
-      "description": "Take a VK Mini App from idea to catalog: plan it, scaffold the official stack, build with VKUI, integrate and mock VK Bridge, test locally, create assets and listing copy, then publish.",
+      "description": "Take a VK Mini App from idea to catalog: plan it, scaffold and build with VKUI, integrate and runtime-mock Bridge, secure and audit, test, create catalog materials, then publish.",
       "author": {
         "name": "antonlenev"
       },
@@ -22,6 +22,9 @@
         "vkui",
         "vk-bridge",
         "testing",
+        "security",
+        "doctor",
+        "audit",
         "catalog",
         "screenshots",
         "icons",

@@ -1,0 +1,4 @@
+interface:
+  display_name: "VK App Security"
+  short_description: "Harden VK Mini Apps clients and backends"
+  default_prompt: "Use $vk-app-security to review this VK Mini App security model, verify launch authentication, and fix high-confidence risks."

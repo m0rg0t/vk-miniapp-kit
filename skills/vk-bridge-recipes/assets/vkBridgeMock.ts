@@ -15,18 +15,57 @@ export const MOCK_USER = {
 /** Canned responses keyed by VK Bridge method name. */
 const MOCKS: Record<string, unknown> = {
   VKWebAppGetUserInfo: MOCK_USER,
-  VKWebAppGetLaunchParams: { vk_user_id: 1, vk_app_id: 0, vk_platform: 'desktop_web' },
+  VKWebAppGetLaunchParams: {
+    vk_user_id: 1,
+    vk_app_id: 1,
+    vk_is_app_user: 1,
+    vk_are_notifications_enabled: 0,
+    vk_language: 'ru',
+    vk_ref: 'mock',
+    vk_access_token_settings: '',
+    vk_platform: 'desktop_web',
+    vk_is_favorite: 0,
+    vk_ts: 1_700_000_000,
+    sign: 'mock-signature-not-for-authentication',
+  },
 
   // Ads — return "available" so you can exercise the UI path in dev. Note: no
   // real ad renders in dev; only the VK client shows actual ads.
   VKWebAppCheckNativeAds: { result: true },
   VKWebAppShowNativeAds: { result: true },
-  VKWebAppCheckBannerAd: { result: true },
-  VKWebAppShowBannerAd: { banner_height: 64 },
-  VKWebAppHideBannerAd: { result: true },
+  VKWebAppCheckBannerAd: {
+    result: true,
+    banner_width: 320,
+    banner_height: 64,
+    banner_location: 'bottom',
+    banner_align: 'center',
+    layout_type: 'resize',
+    height_type: 'regular',
+    orientation: 'horizontal',
+  },
+  VKWebAppShowBannerAd: {
+    result: true,
+    banner_width: 320,
+    banner_height: 64,
+    banner_location: 'bottom',
+    banner_align: 'center',
+    layout_type: 'resize',
+    height_type: 'regular',
+    orientation: 'horizontal',
+  },
+  VKWebAppHideBannerAd: {
+    result: true,
+    banner_width: 320,
+    banner_height: 64,
+    banner_location: 'bottom',
+    banner_align: 'center',
+    layout_type: 'resize',
+    height_type: 'regular',
+    orientation: 'horizontal',
+  },
 
   // Sharing
-  VKWebAppShare: { type: 'message' },
+  VKWebAppShare: [{ type: 'link' }],
 
   // Storage (in-memory below overrides these for round-tripping)
   VKWebAppStorageSet: { result: true },
@@ -49,5 +88,6 @@ export function getMockResponse<T>(method: string, params: Record<string, unknow
   if (method === 'VKWebAppStorageGetKeys') {
     return { keys: [...memStore.keys()] } as T;
   }
-  return (MOCKS[method] ?? { result: true }) as T;
+  if (!(method in MOCKS)) throw new Error(`Unsupported VK Bridge mock method: ${method}`);
+  return MOCKS[method] as T;
 }

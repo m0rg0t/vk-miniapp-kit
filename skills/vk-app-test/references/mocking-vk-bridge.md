@@ -4,15 +4,25 @@
 
 | Need | Best boundary |
 |---|---|
-| Click through the app outside VK | Official package alias or runtime service mock |
+| Click through a Bridge 3 app outside VK | Bundled source runtime mock |
+| Preserve an older compatible harness | Official package alias |
 | Test Bridge wrapper signatures/timeouts | Mock `@vkontakte/vk-bridge` |
 | Test panels/hooks | Mock the app's centralized Bridge service |
 | Reproduce a receive-only client event | Scenario controller/event emitter |
 | Prove real ad/permission/host UI | Real VK client; no local substitute |
 
-## Official standalone mock
+## Bundled runtime mock
 
-Install the VK-maintained browser mock as a development dependency:
+Read `runtime-mock.md` and use the bundled mock by default for current Bridge 3
+projects. It has explicit supported methods, structured failures, storage,
+receive-only events, and allow-listed scenarios. Extend its switch with a
+realistic response when the app needs another method; never replace unknown
+methods with generic success.
+
+## Official standalone mock (compatibility option)
+
+Retain or install the VK-maintained browser mock only after comparing its Bridge
+dependency major and method coverage with the target application:
 
 ```bash
 npm install -D @vkontakte/vk-bridge-mock
@@ -24,10 +34,10 @@ Create an explicit Vite mode instead of changing production imports:
 // vite.config.ts (merge with the existing config)
 import { defineConfig } from 'vite';
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ command, mode }) => ({
   resolve: {
     alias:
-      mode === 'vk-mock'
+      command === 'serve' && mode === 'vk-mock'
         ? [{ find: /^@vkontakte\/vk-bridge$/, replacement: '@vkontakte/vk-bridge-mock' }]
         : [],
   },
@@ -42,8 +52,9 @@ official mock may not cover a newly added Bridge method; if compatibility or
 coverage is weak, use the app's centralized service mock instead of returning a
 misleading generic success.
 
-Keep the alias exact (`/^@vkontakte\/vk-bridge$/`) and mode-specific. Run a
-normal production build during release verification to prove the mock is absent.
+Keep the alias exact (`/^@vkontakte\/vk-bridge$/`), mode-specific, and restricted
+to Vite's `serve` command. Run a normal production build during release
+verification to prove the mock is absent.
 
 ## Deterministic Vitest scenarios
 
@@ -98,7 +109,7 @@ the project's Playwright/Cypress runner for a repeatable release or CI gate.
 
 - Start Vite with the explicit mock mode and a fixed test port.
 - Select an allow-listed scenario through a development-only query such as
-  `?vk_mock=user-success` or `?vk_mock=permission-declined`.
+  `?vk_mock=success` or `?vk_mock=permission-declined`.
 - Make the runtime mock adapter—not production components—interpret that value.
 - Reset storage and scenario state between tests.
 - Wait on visible app state or Bridge calls, not arbitrary sleeps.

@@ -1,7 +1,7 @@
 {
   "name": "vk-miniapp-kit",
-  "description": "Take VK Mini Apps from idea to catalog: plan, scaffold, build with VKUI, integrate and mock VK Bridge, test, create listing assets and copy, then publish.",
-  "version": "0.2.0",
+  "description": "Take VK Mini Apps from idea to catalog: plan, scaffold, build with VKUI, integrate and runtime-mock VK Bridge, secure and audit, test, create listing assets and copy, then publish.",
+  "version": "0.3.0",
   "author": {
     "name": "antonlenev"
   },
@@ -12,6 +12,9 @@
     "vkui",
     "vk-bridge",
     "testing",
+    "security",
+    "doctor",
+    "audit",
     "catalog",
     "screenshots",
     "icons",

@@ -27,3 +27,8 @@ npx skills add . --skill '*' -a claude-code --copy -y
 When changing a skill, validate its complete installed folder—including
 references, scripts, assets, and `agents/openai.yaml`—rather than checking only
 the `SKILL.md` frontmatter.
+
+For lifecycle, test, security, doctor, or publish changes, also exercise the
+installed runtime Bridge mock, backend launch verifier, and read-only audit
+scripts from a clean fixture. Do not let Claude-specific plugin discovery hide
+a broken `npx skills add` installation.
