@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create a VK Lottie Icon"
+  short_description: "Author or validate a compact looping icon"
+  default_prompt: "Use $vk-lottie-launch-icon to create or validate the animated launch icon for this VK Mini App."

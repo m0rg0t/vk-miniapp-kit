@@ -1,0 +1,4 @@
+interface:
+  display_name: "Capture VK Catalog Screenshots"
+  short_description: "Create verified catalog-ready app screenshots"
+  default_prompt: "Use $vk-catalog-screenshots to capture and verify the strongest VK catalog screenshots for this app."

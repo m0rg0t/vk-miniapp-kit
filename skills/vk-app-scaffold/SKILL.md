@@ -1,6 +1,6 @@
 ---
 name: vk-app-scaffold
-description: Scaffold a new VK Mini App on the official stack — React 18 + VKUI 7 + vk-bridge + vk-mini-apps-router + Vite (+ Vitest), via the official create-vk-mini-app generator — then optionally layer on proven conventions (centralized bridge service with dev mock, env-aware logger, ESLint no-console, Testing Library setup). Use this skill whenever the user wants to start, create, bootstrap, or set up a new VK Mini App / VK мини-приложение / VK app project. For adding features to an existing app use vk-bridge-recipes, and for releasing one use vk-app-publish — this skill is for creating a new app. Prefer this over a generic React setup whenever the target runs inside VK.
+description: Scaffold a new VK Mini App with the current official create-vk-mini-app generator and its React, VKUI, vk-bridge, vk-mini-apps-router, Vite, hosting, and deploy conventions, then optionally add centralized Bridge mocking, logging, lint, and Vitest/Testing Library setup. Use whenever the user wants to start, create, bootstrap, or set up a new VK Mini App / VK мини-приложение / VK app project. Inspect the generated package versions rather than pinning remembered majors. For adding features to an existing app use vk-bridge-recipes; for releasing one use vk-app-publish.
 ---
 
 # Scaffold a new VK Mini App
@@ -23,6 +23,10 @@ See `references/stack.md` for npx/yarn forms, template choices, and exactly
 what the template includes. Use `vkui-bridge-router` unless the user explicitly
 wants no router (`vkui-bridge`).
 
+Inspect `package.json` after generation and adapt all subsequent code to those
+installed majors. Do not force an older React/VKUI/Bridge version from this
+skill.
+
 ### 2. Install & verify it runs
 
 ```bash
@@ -40,7 +44,8 @@ from `references/stack.md`:
   highest-leverage addition.
 - **Env-aware logger + `logger.diag`** for prod-visible diagnostics.
 - **ESLint flat config** with `no-console: error` (logger file exempted).
-- **Vitest + Testing Library** with a `vk-bridge`-mocking `src/test/setup.ts`.
+- **Vitest + Testing Library** with the scenario-controlled harness from
+  **`vk-app-test`** and an optional standalone `@vkontakte/vk-bridge-mock` mode.
 
 Apply each with TDD where it adds real code, matching the template's existing
 style.
@@ -52,6 +57,9 @@ A fresh app usually needs assets and, eventually, release:
 - animated launch icon → **`vk-lottie-launch-icon`**
 - catalog screenshots → **`vk-catalog-screenshots`**
 - bridge features (ads/analytics/share/storage) → **`vk-bridge-recipes`**
+- VKUI screen implementation → **`vk-app-design`**
+- local and release testing → **`vk-app-test`**
+- catalog descriptions/privacy/manifest → **`vk-app-listing`**
 - publish → **`vk-app-publish`**
 
 ## Done when

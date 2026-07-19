@@ -13,14 +13,17 @@ the source of truth for required fields and sizes.
 
 ## App settings (in the admin)
 
-- [ ] App name + short description (both languages if targeting RU+EN)
+- [ ] `vk-app-listing` produced a catalog copy pack based on the shipped app
+- [ ] App name + short/full description (both languages if targeting RU+EN)
 - [ ] Category / section chosen
-- [ ] Privacy policy URL if the app collects data
+- [ ] Support/contact details are current
+- [ ] Privacy policy URL is public and matches actual data behavior
 - [ ] Open API / domains / trusted redirect set if the app needs them
 
 ## Build & hosting
 
 - [ ] `npm run build` succeeds with no type errors
+- [ ] Unit/integration/browser gates from `vk-app-test` pass
 - [ ] `vk-hosting-config.json` valid: correct `app_id`, `static_path` (e.g. `dist`),
       and `endpoints` (`mobile` / `mvk` / `web` → `index.html`)
 - [ ] Choose a deploy path:

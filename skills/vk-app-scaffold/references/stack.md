@@ -17,13 +17,19 @@ yarn create @vkontakte/vk-mini-app <app-dir> --typescript --template=vkui-bridge
 ```
 
 Templates: `vkui-bridge-router` (recommended), `vkui-bridge` (no router),
-`vkui-only` (not a mini app). Node ≥ 18 → current generator; older Node needs
-`create-vk-mini-app` v1.
+`vkui-only` (not a mini app). Check the current generator's `engines` field
+before running it and upgrade Node when required; do not silently fall back to
+an obsolete generator.
 
-What the template gives you: React 18 + VKUI 7 + `@vkontakte/vk-bridge`
-(+ `@vkontakte/vk-bridge-react`) + `@vkontakte/vk-mini-apps-router`, Vite,
+What the template gives you: React + VKUI + `@vkontakte/vk-bridge`
+(and template-dependent Bridge React helpers) +
+`@vkontakte/vk-mini-apps-router`, Vite,
 `vk-hosting-config.json`, `vk-miniapps-deploy`, `vk-tunnel`, and the
 `public/resources/app/` asset folder (icon/splashscreen sources).
+
+The generator and libraries evolve independently. Inspect the generated
+`package.json` and installed types before using version-specific component props
+or Bridge exports.
 
 ## Conventions to layer on top (proven, optional)
 
@@ -51,11 +57,9 @@ globals on, a `src/test/setup.ts` that mocks `@vkontakte/vk-bridge`. Use
 `eslint src/ --max-warnings 0`, `no-console: error` project-wide with a single
 override turning it `off` for `src/utils/logger.ts`.
 
-## VKUI v7 gotchas (save debugging time)
+## Version-sensitive VKUI gotchas
 
-- `Header` has **no** `aside` prop — use `after` (right side) or `afterTitle`
-  (16px inline).
-- `Popover` with the default click trigger is touch-correct (auto-closes on
-  outside click / Escape) — good for tap tooltips/help hints.
+- Confirm `Header`, popover, modal, and adaptivity props in the installed types;
+  these APIs have changed across VKUI majors.
 - All panels usually stay mounted inside `<View>`, so app-wide effects (banner
   ads, analytics init) belong at the `App` level, driven once.

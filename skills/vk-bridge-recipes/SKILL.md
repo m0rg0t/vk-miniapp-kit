@@ -23,9 +23,10 @@ Panels and hooks must never branch on environment. They call
 ### Install the service
 
 ```bash
-cp "$CLAUDE_PLUGIN_ROOT/skills/vk-bridge-recipes/assets/logger.ts"        src/utils/logger.ts
-cp "$CLAUDE_PLUGIN_ROOT/skills/vk-bridge-recipes/assets/vkBridgeMock.ts"   src/utils/vkBridgeMock.ts
-cp "$CLAUDE_PLUGIN_ROOT/skills/vk-bridge-recipes/assets/vkBridge.ts"       src/services/vkBridge.ts
+SKILL_DIR="<absolute path to the installed vk-bridge-recipes skill>"
+cp "$SKILL_DIR/assets/logger.ts"       src/utils/logger.ts
+cp "$SKILL_DIR/assets/vkBridgeMock.ts" src/utils/vkBridgeMock.ts
+cp "$SKILL_DIR/assets/vkBridge.ts"     src/services/vkBridge.ts
 ```
 
 Adjust the two relative imports at the top of `vkBridge.ts` if your paths differ.
@@ -52,7 +53,9 @@ This is real production code — follow red-green-refactor. The dev mock makes
 hooks testable without the VK client: mock `../services/vkBridge` in the test,
 assert your hook calls the right method with the right params, and that it
 **fails open** (a declined/missing feature never throws). See the banner-hook
-example in `references/ads.md` for the shape.
+example in `references/ads.md` for the shape. Use **`vk-app-test`** when the user
+needs the full local harness, the official `@vkontakte/vk-bridge-mock` package,
+scenario control, browser tests, or a release test matrix.
 
 ## Two facts that save hours
 

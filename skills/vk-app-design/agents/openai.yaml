@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design with VKUI"
+  short_description: "Build native-feeling adaptive VKUI flows"
+  default_prompt: "Use $vk-app-design to design and implement this VK Mini App flow with VKUI."

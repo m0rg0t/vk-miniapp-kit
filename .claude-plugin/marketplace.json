@@ -5,13 +5,13 @@
     "name": "antonlenev"
   },
   "metadata": {
-    "description": "Tools for shipping VK Mini Apps faster: catalog screenshots, icon/splash assets, animated Lottie launch icon, project scaffold, vk-bridge recipes, and catalog publishing."
+    "description": "End-to-end VK Mini Apps toolkit: product planning, VKUI implementation, VK Bridge integration and local mocks, testing, catalog assets and copy, and publishing."
   },
   "plugins": [
     {
       "name": "vk-miniapp-kit",
       "source": "./",
-      "description": "Ship VK Mini Apps faster: scaffold the official stack, capture catalog screenshots at the exact required size, generate/resize icons & splashscreens, build animated Lottie launch icons, wire up vk-bridge features (ads/analytics/theme/share/storage), and prep for VK catalog submission.",
+      "description": "Take a VK Mini App from idea to catalog: plan it, scaffold the official stack, build with VKUI, integrate and mock VK Bridge, test locally, create assets and listing copy, then publish.",
       "author": {
         "name": "antonlenev"
       },
@@ -21,6 +21,8 @@
         "vk-mini-apps",
         "vkui",
         "vk-bridge",
+        "testing",
+        "catalog",
         "screenshots",
         "icons",
         "lottie"
