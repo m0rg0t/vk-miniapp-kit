@@ -57,10 +57,15 @@ example in `references/ads.md` for the shape. Use **`vk-app-test`** when the use
 needs the full local harness, the official `@vkontakte/vk-bridge-mock` package,
 scenario control, browser tests, or a release test matrix.
 
-## Two facts that save hours
+## Three facts that save hours
 
-- **Several features are mobile-only or VK-client-only** (banner ads especially —
-  they don't render in desktop web). Smoke-test in the VK mobile client.
+- **`VKWebAppCheckBannerAd` is not an availability check** — it reports whether
+  a banner is *already* shown, so it's always `result: false` before the first
+  `VKWebAppShowBannerAd`. Never gate the first show on it; see
+  `references/ads.md`.
+- **Several features are VK-client-dependent** (banner ads are nominally
+  supported everywhere but rarely fill on desktop web). Smoke-test in the VK
+  mobile client.
 - **Dev mocks don't render real VK UI.** Use `logger.diag` (not `logger.log`) to
   trace behavior in production, since dev logs are stripped from the build.
 
