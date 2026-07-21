@@ -135,15 +135,26 @@ export function vkBridgeSubscribe(
 
 // ── Init ────────────────────────────────────────────────────────────────────
 
-export async function initVkBridge(): Promise<void> {
-  if (isDevMode()) {
-    logger.log('[VK Bridge] Init (dev mode)');
-    return;
-  }
-  try {
-    await vkBridge.send('VKWebAppInit');
-    logger.log('[VK Bridge] Initialized');
-  } catch (error) {
-    logger.error('[VK Bridge] Init error:', error);
-  }
+let initPromise: Promise<void> | null = null;
+
+/**
+ * Idempotent: the first call sends VKWebAppInit; later callers await the same
+ * promise. Ad (and other) calls made before init completes can fail silently on
+ * mobile clients — always `await initVkBridge()` in mount-time hooks instead of
+ * racing the fire-and-forget init from main.tsx.
+ */
+export function initVkBridge(): Promise<void> {
+  initPromise ??= (async () => {
+    if (isDevMode()) {
+      logger.log('[VK Bridge] Init (dev mode)');
+      return;
+    }
+    try {
+      await vkBridge.send('VKWebAppInit');
+      logger.log('[VK Bridge] Initialized');
+    } catch (error) {
+      logger.error('[VK Bridge] Init error:', error);
+    }
+  })();
+  return initPromise;
 }
