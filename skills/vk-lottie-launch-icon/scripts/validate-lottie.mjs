@@ -5,7 +5,7 @@
  * jump at the loop point looks broken, so this checks both the hard limits and
  * the loop seam.
  *
- * Usage: node validate-lottie.mjs <path.json> [--width 96] [--height 96] [--max-kb 24]
+ * Usage: node validate-lottie.mjs <path.json> [--width 96] [--height 96] [--max-kb 24] [--strict-loop]
  *
  * Hard checks (exit 1 on failure):
  *   - file is valid JSON
@@ -32,6 +32,7 @@ if (!file || file.startsWith('--')) {
 const targetW = Number(arg('width', 96));
 const targetH = Number(arg('height', 96));
 const maxBytes = Number(arg('max-kb', 24)) * 1024;
+const strictLoop = process.argv.includes('--strict-loop');
 
 let hardFail = false;
 const fail = (m) => { console.error(`✗ ${m}`); hardFail = true; };
@@ -91,13 +92,14 @@ function walk(node, path) {
 walk(data.layers, 'layers');
 
 if (animatedCount === 0) {
-  warn('no animated properties found — is this actually animated?');
+  (strictLoop ? fail : warn)('no animated properties found — is this actually animated?');
 } else if (offenders.length === 0) {
   ok(`seamless loop: all ${animatedCount} animated properties return to start`);
 } else {
-  warn(`loop seam: ${offenders.length} of ${animatedCount} animated properties do NOT return to start:`);
-  offenders.slice(0, 10).forEach((o) => warn(`    ${o}`));
-  warn('  → set the last keyframe value equal to the first so the loop is seamless.');
+  const report = strictLoop ? fail : warn;
+  report(`loop seam: ${offenders.length} of ${animatedCount} animated properties do NOT return to start:`);
+  offenders.slice(0, 10).forEach((o) => report(`    ${o}`));
+  report('  → set the last keyframe value equal to the first so the loop is seamless.');
 }
 
 process.exit(hardFail ? 1 : 0);

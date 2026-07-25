@@ -5,13 +5,13 @@
     "name": "antonlenev"
   },
   "metadata": {
-    "description": "End-to-end VK Mini Apps toolkit: planning, VKUI, Bridge runtime mocks, launch security, readiness audits, tests, catalog assets, and publishing."
+    "description": "End-to-end VK Mini Apps toolkit: planning, VKUI, Bridge mocks, security, tests, strict catalog preflight, plain copy, version-bound deploy, and publishing."
   },
   "plugins": [
     {
       "name": "vk-miniapp-kit",
       "source": "./",
-      "description": "Take a VK Mini App from idea to catalog: plan it, scaffold and build with VKUI, integrate and runtime-mock Bridge, secure and audit, test, create catalog materials, then publish.",
+      "description": "Take a VK Mini App from idea to catalog: build and test it, preflight exact catalog materials, then deploy and confirm a saved hosting version.",
       "author": {
         "name": "antonlenev"
       },
@@ -28,7 +28,9 @@
         "catalog",
         "screenshots",
         "icons",
-        "lottie"
+        "lottie",
+        "preflight",
+        "deploy"
       ]
     }
   ]

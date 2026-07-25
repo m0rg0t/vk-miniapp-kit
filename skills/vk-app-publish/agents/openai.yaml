@@ -1,4 +1,4 @@
 interface:
   display_name: "Publish a VK Mini App"
-  short_description: "Build, package, verify, and release to VK"
-  default_prompt: "Use $vk-app-publish to prepare, verify, and release this VK Mini App."
+  short_description: "Preflight, deploy, verify, and submit to VK"
+  default_prompt: "Use $vk-app-publish to preflight, deploy only if needed, verify, and submit this VK Mini App."

@@ -14,8 +14,9 @@ each field before final copy editing.
 ## Russian
 
 - App name (`limit: ___`):
-- Short description (`limit: ___`):
-- Full description (`limit: ___`):
+- Validated copy file (`vk-catalog-copy`):
+- Short description (`single line; exact count: ___ / current limit: ___`):
+- Description (`single line; exact count: ___ / current limit: ___`):
 - Category:
 - Search terms/topics:
 - Support/contact:
@@ -23,8 +24,9 @@ each field before final copy editing.
 ## English (if required)
 
 - App name (`limit: ___`):
-- Short description (`limit: ___`):
-- Full description (`limit: ___`):
+- Validated copy file (`vk-catalog-copy`):
+- Short description (`single line; exact count: ___ / current limit: ___`):
+- Description (`single line; exact count: ___ / current limit: ___`):
 - Category:
 - Search terms/topics:
 - Support/contact:
@@ -45,7 +47,11 @@ orientation and put the strongest image first.
 | Purpose | File | Required size/limit | Verified |
 |---|---|---|---|
 | Editable icon master | | | |
-| Catalog icon | | current admin value | |
+| Catalog icon | `icon-576.png` | current admin value | |
+| Catalog snippet | `catalog-snippet-1120x630.png` | current admin value | |
+| Reproducible snippet source | | — | |
+| Snippet real UI/icon sources | | — | |
+| Snippet personal-data review | | required | |
 | Portrait splash | | current admin value | |
 | Landscape splash (if used) | | current admin value | |
 | Animated launch icon (optional) | | current admin value | |
@@ -68,5 +74,8 @@ orientation and put the strongest image first.
 - Final copy approved by:
 - Final assets approved by:
 - Build/deploy identifier:
+- Deploy package version:
+- Uploaded deploy version:
+- Verified production URL / HTTP status:
 - Real-client smoke test:
 - Submitted on / status:

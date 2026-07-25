@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy a VK Mini App Version"
+  short_description: "Track, confirm, and verify one VK deploy version"
+  default_prompt: "Use $vk-miniapps-deploy to upload or confirm this VK Mini App version without creating an accidental replacement deploy."

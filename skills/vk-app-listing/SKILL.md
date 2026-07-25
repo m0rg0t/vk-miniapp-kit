@@ -1,6 +1,6 @@
 ---
 name: vk-app-listing
-description: "Prepare a complete VK Mini App publication/listing pack from the shipped product: app names, short and full descriptions, keywords/category suggestions, Russian and optional English localization, screenshot captions/order, icon and splash manifest, support details, privacy-policy draft, data disclosure, moderation notes, and a final catalog field checklist. Use when the user asks for catalog/store copy, описание/короткое описание, publication materials, privacy text, localization, moderation submission, or wants all screenshots/logos/descriptions organized for release. Coordinate image production with vk-app-assets and vk-catalog-screenshots; do not invent features the app does not ship."
+description: "Prepare the wider VK Mini App listing pack from the shipped product: names, category suggestions, localization, privacy-policy draft, data disclosure, moderation notes, screenshot story, support details, and catalog field inventory. Use for publication metadata, privacy text, localization, moderation submission, or organizing a catalog release. Delegate the paste-ready Description and Short description fields to vk-catalog-copy and the deterministic visual manifest/preflight to vk-app-assets; never invent features the app does not ship."
 ---
 
 # Prepare a VK catalog listing
@@ -22,18 +22,16 @@ Create a working directory such as `release/catalog/` and use
 1. Define one positioning sentence: audience + job + concrete outcome.
 2. Produce several concise name/short-description variants only if a product
    naming choice is still open; recommend one and explain the tradeoff briefly.
-3. Write the full description in benefit-first order:
-   - what the user can do now;
-   - the core flow and differentiators;
-   - relevant limitations or requirements;
-   - a restrained call to action.
+3. Load `vk-catalog-copy` and use it for the final `Описание` and `Краткое
+   описание`. It owns one-line plain text, Markdown/emoji rejection, current
+   limits, character counts, and `catalog-copy.json`.
 4. Localize by meaning, not word-for-word. Russian is the default unless the
    target audience says otherwise; add English when distribution requires it.
 5. Map screenshot order and captions to demonstrable in-app moments. The first
    image carries the clearest promise.
 6. Inventory every required visual file and measured dimension. Delegate missing
-   identity art to `vk-app-assets`, animation to `vk-lottie-launch-icon`, and
-   in-app captures to `vk-catalog-screenshots`.
+   identity art and the 1120×630 snippet to `vk-app-assets`, animation to
+   `vk-lottie-launch-icon`, and in-app captures to `vk-catalog-screenshots`.
 
 ## Privacy and moderation
 
@@ -56,17 +54,18 @@ backend are active.
 
 ## Quality checks
 
-- Count characters against the current admin fields.
+- Require `vk-catalog-copy` validation rather than estimating or hand-counting.
 - Remove claims not visible in the build or supported by evidence.
 - Use consistent terminology across app UI, descriptions, captions, and policy.
 - Check capitalization, Russian typography, links, support contact, and version.
-- Record the final chosen copy and exact asset paths in one manifest.
+- Record the final copy path and exact asset paths in the common
+  `vk-app-assets` catalog manifest.
 
 ## Done when
 
-- The copy pack contains paste-ready short/full descriptions for each target
-  locale plus category/keyword and support suggestions.
+- The pack references validated paste-ready copy for each target locale plus
+  category/keyword and support suggestions.
 - Privacy/moderation notes match the implementation.
 - Every required logo, icon, splash, animation, and screenshot is present or has
   an explicit owner and generation step.
-- The final manifest is ready to work through with `vk-app-publish`.
+- The common catalog preflight passes before handoff to `vk-app-publish`.

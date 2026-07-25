@@ -2,8 +2,9 @@
 
 The **authoritative source is the VK app admin upload forms** — each field states
 its required size and rejects the wrong one. App settings live at
-`vk.com/editapp?act=...` (sections: «Настройки», «Каталог»). Confirm there
-before a final submission; treat this table as the well-known defaults.
+`vk.com/editapp?act=...` (sections: «Настройки», «Каталог»). Confirm there before
+producing assets and record the date plus form/screenshot source in
+`catalog-manifest.json`; treat this table only as known defaults.
 
 ## Icons
 
@@ -34,6 +35,17 @@ distorts. The `--splash` / `--splash-landscape` flags keep them independent.
 |-------|---------------|-------|
 | Catalog screenshots | 600×1200 portrait (or 1200×600) | `vk-catalog-screenshots` |
 | Animated launch icon | 96×96, ≤24 KB, Lottie JSON | `vk-lottie-launch-icon` |
+| Catalog copy | Current form limits (known defaults: 2000 / 128) | `vk-catalog-copy` |
+
+## Catalog snippet
+
+| Purpose | Size | File | Source |
+|---|---:|---|---|
+| Catalog card snippet | 1120×630 | `catalog-snippet-1120x630.png` | Reproducible composition using the real app UI and icon |
+
+The common preflight requires the snippet PNG, composition source, exact icon
+and interface evidence paths, a reasonable byte budget copied into the
+manifest, and an explicit personal-data review.
 
 ## Where assets live
 
