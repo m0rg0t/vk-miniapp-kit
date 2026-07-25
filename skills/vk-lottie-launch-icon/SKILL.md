@@ -23,13 +23,12 @@ visibly jumps.
 ```bash
 SKILL_DIR="<absolute path to the installed vk-lottie-launch-icon skill>"
 node "$SKILL_DIR/scripts/validate-lottie.mjs" \
-  path/to/icon-animation.json
+  path/to/icon-animation.json --strict-loop
 ```
 
-It checks size, JSON validity, required fields, 96×96 dimensions, and reports any
+It checks size, JSON validity, required fields, 96×96 dimensions, and rejects any
 animated property whose loop seam drifts (start ≠ end). Override targets with
-`--width/--height/--max-kb` if VK's spec changes. Hard failures exit non-zero;
-loop-seam issues warn and name the offending properties so they're easy to fix.
+`--width/--height/--max-kb` only after reading the current admin form.
 
 ### B. Author a new one
 
@@ -46,6 +45,8 @@ loop-seam issues warn and name the offending properties so they're easy to fix.
 4. **Save** to the app's asset folder, conventionally
    `public/resources/app/icon-animation.json`.
 5. **Validate** with the script above and fix anything it flags.
+6. **Record** the path and current form limits in the common
+   `vk-app-assets` catalog manifest; its preflight rechecks Lottie strictly.
 
 ### C. Visual check (optional but recommended)
 
