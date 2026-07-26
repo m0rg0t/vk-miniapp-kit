@@ -16,7 +16,10 @@ producing assets and record the date plus form/screenshot source in
 | Vector source | — | `icon.svg` | The `create-vk-mini-app` template ships an SVG master. |
 
 Square source in, square sizes out — never feed a non-square image to the icon
-path or it distorts.
+path or it distorts. Do not apply an outer rounded-square mask, corner radius,
+or transparent rounded-corner cutout to the icon master or export. VK applies
+the catalog mask, so pre-rounding causes a double inset. Rounded shapes inside
+the artwork are not the same as rounding the outer canvas.
 
 ## Splashscreens (loading background)
 
@@ -45,7 +48,10 @@ distorts. The `--splash` / `--splash-landscape` flags keep them independent.
 
 The common preflight requires the snippet PNG, composition source, exact icon
 and interface evidence paths, a reasonable byte budget copied into the
-manifest, and an explicit personal-data review.
+manifest, and explicit visual reviews. Keep the outer 1120×630 canvas
+rectangular: do not clip it to a rounded card or make its outer corners
+transparent because the catalog applies its own treatment. Rounded components
+inside the shown app UI remain valid.
 
 ## Where assets live
 

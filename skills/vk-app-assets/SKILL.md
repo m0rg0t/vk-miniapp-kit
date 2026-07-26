@@ -22,6 +22,10 @@ recognizable identity that remains legible at small size.
 
 - Prefer a square SVG icon master under `public/resources/app/icon.svg`.
 - For raster input, require a square source at least 1024×1024.
+- Keep the icon artwork square to the canvas without a baked outer corner
+  radius, rounded-square mask, or transparent rounded-corner cutout. VK applies
+  the catalog mask; pre-rounding compounds it. Rounded elements inside the
+  artwork are fine.
 - Keep separate correctly proportioned portrait and landscape splash sources.
 - If no usable icon exists, create an original editable SVG. Never imitate
   third-party marks or generatively redraw an accepted master for each size.
@@ -50,6 +54,9 @@ source) and render `catalog-snippet-1120x630.png`.
 
 - Use a real current interface capture and the app's actual icon.
 - Keep the exact icon and interface source paths in the manifest.
+- Keep the outer 1120×630 canvas rectangular and unmasked. Do not bake rounded
+  outer corners into the snippet; the catalog applies its own card treatment.
+  Normal rounded controls and cards inside the captured UI are fine.
 - Do not invent UI or use image generation to fabricate product text.
 - Review visible names, avatars, health values, messages, identifiers, and
   notifications for personal data.
@@ -63,8 +70,9 @@ Do not stretch an arbitrary screenshot to 1120×630.
 Copy `assets/catalog-manifest.json` into `release/catalog/`, update every path,
 and replace all placeholders with requirements copied from the current form.
 Point `icon.source` at the retained master SVG and `snippet.iconSource` at the
-verified `icon-576.png`. Set `realUiReviewed` and `privacyReviewed` only after
-visual inspection. Use:
+verified `icon-576.png`. Set both `unroundedReviewed` fields only after checking
+that neither asset has a baked outer-corner mask. Set `realUiReviewed` and
+`privacyReviewed` only after visual inspection. Use:
 
 - `vk-catalog-copy` for `catalog-copy.json`;
 - `vk-catalog-screenshots` for the vertical images;
@@ -93,6 +101,8 @@ deploy.
 
 - `catalog-preflight.mjs` prints `пакет готов` with no failures.
 - `icon-576.png` and `catalog-snippet-1120x630.png` exist at exact sizes.
+- Icon and snippet retain square/rectangular outer corners for the catalog to
+  mask; both `unroundedReviewed` fields are true.
 - Editable icon and snippet composition sources are retained.
 - The manifest records current-form evidence, real UI/icon sources, privacy
   review, copy counts, screenshots, links, contacts, and optional Lottie.

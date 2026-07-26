@@ -49,6 +49,7 @@ orientation and put the strongest image first.
 | Editable icon master | | | |
 | Catalog icon | `icon-576.png` | current admin value | |
 | Catalog snippet | `catalog-snippet-1120x630.png` | current admin value | |
+| Icon/snippet outer corners left unmasked | | required; catalog applies treatment | |
 | Reproducible snippet source | | — | |
 | Snippet real UI/icon sources | | — | |
 | Snippet personal-data review | | required | |

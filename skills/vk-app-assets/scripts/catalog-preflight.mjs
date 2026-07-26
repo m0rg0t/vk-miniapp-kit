@@ -301,10 +301,14 @@ export function preflight(manifestFile) {
     }
   };
 
-  const iconPath = checkImage('icon-576', manifest.assets?.icon, requirements.icon, true);
+  const icon = manifest.assets?.icon;
+  const iconPath = checkImage('icon-576', icon, requirements.icon, true);
   if (iconPath && !iconPath.endsWith('icon-576.png')) errors.push('catalog icon filename must be icon-576.png');
+  if (icon?.unroundedReviewed !== true) {
+    errors.push('icon.unroundedReviewed must be true (leave outer corners unmasked; VK applies the catalog mask)');
+  }
   try {
-    const iconSource = absolute(base, manifest.assets?.icon?.source);
+    const iconSource = absolute(base, icon?.source);
     statSync(iconSource);
     report.sources.iconMaster = iconSource;
     if (extname(iconSource).toLowerCase() !== '.svg') errors.push('icon source must be the retained master SVG');
@@ -346,6 +350,9 @@ export function preflight(manifestFile) {
   }
   if (snippetSources.iconSource && snippetSources.iconSource !== iconPath) {
     errors.push('snippet.iconSource must reference the verified icon-576.png');
+  }
+  if (snippet?.unroundedReviewed !== true) {
+    errors.push('snippet.unroundedReviewed must be true (leave the outer 1120x630 canvas rectangular)');
   }
   if (snippet?.realUiReviewed !== true) errors.push('snippet.realUiReviewed must be true');
   if (snippet?.privacyReviewed !== true) errors.push('snippet.privacyReviewed must be true');
