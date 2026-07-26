@@ -44,6 +44,9 @@ URL or screenshot path in the common catalog manifest.
 - [ ] Manual `build.zip`, when used, has `index.html` at its root.
 - [ ] Installed and current official `@vkontakte/vk-miniapps-deploy` versions
       were inspected before version-specific behavior.
+- [ ] Automatic jobs use a secret-injected `MINI_APPS_ACCESS_TOKEN`,
+      `noprompt: 1`, an exact `dev`/`production` environment, and the
+      `vk-miniapps-deploy` CI preflight; production remains operator-confirmed.
 - [ ] If hosting changed, the exact uploaded version is saved in
       `vk-deploy-state.json`.
 - [ ] Confirmation code was applied to that same version with

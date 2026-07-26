@@ -41,7 +41,7 @@ For local development, use `npx skills add . --list` or
 | **vk-app-doctor** | Audit the app, tests, security, hosting, assets, and catalog readiness with one read-only command. |
 | **vk-app-listing** | Produce names, privacy/moderation text, localization, category, support details, and the wider listing pack. |
 | **vk-catalog-copy** | Produce single-line paste-ready Description and Short description values with exact counts and current-form limits. |
-| **vk-miniapps-deploy** | Save an uploaded hosting version, confirm a code for that same version, and verify production HTTP 200 without re-uploading. |
+| **vk-miniapps-deploy** | Preflight automatic dev uploads, save a production hosting version, confirm that exact version, and verify HTTP 200 without re-uploading. |
 | **vk-app-publish** | Orchestrate catalog preflight, build/package, version-bound deploy confirmation, smoke tests, and submission. |
 
 Start with **`vk-miniapp-lifecycle`** for a broad request. It routes each phase
@@ -170,7 +170,7 @@ npx skills add m0rg0t/vk-miniapp-kit --skill vk-app-test
 | **vk-catalog-screenshots** | Делает и нормализует скриншоты для каталога VK. |
 | **vk-app-listing** | Готовит название, локализацию, категорию, политику конфиденциальности и материалы для модерации. |
 | **vk-catalog-copy** | Готовит однострочные поля описания без Markdown и показывает точные счётчики. |
-| **vk-miniapps-deploy** | Сохраняет версию загрузки, подтверждает код именно для неё и проверяет production HTTP 200. |
+| **vk-miniapps-deploy** | Проверяет автоматический dev-деплой, сохраняет production-версию, подтверждает код именно для неё и проверяет HTTP 200. |
 | **vk-app-publish** | Оркестрирует preflight, сборку, version-bound deploy, smoke-тесты и отправку в каталог. |
 
 Подробные правила разработки находятся в [`AGENTS.md`](AGENTS.md), а инструкции
