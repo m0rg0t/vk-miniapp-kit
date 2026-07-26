@@ -1,6 +1,6 @@
 ---
 name: vk-miniapps-deploy
-description: Deploy and confirm a VK Mini App hosting version without accidentally uploading a replacement. Use for vk-miniapps-deploy, hosting upload, одноразовый код подтверждения, apps.confirmDeploy, deployment version tracking, production URL verification, or when a new confirmation code arrives for an existing upload. Inspect the installed and current official deploy package versions, persist upload version state, bind every code to that version, and require HTTP 200 after confirmation.
+description: Deploy and confirm a VK Mini App hosting version without accidentally uploading a replacement, including automatic CI/build uploads with MINI_APPS_ACCESS_TOKEN, MINI_APPS_ENVIRONMENT, and noprompt. Use for vk-miniapps-deploy, hosting upload, auto deploy, CI/CD, автоматическая сборка, одноразовый код подтверждения, apps.confirmDeploy, deployment version tracking, production URL verification, or when a new confirmation code arrives for an existing upload. Inspect the installed and current official deploy package versions, preflight non-interactive jobs, persist production upload state, bind every code to that version, and require HTTP 200 after confirmation.
 ---
 
 # Deploy a VK Mini App version safely
@@ -25,7 +25,34 @@ behavior. Use the
 [VKCOM/vk-miniapps-deploy repository](https://github.com/VKCOM/vk-miniapps-deploy)
 as the public source, not a third-party tutorial.
 
-## Upload exactly once
+## Automate build uploads safely
+
+Read `references/automatic-builds.md` before changing a CI job. Run the bundled
+preflight before `npm run deploy`:
+
+```bash
+export MINI_APPS_ENVIRONMENT=dev
+export MINI_APPS_ACCESS_TOKEN="<injected by the CI secret store>"
+export CI_URLS=1
+
+SKILL_DIR="<absolute path to the installed vk-miniapps-deploy skill>"
+node "$SKILL_DIR/scripts/ci-preflight.mjs" \
+  --config vk-hosting-config.json
+npm run deploy
+```
+
+Put `"noprompt": 1` in `vk-hosting-config.json`, keep `static_path` aligned
+with the built artifact, and inject the token through the CI secret store. Never
+commit, print, cache, or upload the token as an artifact.
+
+`MINI_APPS_ACCESS_TOKEN` authorizes automatic hosting uploads for both `dev` and
+`production`. Use `MINI_APPS_ENVIRONMENT=dev` when the whole job must be
+unattended. A production job can build and upload automatically, but publishing
+the new production URLs remains a protected administrator-confirmed step. Pass
+`--allow-production` to the preflight only after that gate is explicit. Never
+describe production deployment as fully unattended.
+
+## Upload a production version exactly once
 
 Build and run the existing deploy command while retaining its output:
 
@@ -77,6 +104,15 @@ real VK client. Record each result separately. Never let a browser-only pass
 stand in for the VK client smoke test.
 
 ## Done when
+
+For an automatic dev upload:
+
+- `ci-preflight.mjs` passes with an exact `dev` environment.
+- The token came from the CI secret store and was absent from logs/artifacts.
+- The configured build directory and every endpoint file existed before upload.
+- The emitted dev URLs and deploy log were retained as CI evidence.
+
+For a production upload:
 
 - Installed/current deploy package versions were checked and recorded.
 - The uploaded version is saved in `vk-deploy-state.json`.
