@@ -27,13 +27,15 @@
   "assets": {
     "icon": {
       "path": "icon-576.png",
-      "source": "icon.svg"
+      "source": "icon.svg",
+      "unroundedReviewed": false
     },
     "snippet": {
       "path": "catalog-snippet-1120x630.png",
       "compositionSource": "catalog-snippet-1120x630.source.svg",
       "iconSource": "icon-576.png",
       "interfaceSource": "screenshots/01-main.png",
+      "unroundedReviewed": false,
       "realUiReviewed": false,
       "privacyReviewed": false
     },

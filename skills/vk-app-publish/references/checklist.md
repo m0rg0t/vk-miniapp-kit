@@ -7,8 +7,12 @@ URL or screenshot path in the common catalog manifest.
 
 - [ ] `icon-576.png` is a real readable PNG at exactly 576×576, rendered from
       the retained master without distortion or generative redraw.
+- [ ] Catalog icon has no baked outer corner radius, rounded-square mask, or
+      transparent rounded-corner cutout; VK applies the catalog mask.
 - [ ] `catalog-snippet-1120x630.png` is a real readable PNG at exactly 1120×630
       and within the current form's byte limit.
+- [ ] Snippet outer canvas remains rectangular and unmasked; rounded UI elements
+      inside the captured interface are allowed.
 - [ ] Snippet source is reproducible and uses the real app UI plus actual icon.
 - [ ] Snippet personal-data review is complete.
 - [ ] Every vertical screenshot matches the current form and demonstrates the

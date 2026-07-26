@@ -93,12 +93,13 @@ const manifest = {
     lottie: { width: 96, height: 96, maxBytes: 24 * 1024 },
   },
   assets: {
-    icon: { path: 'icon-576.png', source: 'icon.svg' },
+    icon: { path: 'icon-576.png', source: 'icon.svg', unroundedReviewed: true },
     snippet: {
       path: 'catalog-snippet-1120x630.png',
       compositionSource: 'catalog-snippet-1120x630.source.svg',
       iconSource: 'icon-576.png',
       interfaceSource: 'screenshots/01-main.png',
+      unroundedReviewed: true,
       realUiReviewed: true,
       privacyReviewed: true,
     },
@@ -116,6 +117,14 @@ const run = (value) => {
 };
 
 assert.deepEqual(run(manifest), []);
+
+const roundedIconUnreviewed = structuredClone(manifest);
+roundedIconUnreviewed.assets.icon.unroundedReviewed = false;
+assert.ok(run(roundedIconUnreviewed).some((error) => error.includes('icon.unroundedReviewed')));
+
+const roundedSnippetUnreviewed = structuredClone(manifest);
+delete roundedSnippetUnreviewed.assets.snippet.unroundedReviewed;
+assert.ok(run(roundedSnippetUnreviewed).some((error) => error.includes('snippet.unroundedReviewed')));
 
 const missing576 = structuredClone(manifest);
 missing576.assets.icon.path = 'icon-512.png';
