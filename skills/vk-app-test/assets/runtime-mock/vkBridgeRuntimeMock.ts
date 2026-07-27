@@ -110,6 +110,8 @@ const send = async (
       return { keys: [...storage.keys()] };
     case 'VKWebAppShare':
       return [{ type: 'link' }];
+    case 'VKWebAppShowStoryBox':
+      return { result: true };
     case 'VKWebAppAllowNotifications':
     case 'VKWebAppAddToFavorites':
     case 'VKWebAppShowNativeAds':
@@ -173,6 +175,7 @@ const supportedMethods = new Set([
   'VKWebAppStorageGet',
   'VKWebAppStorageGetKeys',
   'VKWebAppShare',
+  'VKWebAppShowStoryBox',
   'VKWebAppAllowNotifications',
   'VKWebAppAddToFavorites',
   'VKWebAppShowNativeAds',
