@@ -1,12 +1,16 @@
 # Sharing (vk-bridge)
 
-Let users share the app or content back into VK. Common methods:
+Use only supported share surfaces:
 
 | Method | Use for |
 |--------|---------|
 | `VKWebAppShare` | Share a link via the system share sheet |
-| `VKWebAppShowWallPostBox` | Open a pre-filled wall-post composer |
 | `VKWebAppShowStoryBox` | Open the story editor with media |
+
+Do not propose or implement `VKWebAppShowWallPostBox`. VK no longer supports
+the wall-post event, even if it remains in stale examples, generated knowledge,
+or installed package types. Replace an existing wall-post flow with one of the
+two supported choices above.
 
 ## Share a link
 
@@ -17,23 +21,37 @@ const result = await vkBridgeService.share('https://vk.com/app<APP_ID>');
 
 Omit the argument to share the app's own URL (VK fills it in).
 
-## Wall post (pre-filled composer)
+## Share through a story
 
 ```ts
 import { vkBridgeSend } from '../services/vkBridge';
 
-await vkBridgeSend('VKWebAppShowWallPostBox', {
-  message: 'Check out this VK Mini App!',
-  attachments: 'https://vk.com/app<APP_ID>',
+const result = await vkBridgeSend<{ result: true }>('VKWebAppShowStoryBox', {
+  background_type: 'image',
+  url: 'https://example.com/story-background.png',
+  attachment: {
+    text: 'open',
+    type: 'url',
+    url: 'https://vk.com/app<APP_ID>',
+  },
 });
+
+if (!result) {
+  // Decline, unavailable editor, or Bridge failure: keep the app usable.
+}
 ```
 
-The user always sees and confirms the composer — nothing posts silently.
+Use a publicly reachable PNG or JPEG for an image background, or pass a
+supported `blob`. Label the action as opening/sharing through the story editor:
+the user can edit or cancel there, and a successful Bridge response confirms
+that the editor opened, not that the story was published.
 
 ## Notes
 
 - Sharing opens VK-native UI; there's nothing to render in dev (the mock returns
   a canned result so your success path still runs).
+- Treat unavailable methods, user cancellation, and Bridge errors as normal
+  fail-open states. Do not silently fall back to a wall post.
 - Build share URLs as `https://vk.com/app<APP_ID>` (optionally `#<hash>` for deep
   links your router reads on launch).
 
