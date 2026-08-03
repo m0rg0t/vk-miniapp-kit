@@ -2,8 +2,8 @@
 # Generate the VK Mini App icon (and optional splashscreen) set from source
 # images, then verify every output is exactly the size it claims to be.
 #
-# macOS-native: uses `sips` (built in). On Linux, swap the sips calls for
-# ImageMagick `convert src -resize WxH! out` — the workflow is identical.
+# Uses rsvg-convert/ImageMagick for SVG masters and sips/ImageMagick for raster
+# sources. SVG rendering preserves aspect; square raster sources are required.
 #
 # Usage:
 #   resize-assets.sh --icon <square-source.png> [--out <dir>] [--sizes "1024 576 256"]
@@ -33,12 +33,51 @@ if [ -z "$ICON" ] && [ -z "$SPLASH" ]; then
 fi
 mkdir -p "$OUT"
 
-dim() { sips -g pixelWidth -g pixelHeight "$1" 2>/dev/null | awk '/pixel/{print $2}' | paste -sd'x' -; }
+dim() {
+  if command -v sips >/dev/null 2>&1; then
+    sips -g pixelWidth -g pixelHeight "$1" 2>/dev/null | awk '/pixel/{print $2}' | paste -sd'x' -
+  elif command -v identify >/dev/null 2>&1; then
+    identify -format '%wx%h' "$1"
+  else
+    echo "cannot inspect images: install ImageMagick or use macOS sips" >&2
+    exit 2
+  fi
+}
 
-# Resize to an exact WxH (forces aspect: width then height differ → may distort,
-# so callers must feed correctly-proportioned sources).
-to_exact() { # src w h out
-  sips -z "$3" "$2" "$1" --out "$4" >/dev/null
+to_exact_raster() { # src w h out
+  if command -v sips >/dev/null 2>&1; then
+    sips -z "$3" "$2" "$1" --out "$4" >/dev/null
+  elif command -v magick >/dev/null 2>&1; then
+    magick "$1" -resize "$2x$3!" "$4"
+  else
+    echo "cannot resize images: install ImageMagick or use macOS sips" >&2
+    exit 2
+  fi
+}
+
+render_icon() { # src size out
+  case "$1" in
+    *.svg|*.SVG)
+      if command -v rsvg-convert >/dev/null 2>&1; then
+        rsvg-convert --keep-aspect-ratio -w "$2" -h "$2" "$1" -o "$3"
+      elif command -v magick >/dev/null 2>&1; then
+        magick -background none "$1" -resize "$2x$2" -gravity center -extent "$2x$2" "$3"
+      else
+        echo "SVG master requires rsvg-convert or ImageMagick; refusing a lossy/generative redraw" >&2
+        exit 2
+      fi
+      ;;
+    *)
+      src_dim=$(dim "$1")
+      src_w=${src_dim%x*}
+      src_h=${src_dim#*x}
+      if [ "$src_w" != "$src_h" ]; then
+        echo "icon source must be square; got $src_dim. Refusing to stretch it." >&2
+        exit 1
+      fi
+      to_exact_raster "$1" "$2" "$2" "$3"
+      ;;
+  esac
 }
 
 echo "== icons =="
@@ -47,7 +86,7 @@ if [ -n "$ICON" ]; then
   echo "source icon: $ICON ($src_dim)"
   for s in $SIZES; do
     out="$OUT/icon-$s.png"
-    to_exact "$ICON" "$s" "$s" "$out"
+    render_icon "$ICON" "$s" "$out"
     echo "  → $out ($(dim "$out"))"
   done
 fi
@@ -55,12 +94,12 @@ fi
 echo "== splashscreens =="
 if [ -n "$SPLASH" ]; then
   echo "source portrait splash: $SPLASH ($(dim "$SPLASH"))"
-  to_exact "$SPLASH" 1080 1920 "$OUT/splashscreen-1080x1920.png"   # portrait
+  to_exact_raster "$SPLASH" 1080 1920 "$OUT/splashscreen-1080x1920.png"   # portrait
   echo "  → $OUT/splashscreen-1080x1920.png ($(dim "$OUT/splashscreen-1080x1920.png"))"
 fi
 if [ -n "$SPLASH_LS" ]; then
   echo "source landscape splash: $SPLASH_LS ($(dim "$SPLASH_LS"))"
-  to_exact "$SPLASH_LS" 1920 1080 "$OUT/splashscreen-1920x1080.png"  # landscape
+  to_exact_raster "$SPLASH_LS" 1920 1080 "$OUT/splashscreen-1920x1080.png"  # landscape
   echo "  → $OUT/splashscreen-1920x1080.png ($(dim "$OUT/splashscreen-1920x1080.png"))"
 elif [ -n "$SPLASH" ]; then
   echo "  (no --splash-landscape given; skipping 1920×1080. Provide a landscape"
@@ -68,7 +107,6 @@ elif [ -n "$SPLASH" ]; then
 fi
 
 echo "== verify =="
-fail=0
 for f in "$OUT"/icon-*.png "$OUT"/splashscreen-*.png; do
   [ -f "$f" ] || continue
   echo "  $f -> $(dim "$f")"
