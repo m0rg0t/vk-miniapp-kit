@@ -1,6 +1,6 @@
 ---
 name: vk-app-assets
-description: Create or derive a visual direction, then generate and resize VK Mini App logos, icons, and splashscreens to every required size. Use whenever the user needs a logo, app identity, иконка приложения, catalog icon, 1024 master icon, splashscreen, заставка, publication artwork, or has a source at the wrong size for VK. Produce editable masters plus verified PNG outputs under public/resources/app/. These are static identity assets; use vk-lottie-launch-icon for animation, vk-catalog-screenshots for in-app screenshots, and vk-app-listing for catalog copy and the final publication manifest.
+description: Create or derive a recognizable VK Mini App visual identity, then generate and resize square icons and separate splashscreens to every required size. Use whenever the user needs a logo, app identity, иконка приложения, catalog icon, 1024 master icon, splashscreen, заставка, publication artwork, or has a source at the wrong size for VK. Review the mark at 64–96 px on light, dark, and catalogue-like backgrounds; preserve an editable unmasked master and reject non-square raster input instead of stretching it. These are static identity assets; use vk-lottie-launch-icon for animation, vk-catalog-screenshots for in-app screenshots, and vk-app-listing for catalog copy and the final publication manifest.
 ---
 
 # VK Mini App icons & splashscreens
@@ -21,14 +21,17 @@ form is the final word on required sizes — confirm there before submission.
 
 ### 1. Establish or locate the visual source
 
-Read the product brief and inspect the app UI before drawing anything. Write a
-one-paragraph direction covering concept, silhouette, palette, light/dark
-behavior, and what must remain legible at small size.
+Read `references/vk-icon-style.md`, the product brief, and the real app UI before
+drawing anything. Write a one-paragraph direction covering concept, silhouette,
+palette, light/dark behavior, and what must remain legible at small size. Treat
+the style reference as a starting point, not as permission to imitate a known
+app's mark.
 
-- **Icon:** a square image, ideally ≥1024×1024. If only a smaller or non-square
-  one exists, say so — upscaling looks soft and non-square distorts. The official
-  template keeps an `icon.svg` master under `public/resources/app/`; rendering
-  the SVG at 1024 first gives the cleanest raster source.
+- **Icon:** keep a full square master, ideally an SVG under
+  `public/resources/app/icon.svg`, and derive all raster sizes from it. If only
+  a smaller or non-square raster exists, say so — upscaling looks soft and
+  non-square input must be rejected rather than stretched. Keep the outer
+  square unmasked; rounded details inside the artwork are fine.
 - **Splash:** separate portrait (≥1080×1920) and landscape (≥1920×1080) sources.
 - **No usable source:** create an original SVG or use an available image
   generation tool to make a 1024×1024 master. Prefer a simple silhouette, broad
@@ -57,12 +60,19 @@ The script forces exact dimensions and prints each output's measured size. It
 deliberately skips landscape if no landscape source is given rather than
 stretching a portrait one.
 
-### 3. Verify
+### 3. Verify and review at catalogue scale
 
 The script ends with a `verify` block listing every file's real dimensions.
 Confirm they match the table exactly. If any source was non-square or the wrong
 aspect, the output will look squashed — fix the **source**, don't ship a
 distorted asset.
+
+Render or open a 64–96 px preview of the icon and inspect it on a light
+background, a dark background, and in a catalogue-like grid. Confirm the
+silhouette, contrast, safe field, optical size, and absence of a baked outer
+corner mask. Reuse the same background, main symbol, accent, and geometry in
+the splashscreen, snippet, and optional Lottie; use `vk-lottie-launch-icon` for
+the animated asset and its visual frame gate.
 
 ### 4. Wire them up (only if not already referenced)
 
