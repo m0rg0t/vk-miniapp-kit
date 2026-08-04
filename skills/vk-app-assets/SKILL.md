@@ -20,15 +20,28 @@ for screenshots and keep readiness blocked. Do not copy limits from memory.
 Read the product brief and inspect the real app UI before drawing. Keep a simple,
 recognizable identity that remains legible at small size.
 
+Read `references/vk-icon-style.md` before drawing anything. Write a one-paragraph
+direction covering concept, silhouette, palette, light/dark behavior, and what
+must remain legible at small size. Treat the style reference as a starting point,
+not as permission to imitate a known app's mark.
+
 - Prefer a square SVG icon master under `public/resources/app/icon.svg`.
-- For raster input, require a square source at least 1024×1024.
-- Keep the icon artwork square to the canvas without a baked outer corner
-  radius, rounded-square mask, or transparent rounded-corner cutout. VK applies
-  the catalog mask; pre-rounding compounds it. Rounded elements inside the
-  artwork are fine.
+- For raster input, require a square source at least 1024×1024; reject non-square
+  input rather than stretching it.
+- Keep the icon artwork square to the canvas without a baked outer corner radius,
+  rounded-square mask, or transparent rounded-corner cutout. VK applies the
+  catalog mask; pre-rounding compounds it. Rounded elements inside the artwork
+  are fine.
 - Keep separate correctly proportioned portrait and landscape splash sources.
-- If no usable icon exists, create an original editable SVG. Never imitate
-  third-party marks or generatively redraw an accepted master for each size.
+- If no usable icon exists, create an original editable SVG or use an available
+  image generation tool to make a 1024×1024 master. Prefer a simple silhouette,
+  broad shapes, and no tiny text. Do not imitate third-party marks or
+  generatively redraw an accepted master for each size. Keep the original prompt
+  or SVG alongside the outputs so the identity can be revised.
+
+Present materially different directions only when the user needs to choose a
+brand direction. Once chosen, use one consistent identity across icon, splash,
+screenshots, and catalog copy.
 
 ## 2. Render the icon and splash set
 
@@ -64,6 +77,15 @@ source) and render `catalog-snippet-1120x630.png`.
 
 Render with `rsvg-convert`, ImageMagick, or a browser from the retained source.
 Do not stretch an arbitrary screenshot to 1120×630.
+
+### Review the identity at catalogue scale
+
+Render or open a 64–96 px preview of the icon and inspect it on a light
+background, a dark background, and in a catalogue-like grid. Confirm the
+silhouette, contrast, safe field, optical size, and absence of a baked outer
+corner mask. Reuse the same background, main symbol, accent, and geometry in
+the splashscreen, snippet, and optional Lottie; use `vk-lottie-launch-icon` for
+the animated asset and its visual frame gate.
 
 ## 4. Create the catalog manifest
 

@@ -106,7 +106,6 @@ elif [ -n "$SPLASH" ]; then
 fi
 
 echo "== verify =="
-fail=0
 for f in "$OUT"/icon-*.png "$OUT"/splashscreen-*.png; do
   [ -f "$f" ] || continue
   echo "  $f -> $(dim "$f")"
