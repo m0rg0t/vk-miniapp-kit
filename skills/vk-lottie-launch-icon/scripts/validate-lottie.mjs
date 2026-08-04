@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 import { readFileSync, statSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 

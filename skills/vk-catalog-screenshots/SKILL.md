@@ -1,6 +1,6 @@
 ---
 name: vk-catalog-screenshots
-description: Capture VK Mini App catalog/store screenshots at VK's exact required size (600×1200 px portrait, ≥3 images, PNG/JPG). Use this skill whenever the user wants app screenshots for the VK catalog, store/listing preview images, app card images, or says "скриншоты для каталога", "скрины приложения", "картинки для витрины VK" — even if they don't name the exact size. It launches the running app, navigates to the best screens, captures them, and normalizes every file to spec. Prefer this over ad-hoc screenshotting whenever the goal is VK catalog/store images.
+description: "Capture and normalize real VK Mini App catalog/store screenshots to the current admin form's exact size and count (known default: 600×1200 portrait, at least 3, PNG/JPG). Use for catalog screenshots, store/listing preview images, app card images, \"скриншоты для каталога\", or \"картинки для витрины VK\". Read the current form first, capture only the shipped UI, verify every file, and register the results in the shared vk-app-assets manifest."
 ---
 
 # VK catalog screenshots
@@ -10,20 +10,20 @@ real running app and normalized to VK's exact pixel spec. The hard parts this
 skill removes: picking a browser tool that actually works on the machine,
 capturing at the right size, and guaranteeing every file is exactly to spec.
 
-## VK's spec (the target)
+## Read the current target first
 
-- **Size:** `600 × 1200 px` portrait ("Книжная") — the default. Landscape
+- Open the current catalog form and record its date/source in the common
+  `vk-app-assets` manifest before capture.
+- **Known default:** `600 × 1200 px` portrait ("Книжная"). Landscape
   ("Альбомная") is `1200 × 600 px`. Pick one orientation and keep all shots
   consistent.
-- **Format:** PNG or JPG (GIF allowed). PNG is the safe default.
-- **Count:** at least 3; 3–5 is the sweet spot. The **first** image is the one
+- **Known default format:** PNG or JPG. PNG is the safe default.
+- **Known default count:** at least 3; 3–5 is the useful range. The **first** image is the one
   most users see — make it the strongest screen.
 
-> VK occasionally adjusts catalog requirements. Before a final submission,
-> confirm the current size/count in the app admin
-> (`vk.com/editapp?act=catalog`) or [dev.vk.com](https://dev.vk.com). If they
-> differ, pass the new numbers via `--width/--height` (script) or
-> `set viewport` (agent-browser) — the workflow is unchanged.
+If the form differs, pass its numbers via `--width/--height` or `set viewport`.
+If the form is inaccessible, ask for a screenshot rather than presenting the
+known defaults as current facts.
 
 ## Workflow
 
@@ -118,14 +118,16 @@ done
 Every line must read `600x1200`. If a shot looks stretched, the source aspect
 ratio was off — recapture that screen rather than squashing it.
 
-### 5. Document the set
+### 5. Document and register the set
 
 Write/refresh `screenshots/README.md` so the choices are reviewable: a table of
 file → screen → note, the spec used, and a recommended top-3 for the catalog
-(lead with the strongest). Keep it short.
+(lead with the strongest). Add every exact file path and current dimensions to
+the common `vk-app-assets` catalog manifest.
 
 ## Done when
 
 - ≥3 PNGs in `screenshots/`, each verified at exactly the target size.
 - File order reflects catalog display order; the first is the strongest screen.
 - `screenshots/README.md` documents the set and the recommended top-3.
+- The common catalog preflight accepts every screenshot.

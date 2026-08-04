@@ -44,7 +44,7 @@ Each reference has verified signatures, a working snippet, and the gotchas:
 | Show ads (banner / interstitial / reward) | `references/ads.md` | `checkBannerAd` / `showBannerAd` / `hideBannerAd`, `checkAds` / `showAd` |
 | Track events | `references/analytics.md` | (your `trackEvent`) + `getLaunchParams` |
 | Match VK light/dark theme | `references/theme.md` | `useAppearance` / `vkBridgeSubscribe` |
-| Share a link / wall post / story | `references/share.md` | `share`, `vkBridgeSend('VKWebAppShowWallPostBox', …)` |
+| Share a link / publish a story | `references/share.md` | `share`, `vkBridgeSend('VKWebAppShowStoryBox', …)` |
 | Persist per-user data | `references/storage.md` | `storageSet` / `storageGet` / `storageGetKeys` |
 
 ## Build it with TDD
@@ -66,6 +66,9 @@ scenario control, browser tests, or a release test matrix.
 - **Several features are VK-client-dependent** (banner ads are nominally
   supported everywhere but rarely fill on desktop web). Smoke-test in the VK
   mobile client.
+- **Do not offer `VKWebAppShowWallPostBox` for sharing.** VK no longer supports
+  the wall-post event. Use `VKWebAppShare` for a link or
+  `VKWebAppShowStoryBox` for a media-rich share flow.
 - **Dev mocks don't render real VK UI.** Use `logger.diag` (not `logger.log`) to
   trace behavior in production, since dev logs are stripped from the build.
 

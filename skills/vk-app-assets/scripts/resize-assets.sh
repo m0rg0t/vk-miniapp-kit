@@ -3,7 +3,7 @@
 # images, then verify every output is exactly the size it claims to be.
 #
 # Uses rsvg-convert/ImageMagick for SVG masters and sips/ImageMagick for raster
-# sources. SVG rendering preserves aspect; square raster sources are required.
+# sources. Square raster sources are required; vector rendering preserves aspect.
 #
 # Usage:
 #   resize-assets.sh --icon <square-source.png> [--out <dir>] [--sizes "1024 576 256"]
@@ -82,8 +82,7 @@ render_icon() { # src size out
 
 echo "== icons =="
 if [ -n "$ICON" ]; then
-  src_dim=$(dim "$ICON")
-  echo "source icon: $ICON ($src_dim)"
+  echo "source icon: $ICON"
   for s in $SIZES; do
     out="$OUT/icon-$s.png"
     render_icon "$ICON" "$s" "$out"

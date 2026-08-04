@@ -66,6 +66,7 @@ const MOCKS: Record<string, unknown> = {
 
   // Sharing
   VKWebAppShare: [{ type: 'link' }],
+  VKWebAppShowStoryBox: { result: true },
 
   // Storage (in-memory below overrides these for round-tripping)
   VKWebAppStorageSet: { result: true },

@@ -324,9 +324,26 @@ const pngs = allFiles
   .filter((path) => extname(path).toLowerCase() === '.png')
   .map((path) => ({ path, dimensions: pngDimensions(path) }))
   .filter(({ dimensions }) => dimensions);
+const catalogManifestPath = allFiles.find((path) => /catalog-manifest\.json$/i.test(rel(path)));
+const catalogManifestValue = catalogManifestPath ? parseJson(catalogManifestPath).value : null;
+const manifestScreenshotWidth = Number(catalogManifestValue?.requirements?.screenshots?.width);
+const manifestScreenshotHeight = Number(catalogManifestValue?.requirements?.screenshots?.height);
+const manifestScreenshotMinimum = Number(catalogManifestValue?.requirements?.screenshots?.minCount);
+const screenshotMinimum = Number.isInteger(manifestScreenshotMinimum) && manifestScreenshotMinimum > 0
+  ? manifestScreenshotMinimum
+  : 3;
+const screenshotTargets =
+  Number.isInteger(manifestScreenshotWidth) && manifestScreenshotWidth > 0 &&
+  Number.isInteger(manifestScreenshotHeight) && manifestScreenshotHeight > 0
+    ? [[manifestScreenshotWidth, manifestScreenshotHeight]]
+    : [[600, 1200], [1200, 600]];
 const icons = pngs.filter(({ path, dimensions }) =>
   /icon/i.test(rel(path)) && dimensions.width === dimensions.height &&
-  [576, 1024].includes(dimensions.width),
+  dimensions.width === 576,
+);
+const snippets = pngs.filter(({ path, dimensions }) =>
+  /catalog-snippet/i.test(rel(path)) &&
+  dimensions.width === 1120 && dimensions.height === 630,
 );
 const splashes = pngs.filter(({ path, dimensions }) =>
   /splash/i.test(rel(path)) &&
@@ -334,13 +351,14 @@ const splashes = pngs.filter(({ path, dimensions }) =>
 );
 const screenshots = pngs.filter(({ path, dimensions }) =>
   /screenshot/i.test(rel(path)) &&
-  [[600, 1200], [1200, 600]].some(([w, h]) => dimensions.width === w && dimensions.height === h),
+  screenshotTargets.some(([w, h]) => dimensions.width === w && dimensions.height === h),
 );
 
 for (const [check, items, minimum, remediation] of [
-  ['catalog-icon', icons, 1, 'Provide a 576×576 or 1024×1024 PNG with icon in its name.'],
+  ['catalog-icon', icons, 1, 'Provide the mandatory readable 576×576 icon-576.png.'],
+  ['catalog-snippet', snippets, 1, 'Provide catalog-snippet-1120x630.png from the real UI/icon and retain its source.'],
   ['splashscreen', splashes, 1, 'Provide a 1080×1920 or 1920×1080 PNG with splash in its name.'],
-  ['catalog-screenshots', screenshots, 3, 'Provide at least three consistent 600×1200 or 1200×600 PNGs.'],
+  ['catalog-screenshots', screenshots, screenshotMinimum, `Provide at least ${screenshotMinimum} consistent ${screenshotTargets.map(([w, h]) => `${w}×${h}`).join(' or ')} PNGs.`],
 ]) {
   add(
     'assets',
@@ -368,6 +386,10 @@ const catalogText = docs.filter(({ path, text }) =>
   /catalog|listing|store-copy|каталог/i.test(rel(path)) ||
   /short description|краткое описание/i.test(text),
 );
+const catalogManifest = docs.filter(({ path, text }) =>
+  /catalog-manifest\.json$/i.test(rel(path)) &&
+  /"checkedAt"|"requirements"/.test(text),
+);
 const privacy = docs.filter(({ path, text }) =>
   /privacy|confidential|политик[аи] конфиденциальности/i.test(rel(path) + text),
 );
@@ -375,7 +397,8 @@ const support = docs.filter(({ text }) =>
   /support|поддержк[аи]|contact|контакт/i.test(text),
 );
 for (const [check, items, remediation] of [
-  ['catalog-copy', catalogText, 'Use vk-app-listing to create copy based on shipped behavior.'],
+  ['catalog-copy', catalogText, 'Use vk-catalog-copy to create validated one-line copy based on shipped behavior.'],
+  ['catalog-manifest', catalogManifest, 'Use vk-app-assets to create and run the common catalog preflight manifest.'],
   ['privacy-evidence', privacy, 'Document the actual data behavior and public policy location.'],
   ['support-contact', support, 'Record a current support/contact destination.'],
 ]) {
