@@ -40,7 +40,9 @@ each field before final copy editing.
 | 3 | | Result/value | |
 
 Use only screenshots from the current production-like build. Keep one
-orientation and put the strongest image first.
+orientation and put the strongest image first. For the known portrait target,
+record `300×600` CSS at `2×` producing an exact `600×1200` PNG; document any
+below-fold/export frame separately.
 
 ## Visual asset manifest
 
@@ -57,6 +59,7 @@ orientation and put the strongest image first.
 | Landscape splash (if used) | | current admin value | |
 | Animated launch icon (optional) | | current admin value | |
 | Catalog screenshots | | current admin value/count | |
+| Screenshot capture evidence (`assets.screenshotCapture`) | | CSS viewport, 2× scale, physical output, privacy review | |
 
 ## Privacy and moderation
 

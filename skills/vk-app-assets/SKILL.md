@@ -6,7 +6,10 @@ description: "Create and preflight the complete VK Mini App catalog asset packag
 # Create and preflight VK catalog assets
 
 Create the complete catalog package, preserve editable sources, and let the
-deterministic preflight decide whether it is ready.
+deterministic preflight decide whether it is ready. For the known portrait
+screen target, capture real UI at `300×600` CSS with `deviceScaleFactor: 2` so
+the physical PNGs are exactly `600×1200`; `vk-catalog-screenshots` owns that
+workflow.
 
 ## Read the current admin form first
 
@@ -100,6 +103,11 @@ that neither asset has a baked outer-corner mask. Set `realUiReviewed` and
 - `vk-catalog-screenshots` for the vertical images;
 - `vk-lottie-launch-icon` when a launch animation is present.
 
+Keep `assets.screenshotCapture` in the manifest. It records the app source,
+capture date and engine, CSS viewport, 2× device scale, physical output, the
+synthetic-data policy, and real-UI/privacy review flags. The screenshot skill's
+verifier and the common preflight must agree before release.
+
 ## 5. Run the single preflight
 
 ```bash
@@ -123,6 +131,8 @@ deploy.
 
 - `catalog-preflight.mjs` prints `пакет готов` with no failures.
 - `icon-576.png` and `catalog-snippet-1120x630.png` exist at exact sizes.
+- Screenshot files match the current form's physical dimensions; the known
+  portrait target is `600×1200` from `300×600` CSS at 2×.
 - Icon and snippet retain square/rectangular outer corners for the catalog to
   mask; both `unroundedReviewed` fields are true.
 - Editable icon and snippet composition sources are retained.

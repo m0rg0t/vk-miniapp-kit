@@ -1,133 +1,208 @@
 ---
 name: vk-catalog-screenshots
-description: "Capture and normalize real VK Mini App catalog/store screenshots to the current admin form's exact size and count (known default: 600×1200 portrait, at least 3, PNG/JPG). Use for catalog screenshots, store/listing preview images, app card images, \"скриншоты для каталога\", or \"картинки для витрины VK\". Read the current form first, capture only the shipped UI, verify every file, and register the results in the shared vk-app-assets manifest."
+description: "Capture and verify real VK Mini App catalog/store screenshots at the current admin form's exact physical size, using a 2× CSS viewport (known default: 300×600 CSS → 600×1200 PNG, at least 3). Use for catalog screenshots, store/listing preview images, app card images, \"скриншоты для каталога\", or \"картинки для витрины VK\". Read the current form first, capture only the shipped UI, remove personal data, and register the result in the shared vk-app-assets manifest."
 ---
 
 # VK catalog screenshots
 
-Produce a set of catalog-ready screenshots for a VK Mini App, captured from the
-real running app and normalized to VK's exact pixel spec. The hard parts this
-skill removes: picking a browser tool that actually works on the machine,
-capturing at the right size, and guaranteeing every file is exactly to spec.
+Produce a reviewable set of catalog screenshots from the real running VK Mini
+App. Keep the browser viewport, device scale, physical PNG dimensions, screen
+order, demo data, and manifest evidence aligned. The default contract is:
+
+| Layer | Portrait default |
+|---|---:|
+| Browser CSS viewport | `300×600` |
+| Device scale factor | `2` |
+| Physical PNG | `600×1200` |
+| Minimum count | `3` |
+
+Do not capture a `600×1200` CSS viewport and downscale it. That produces the
+right file dimensions but the wrong UI density and text scale.
 
 ## Read the current target first
 
-- Open the current catalog form and record its date/source in the common
-  `vk-app-assets` manifest before capture.
-- **Known default:** `600 × 1200 px` portrait ("Книжная"). Landscape
-  ("Альбомная") is `1200 × 600 px`. Pick one orientation and keep all shots
-  consistent.
-- **Known default format:** PNG or JPG. PNG is the safe default.
-- **Known default count:** at least 3; 3–5 is the useful range. The **first** image is the one
-  most users see — make it the strongest screen.
+- Open the current VK catalog upload form and record its date/source in the
+  common `vk-app-assets` manifest before capture. The form is authoritative.
+- Known default physical target: `600×1200` portrait (`«Книжная»`). Landscape
+  is `1200×600` (`«Альбомная»`). Keep every screenshot in one orientation.
+- PNG is the safe default. Capture at least 3; 3–5 is a useful range. The first
+  image is the lead image users see, so make it the strongest screen.
+- Derive the CSS viewport from the physical target and scale. At 2×,
+  `600×1200` physical means `300×600` CSS; `1200×600` means `600×300` CSS.
 
-If the form differs, pass its numbers via `--width/--height` or `set viewport`.
-If the form is inaccessible, ask for a screenshot rather than presenting the
-known defaults as current facts.
+If the form differs, use its physical dimensions and choose a scale that yields
+integer CSS dimensions. If the form is inaccessible, request a screenshot of
+the form instead of treating the known defaults as current facts.
 
 ## Workflow
 
-### 1. Get the app running and reachable
+### 1. Run the shipped app
 
-Catalog images should reflect the **production** build (real assets, no dev-only
-banners). Prefer a preview server; fall back to the dev server.
+Use a production preview when possible so the capture contains real assets and
+no dev-only banners. A dev server is acceptable for a local-only app review.
 
 ```bash
-# preferred — production output
 npm run build && npm run preview   # usually http://localhost:4173
-# or, faster, the dev server
+# or
 npm run dev                        # usually http://localhost:5173
 ```
 
-Run it in the background and wait until the URL responds before capturing
-(`curl -sf <url>` returns 0). Note the actual port from the tool's output —
-don't assume it.
+Run it in the background, wait for the actual URL to respond, and note the
+actual port. Use `curl -sf <url>` or an app-specific ready signal; do not guess
+the port.
 
-### 2. Decide which screens to show (3–5)
+### 2. Prepare honest, stable screens
 
-Look at the app's routes/panels (e.g. `src/panels/`, the router config) and pick
-the screens that best sell the app: the landing/main screen, the core feature
-mid-use, and a result/output screen are a reliable trio. If unsure which screens
-matter most, ask the user briefly. Name files in display order:
-`01-main.png`, `02-…`, `03-….png`.
+Inspect the shipped routes/panels and choose screens that explain the product:
+the main value screen, the core interaction in use, and a useful result or
+settings state are a reliable trio. Keep the same deterministic demo state
+across captures so the set reads as one product.
 
-### 3. Capture — pick the first available tool
+- Complete onboarding with synthetic demo data only. For date-driven apps, a
+  fixed date such as `11 July 2026` is acceptable when documented; never use a
+  user's name, avatar, health value, identifier, message, or private date.
+- Hide devtools, browser chrome, debug overlays, loading skeletons, and stale
+  toasts. Wait for fonts, images, and transitions to settle.
+- Name files in display order: `01-today.png`, `02-calendar.png`,
+  `03-settings-lock.png`. The first file should show the product's strongest
+  value, not an onboarding blank state.
+- Treat the viewport as the frame. If a settings screen's export/data block is
+  below the fold, either capture a fourth scrolled frame or replace the frame
+  after scrolling; do not describe below-fold content as visible in the image.
 
-**Default: `agent-browser` CLI** (purpose-built for agents; captures at the exact
-viewport so no resize is needed). If you're unsure of its commands, load its own
-guide first: `agent-browser skills get core --full`.
+### 3. Capture at 300×600 CSS @2×
+
+**Default: `agent-browser` CLI.** Before using it, load the installed CLI guide
+with `agent-browser skills get core --full` if its commands are unfamiliar.
 
 ```bash
 agent-browser open http://localhost:4173
-agent-browser set viewport 600 1200
-# navigate to a screen, then shoot. Use the accessibility tree to find controls:
-agent-browser snapshot                       # lists elements + refs
-agent-browser find text "Далее" click        # or: agent-browser click <@ref|css>
-agent-browser wait 500
-agent-browser screenshot screenshots/01-main.png
-# repeat: navigate → wait → screenshot for each screen
+agent-browser set viewport 300 600 2
+agent-browser wait --load networkidle
+
+# Discover controls, seed synthetic demo state, and navigate to the first screen.
+agent-browser snapshot -i
+agent-browser screenshot screenshots/01-today.png
+
+# Re-snapshot after each page-changing action; refs become stale after changes.
+agent-browser find text "Календарь" click
+agent-browser wait --load networkidle
+agent-browser screenshot screenshots/02-calendar.png
+
+agent-browser find text "Настройки" click
+agent-browser wait --load networkidle
+agent-browser screenshot screenshots/03-settings-lock.png
+
 agent-browser close
 ```
 
-Tips: `set viewport 600 1200` makes captures land at spec on a 1× display; on a
-HiDPI machine the file may come out at 2× (1200×2400) — that's fine, step 4
-normalizes it. Use `agent-browser wait <ms>` after navigation so animations and
-images settle before the shot.
+For a below-fold state, use `agent-browser scroll down 500`, wait for the UI to
+settle, and capture a clearly named fourth frame. Use an app-specific ready
+signal where available; a short wait is only a fallback for animations.
 
-**Fallback: the bundled capture script** (Playwright → puppeteer-core, whichever
-is installed). Use it when `agent-browser` is absent. Define the navigation as a
-small steps file:
+**Fallback: the bundled browser capturer.** It uses Playwright first and
+`puppeteer-core` second. Its `--width`/`--height` flags are physical output
+dimensions; it derives the CSS viewport and verifies every PNG's IHDR before it
+exits.
 
 ```bash
-cat > /tmp/steps.json <<'JSON'
+cat > /tmp/vk-catalog-steps.json <<'JSON'
 [
-  { "goto": "/", "wait": 800 }, { "shot": "01-main" },
-  { "clickText": "Далее", "wait": 600 }, { "shot": "02-params" },
-  { "clickText": "Рассчитать", "wait": 600 }, { "shot": "03-result" }
+  { "goto": "/" },
+  { "wait": 800 },
+  { "shot": "01-today" },
+  { "clickText": "Календарь" },
+  { "wait": 500 },
+  { "shot": "02-calendar" },
+  { "clickText": "Настройки" },
+  { "wait": 500 },
+  { "shot": "03-settings-lock" }
 ]
 JSON
+
 SKILL_DIR="<absolute path to the installed vk-catalog-screenshots skill>"
 node "$SKILL_DIR/scripts/capture.mjs" \
   --url http://localhost:4173 --out ./screenshots \
-  --width 600 --height 1200 --scale 2 --steps /tmp/steps.json
+  --width 600 --height 1200 --scale 2 \
+  --steps /tmp/vk-catalog-steps.json
 ```
 
-(Each step is one of `goto` / `clickText` / `click` / `waitFor` / `wait` /
-`shot`; see the header of `capture.mjs`. The script captures at `--scale` and
-leaves resizing to step 4, so all tools share one normalize pass.)
+Each step is one of `goto`, `clickText`, `click`, `waitFor`, `wait`, `scroll`,
+or `shot`; see the header of `scripts/capture.mjs`. The script writes
+`.capture-result.json` with the CSS viewport, scale, physical target, engine,
+and files captured.
 
-**Last resort:** use the agent's connected browser/Chrome control to navigate,
-set a 600×1200 viewport, and save screenshots to disk, then run step 4.
+**Last resort:** use the connected browser/Chrome control, set the viewport to
+`300×600` CSS at `2×`, capture only the viewport, and run the verifier below.
 
-### 4. Normalize to exact spec (always run this)
+### 4. Verify; do not resize a wrong capture
 
-Whatever captured them, force every file to the target size and confirm. On
-macOS, `sips` is built in:
+Run the portable verifier for both `agent-browser` captures and any manually
+captured set:
 
 ```bash
-W=600; H=1200
-for f in screenshots/*.png; do
-  sips -z "$H" "$W" "$f" >/dev/null   # -z is height then width
-done
-# verify
-for f in screenshots/*.png; do
-  printf '%s -> ' "$f"; sips -g pixelWidth -g pixelHeight "$f" | awk '/pixel/{print $2}' | paste -sd'x' -
-done
+SKILL_DIR="<absolute path to the installed vk-catalog-screenshots skill>"
+node "$SKILL_DIR/scripts/verify.mjs" \
+  --dir ./screenshots --width 600 --height 1200 --min-count 3
 ```
 
-Every line must read `600x1200`. If a shot looks stretched, the source aspect
-ratio was off — recapture that screen rather than squashing it.
+Every file must report `600x1200`. If a file reports `1200x2400`, the browser
+was set to `600×1200` CSS; recapture at `300×600` CSS @2×. If a file is
+stretched, cropped unexpectedly, or has the wrong orientation, recapture that
+screen. Do not hide a bad viewport by running `sips -z`, ImageMagick, or an
+editor resize.
+
+For a landscape form, pass `--width 1200 --height 600`; the corresponding 2×
+CSS viewport is `600×300`.
 
 ### 5. Document and register the set
 
-Write/refresh `screenshots/README.md` so the choices are reviewable: a table of
-file → screen → note, the spec used, and a recommended top-3 for the catalog
-(lead with the strongest). Add every exact file path and current dimensions to
-the common `vk-app-assets` catalog manifest.
+Write or refresh `screenshots/README.md` with:
+
+- a file → screen → visible-state table in catalog display order;
+- physical dimensions, CSS viewport, device scale, capture date, and engine;
+- the deterministic demo-data note and explicit no-personal-data review;
+- a recommended top-3, with the strongest screen first;
+- any below-fold/export frame and what it demonstrates.
+
+Record the same capture evidence in `assets.screenshotCapture` of the common
+catalog manifest. The minimum shape is:
+
+```json
+{
+  "source": "http://localhost:4173",
+  "capturedAt": "YYYY-MM-DD",
+  "engine": "agent-browser",
+  "cssViewport": { "width": 300, "height": 600 },
+  "deviceScaleFactor": 2,
+  "physicalOutput": { "width": 600, "height": 1200 },
+  "syntheticData": true,
+  "realUiReviewed": true,
+  "privacyReviewed": true
+}
+```
+
+Run the shared preflight after updating the manifest:
+
+```bash
+node "<absolute path to the installed vk-app-assets skill>/scripts/catalog-preflight.mjs" \
+  release/catalog/catalog-manifest.json
+```
+
+### 6. Clean up
+
+Close the browser and local app sessions after capture. Do not commit browser
+state, `.env.local`, credentials, HAR files, or temporary capture metadata
+unless the project explicitly treats them as release evidence.
 
 ## Done when
 
-- ≥3 PNGs in `screenshots/`, each verified at exactly the target size.
-- File order reflects catalog display order; the first is the strongest screen.
-- `screenshots/README.md` documents the set and the recommended top-3.
-- The common catalog preflight accepts every screenshot.
+- At least 3 real-UI PNGs exist in catalog display order.
+- Every PNG is exactly the form's physical target; the default is `600×1200`.
+- The default capture metadata says `300×600` CSS, `deviceScaleFactor: 2`, and
+  `syntheticData: true`.
+- `screenshots/README.md` documents the screens, state, privacy review, and
+  recommended top-3.
+- `assets.screenshotCapture` records the engine, date/source, scale, and
+  physical output, with real-UI and privacy review set to true.
+- The common catalog preflight accepts the complete package.

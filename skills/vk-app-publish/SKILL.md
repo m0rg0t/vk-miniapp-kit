@@ -26,7 +26,8 @@ Load the sibling owners:
   common manifest/preflight;
 - `vk-catalog-copy`: single-line paste-ready Description and Short description
   with exact counts;
-- `vk-catalog-screenshots`: current-form dimensions/count;
+- `vk-catalog-screenshots`: current-form dimensions/count, 2× CSS capture
+  evidence, exact physical PNG verification, and honest demo-state review;
 - `vk-lottie-launch-icon`: strict 96×96, weight, and seamless-loop validation
   when animation is present;
 - `vk-app-listing`: policy, category, localization, support, and moderation.

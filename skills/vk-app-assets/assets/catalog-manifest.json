@@ -44,6 +44,23 @@
       "screenshots/02-core-flow.png",
       "screenshots/03-result.png"
     ],
+    "screenshotCapture": {
+      "source": "http://localhost:5173",
+      "capturedAt": "YYYY-MM-DD",
+      "engine": "agent-browser",
+      "cssViewport": {
+        "width": 300,
+        "height": 600
+      },
+      "deviceScaleFactor": 2,
+      "physicalOutput": {
+        "width": 600,
+        "height": 1200
+      },
+      "syntheticData": true,
+      "realUiReviewed": false,
+      "privacyReviewed": false
+    },
     "lottie": {
       "required": false,
       "path": "icon-animation.json"

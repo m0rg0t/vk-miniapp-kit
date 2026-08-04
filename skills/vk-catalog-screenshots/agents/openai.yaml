@@ -1,4 +1,4 @@
 interface:
   display_name: "Capture VK Catalog Screenshots"
-  short_description: "Create verified catalog-ready app screenshots"
-  default_prompt: "Use $vk-catalog-screenshots to capture and verify the strongest VK catalog screenshots for this app."
+  short_description: "Capture exact 2x VK catalog screenshots"
+  default_prompt: "Use $vk-catalog-screenshots to capture the strongest real-UI VK catalog screenshots at the exact CSS viewport, 2x scale, and physical PNG size, then verify and register them."

@@ -242,6 +242,7 @@ export function preflight(manifestFile) {
     images: [],
     copy: null,
     lottie: null,
+    screenshotCapture: manifest.assets?.screenshotCapture ?? null,
     links: manifest.links ?? {},
     contacts: manifest.contacts ?? {},
   };
@@ -367,6 +368,40 @@ export function preflight(manifestFile) {
     screenshots.forEach((entry, index) => {
       checkImage(`screenshot ${index + 1}`, entry, requirements.screenshots, false);
     });
+  }
+
+  const screenshotCapture = manifest.assets?.screenshotCapture;
+  const screenshotRequirements = requirements.screenshots ?? {};
+  if (!screenshotCapture || typeof screenshotCapture !== 'object' || Array.isArray(screenshotCapture)) {
+    errors.push('assets.screenshotCapture is required with CSS viewport and 2x capture evidence');
+  } else {
+    if (typeof screenshotCapture.source !== 'string' || !screenshotCapture.source.trim()) {
+      errors.push('assets.screenshotCapture.source is required');
+    }
+    if (!isDate(screenshotCapture.capturedAt)) {
+      errors.push('assets.screenshotCapture.capturedAt must be YYYY-MM-DD');
+    }
+    if (typeof screenshotCapture.engine !== 'string' || !screenshotCapture.engine.trim()) {
+      errors.push('assets.screenshotCapture.engine is required');
+    }
+    if (screenshotCapture.deviceScaleFactor !== 2) {
+      errors.push('assets.screenshotCapture.deviceScaleFactor must be exactly 2');
+    }
+    const cssWidth = screenshotCapture.cssViewport?.width;
+    const cssHeight = screenshotCapture.cssViewport?.height;
+    if (!Number.isInteger(cssWidth) || cssWidth < 1 || !Number.isInteger(cssHeight) || cssHeight < 1) {
+      errors.push('assets.screenshotCapture.cssViewport must contain positive integer width and height');
+    } else if (cssWidth * 2 !== screenshotRequirements.width || cssHeight * 2 !== screenshotRequirements.height) {
+      errors.push(`assets.screenshotCapture.cssViewport ${cssWidth}x${cssHeight} does not produce the physical screenshot target ${screenshotRequirements.width}x${screenshotRequirements.height} at 2x`);
+    }
+    const physicalWidth = screenshotCapture.physicalOutput?.width;
+    const physicalHeight = screenshotCapture.physicalOutput?.height;
+    if (physicalWidth !== screenshotRequirements.width || physicalHeight !== screenshotRequirements.height) {
+      errors.push(`assets.screenshotCapture.physicalOutput must be exactly ${screenshotRequirements.width}x${screenshotRequirements.height}`);
+    }
+    if (screenshotCapture.syntheticData !== true) errors.push('assets.screenshotCapture.syntheticData must be true');
+    if (screenshotCapture.realUiReviewed !== true) errors.push('assets.screenshotCapture.realUiReviewed must be true');
+    if (screenshotCapture.privacyReviewed !== true) errors.push('assets.screenshotCapture.privacyReviewed must be true');
   }
 
   const lottieEntry = manifest.assets?.lottie;

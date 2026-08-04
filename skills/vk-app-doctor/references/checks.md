@@ -10,7 +10,7 @@ artifact conventions; keep project-specific exceptions explicit.
 | Tests | real test declarations, browser runner, acceptance criteria | warnings become release blockers under `--strict` |
 | Security | no client secret patterns, signed launch authentication evidence | verifier and privacy evidence expected when a backend/user identity exists |
 | Hosting | parse config when present | config, endpoints, output entry required |
-| Assets | validate recognized files when present | 576 icon, 1120×630 snippet, splash, and ≥3 consistent screenshots required |
+| Assets | validate recognized files when present | 576 icon, 1120×630 snippet, splash, and ≥3 consistent screenshots required; common preflight also requires capture evidence |
 | Catalog | recognize copy/privacy/support/manifest evidence | all required; run the stronger `vk-app-assets` common preflight separately |
 
 ## Exit codes
@@ -28,6 +28,9 @@ The doctor searches common locations and names:
 - splash images containing `splash` at 1080×1920 or 1920×1080;
 - directories containing `screenshot` at the dimensions/count stored in the
   catalog manifest (known fallback: 600×1200 or 1200×600, at least three);
+- `assets.screenshotCapture` in the common manifest, including the CSS viewport,
+  2× device scale, physical output, synthetic demo-data policy, and visual
+  review flags;
 - `catalog-manifest.json` plus Markdown/JSON files containing listing/catalog
   metadata, privacy policy, and support/contact details;
 - product specs containing “acceptance criteria” or “критерии приёмки”.

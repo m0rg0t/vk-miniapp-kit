@@ -36,7 +36,7 @@ distorts. The `--splash` / `--splash-landscape` flags keep them independent.
 
 | Asset | Size / budget | Skill |
 |-------|---------------|-------|
-| Catalog screenshots | 600×1200 portrait (or 1200×600) | `vk-catalog-screenshots` |
+| Catalog screenshots | 600×1200 portrait (or 1200×600) physical PNG | `vk-catalog-screenshots` |
 | Animated launch icon | 96×96, ≤24 KB, Lottie JSON | `vk-lottie-launch-icon` |
 | Catalog copy | Current form limits (known defaults: 2000 / 128) | `vk-catalog-copy` |
 
@@ -52,6 +52,12 @@ manifest, and explicit visual reviews. Keep the outer 1120×630 canvas
 rectangular: do not clip it to a rounded card or make its outer corners
 transparent because the catalog applies its own treatment. Rounded components
 inside the shown app UI remain valid.
+
+For the known portrait screenshot target, the capture evidence is not the same
+as the physical file size: use a `300×600` CSS viewport with
+`deviceScaleFactor: 2` to produce a `600×1200` PNG. Do not capture a
+`600×1200` CSS viewport and resize it afterward; the physical dimensions would
+match while the UI density would not.
 
 ## Where assets live
 

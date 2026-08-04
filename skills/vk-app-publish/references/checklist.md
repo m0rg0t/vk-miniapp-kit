@@ -17,6 +17,10 @@ URL or screenshot path in the common catalog manifest.
 - [ ] Snippet personal-data review is complete.
 - [ ] Every vertical screenshot matches the current form and demonstrates the
       shipped UI; count/orientation is consistent.
+- [ ] Default portrait captures use a `300×600` CSS viewport at `2×` and
+      produce exact `600×1200` physical PNGs; no wrong-viewport resize was used.
+- [ ] `assets.screenshotCapture` records source/date/engine, CSS viewport, scale,
+      physical output, synthetic-only demo data, and real-UI/privacy review.
 - [ ] Optional launch Lottie is 96×96, within budget, animated, and seamless.
 - [ ] Description and Short description are separate single-line plain-text
       values with no Markdown, lists, line breaks, or emoji.

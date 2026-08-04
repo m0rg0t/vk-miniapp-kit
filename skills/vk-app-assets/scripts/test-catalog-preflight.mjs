@@ -104,6 +104,17 @@ const manifest = {
       privacyReviewed: true,
     },
     screenshots: ['screenshots/01-main.png', 'screenshots/02-flow.png', 'screenshots/03-result.png'],
+    screenshotCapture: {
+      source: 'http://localhost:5173',
+      capturedAt: '2026-07-26',
+      engine: 'agent-browser',
+      cssViewport: { width: 300, height: 600 },
+      deviceScaleFactor: 2,
+      physicalOutput: { width: 600, height: 1200 },
+      syntheticData: true,
+      realUiReviewed: true,
+      privacyReviewed: true,
+    },
     lottie: { required: true, path: 'icon-animation.json' },
   },
   copy: { path: 'catalog-copy.json' },
@@ -139,6 +150,14 @@ writeFileSync(join(root, 'snippet-1119x630.png'), png(1119, 630));
 const wrongWidth = structuredClone(manifest);
 wrongWidth.assets.snippet.path = 'snippet-1119x630.png';
 assert.ok(run(wrongWidth).some((error) => error.includes('1119x630')));
+
+const wrongCaptureViewport = structuredClone(manifest);
+wrongCaptureViewport.assets.screenshotCapture.cssViewport.width = 600;
+assert.ok(run(wrongCaptureViewport).some((error) => error.includes('cssViewport')));
+
+const missingCaptureEvidence = structuredClone(manifest);
+delete missingCaptureEvidence.assets.screenshotCapture;
+assert.ok(run(missingCaptureEvidence).some((error) => error.includes('screenshotCapture')));
 
 const overlong = JSON.parse(readFileSync(join(root, 'catalog-copy.json'), 'utf8'));
 overlong.description.value = 'я'.repeat(2001);
