@@ -59,7 +59,8 @@ A fresh app usually needs assets and, eventually, release:
 - bridge features (ads/analytics/share/storage) → **`vk-bridge-recipes`**
 - VKUI screen implementation → **`vk-app-design`**
 - local and release testing → **`vk-app-test`**
-- catalog descriptions/privacy/manifest → **`vk-app-listing`**
+- paste-ready catalog descriptions → **`vk-catalog-copy`**
+- privacy/moderation/listing pack → **`vk-app-listing`**
 - publish → **`vk-app-publish`**
 
 ## Done when

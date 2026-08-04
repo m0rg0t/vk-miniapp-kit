@@ -1,4 +1,4 @@
 interface:
   display_name: "Create VK App Assets"
-  short_description: "Create and verify VK icons and splashscreens"
-  default_prompt: "Use $vk-app-assets to create and size the complete static asset set for my VK Mini App."
+  short_description: "Create and preflight complete VK catalog assets"
+  default_prompt: "Use $vk-app-assets to create and preflight the complete VK Mini App catalog asset package."

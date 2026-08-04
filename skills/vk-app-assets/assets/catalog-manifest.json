@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "requirements": {
+    "checkedAt": "YYYY-MM-DD",
+    "source": "admin-form-requirements.png",
+    "icon": {
+      "width": 576,
+      "height": 576
+    },
+    "snippet": {
+      "width": 1120,
+      "height": 630,
+      "minBytes": 1024,
+      "maxBytes": 5242880
+    },
+    "screenshots": {
+      "width": 600,
+      "height": 1200,
+      "minCount": 3
+    },
+    "lottie": {
+      "width": 96,
+      "height": 96,
+      "maxBytes": 24576
+    }
+  },
+  "assets": {
+    "icon": {
+      "path": "icon-576.png",
+      "source": "icon.svg",
+      "unroundedReviewed": false
+    },
+    "snippet": {
+      "path": "catalog-snippet-1120x630.png",
+      "compositionSource": "catalog-snippet-1120x630.source.svg",
+      "iconSource": "icon-576.png",
+      "interfaceSource": "screenshots/01-main.png",
+      "unroundedReviewed": false,
+      "realUiReviewed": false,
+      "privacyReviewed": false
+    },
+    "screenshots": [
+      "screenshots/01-main.png",
+      "screenshots/02-core-flow.png",
+      "screenshots/03-result.png"
+    ],
+    "lottie": {
+      "required": false,
+      "path": "icon-animation.json"
+    }
+  },
+  "copy": {
+    "path": "catalog-copy.json"
+  },
+  "links": {
+    "privacyPolicy": "https://example.com/privacy"
+  },
+  "contacts": {
+    "support": "support@example.com"
+  }
+}

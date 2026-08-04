@@ -42,12 +42,14 @@ Use one concise delivery tracker in the app repository (for example
 7. **Prove behavior — `vk-app-test`.** Exercise the bundled runtime Bridge mock,
    controlled success/failure/event scenarios, unit/integration tests, and the
    critical browser journey.
-8. **Prepare publication — `vk-app-assets`, `vk-lottie-launch-icon`,
-   `vk-catalog-screenshots`, and `vk-app-listing`.** Keep visual identity,
-   screenshots, and claims consistent with the shipped product.
-9. **Release — `vk-app-publish`.** Run `vk-app-doctor --release --strict`,
-   build, package or deploy, smoke-test in a real VK client, and complete the
-   current admin checklist.
+8. **Prepare publication — `vk-app-assets`, `vk-catalog-copy`,
+   `vk-lottie-launch-icon`, `vk-catalog-screenshots`, and `vk-app-listing`.**
+   Read the current admin form, keep real UI/identity/copy consistent, and pass
+   the common catalog preflight.
+9. **Release — `vk-app-publish` and `vk-miniapps-deploy`.** Run the strict
+   gates, deploy only when code/runtime assets changed, bind confirmation to the
+   saved upload version, verify HTTP 200, smoke-test in a real VK client, and
+   complete the current admin checklist.
 
 Load a sibling skill's `SKILL.md` before performing that phase. Load only the
 references needed for the current task.
@@ -64,8 +66,8 @@ Do not claim a later gate proves an earlier one:
 | Security | Signed launch identity, server-only secrets, authorization, and data handling are evidenced |
 | Local QA | Mocked success, decline/error, and event scenarios pass |
 | UX QA | Main flow works at compact mobile and desktop/web widths, light and dark |
-| Catalog | Copy, policy, icon/splash, and ≥3 screenshots match the actual app |
-| Release | Strict release doctor, production build, real-client smoke test, and admin checklist |
+| Catalog | Current-form evidence and common preflight prove 576 icon, 1120×630 real-UI snippet, single-line copy, policy/contact, Lottie when used, and screenshots |
+| Release | Strict release doctor, production build, saved/confirmed deploy version, HTTP 200, real-client smoke test, and admin checklist |
 
 If a gate needs credentials, admin access, legal approval, or a real device,
 finish all local evidence first and record the exact remaining manual check.

@@ -53,9 +53,7 @@ warning a failure with `--strict-layer-order`. Override targets with
    warning. Keep an opaque background at the end of `layers`; the array is
    front-to-back, so the first layer is visually above the next one.
 6. **Record** the path and current form limits in the project's release/catalog
-   manifest. If it uses the common `vk-app-assets` manifest, its preflight must
-   recheck Lottie strictly; otherwise hand the path to `vk-app-listing`, which
-   owns the final publication manifest.
+   manifest. The common `vk-app-assets` preflight rechecks Lottie strictly.
 
 ### C. Mandatory visual check
 

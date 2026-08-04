@@ -2,11 +2,12 @@
 
 import assert from 'node:assert/strict';
 import { deflateSync } from 'node:zlib';
-import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { inspectPng } from './catalog-preflight.mjs';
 
 const CRC_TABLE = Array.from({ length: 256 }, (_, n) => {
   let c = n;
@@ -42,12 +43,6 @@ function png(width, height) {
     chunk('IEND', Buffer.alloc(0)),
   ]);
 }
-function pngDimensions(file) {
-  const data = readFileSync(file);
-  assert.deepEqual([...data.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
-  return { width: data.readUInt32BE(16), height: data.readUInt32BE(20) };
-}
-
 const root = mkdtempSync(join(tmpdir(), 'vk-resize-assets-'));
 const script = join(fileURLToPath(new URL('.', import.meta.url)), 'resize-assets.sh');
 const source = join(root, 'icon.svg');
@@ -61,8 +56,10 @@ writeFileSync(source, `
 
 const valid = spawnSync('bash', [script, '--icon', source, '--out', out], { encoding: 'utf8' });
 assert.equal(valid.status, 0, valid.stderr);
-assert.deepEqual(pngDimensions(join(out, 'icon-576.png')), { width: 576, height: 576 });
-assert.deepEqual(pngDimensions(join(out, 'icon-1024.png')), { width: 1024, height: 1024 });
+const icon576 = inspectPng(join(out, 'icon-576.png'));
+const icon1024 = inspectPng(join(out, 'icon-1024.png'));
+assert.deepEqual({ width: icon576.width, height: icon576.height }, { width: 576, height: 576 });
+assert.deepEqual({ width: icon1024.width, height: icon1024.height }, { width: 1024, height: 1024 });
 
 const nonSquare = join(root, 'non-square.png');
 writeFileSync(nonSquare, png(800, 600));
