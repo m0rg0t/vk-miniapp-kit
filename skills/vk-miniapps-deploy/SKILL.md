@@ -25,6 +25,24 @@ behavior. Use the
 [VKCOM/vk-miniapps-deploy repository](https://github.com/VKCOM/vk-miniapps-deploy)
 as the public source, not a third-party tutorial.
 
+## Check VK hosting limits before uploading
+
+Treat these limits as shared per-mini-app limits, not per administrator:
+
+- VK accepts no more than 24 hosting uploads per day. Count uploads across all
+  administrators before starting another upload.
+- A repeat upload preserves the previous version. Hosting retains up to 10
+  production versions and up to 100 staging versions for one mini-app.
+- The upload ZIP must not exceed 300 MiB.
+- Audio and video files cannot be hosted on VK Mini App hosting. Remove them
+  from the upload and use an appropriate external media service instead.
+
+Before `npm run deploy`, check the recent upload count and retained-version
+budget in the VK admin, verify the built ZIP size, and inspect the archive for
+audio/video files. If any limit is uncertain or exhausted, stop before the
+upload and get an administrator decision; never spend another upload attempt
+just to discover that the limit was reached.
+
 ## Automate build uploads safely
 
 Read `references/automatic-builds.md` before changing a CI job. Run the bundled
