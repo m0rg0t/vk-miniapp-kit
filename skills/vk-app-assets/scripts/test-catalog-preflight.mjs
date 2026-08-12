@@ -8,6 +8,7 @@ import { deflateSync } from 'node:zlib';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { preflight } from './catalog-preflight.mjs';
+import { bundleCatalog } from './catalog-bundle.mjs';
 
 const CRC_TABLE = Array.from({ length: 256 }, (_, n) => {
   let c = n;
@@ -84,6 +85,7 @@ writeFileSync(join(root, 'icon-animation.json'), JSON.stringify({
 
 const manifest = {
   schemaVersion: 1,
+  appId: 54717058,
   requirements: {
     checkedAt: '2026-07-26',
     source: 'admin-form-requirements.png',
@@ -99,6 +101,7 @@ const manifest = {
       compositionSource: 'catalog-snippet-1120x630.source.svg',
       iconSource: 'icon-576.png',
       interfaceSource: 'screenshots/01-main.png',
+      contentSources: ['screenshots/02-flow.png'],
       unroundedReviewed: true,
       realUiReviewed: true,
       privacyReviewed: true,
@@ -128,6 +131,18 @@ const run = (value) => {
 };
 
 assert.deepEqual(run(manifest), []);
+
+const missingAppId = structuredClone(manifest);
+delete missingAppId.appId;
+assert.ok(run(missingAppId).some((error) => error.includes('appId')));
+
+const escapingIcon = structuredClone(manifest);
+escapingIcon.assets.icon.path = '../icon-576.png';
+assert.ok(run(escapingIcon).some((error) => error.includes('escapes the catalog package')));
+
+const missingOptionalLottie = structuredClone(manifest);
+missingOptionalLottie.assets.lottie = { required: false, path: 'missing-animation.json' };
+assert.ok(run(missingOptionalLottie).some((error) => error.includes('missing-animation.json')));
 
 const roundedIconUnreviewed = structuredClone(manifest);
 roundedIconUnreviewed.assets.icon.unroundedReviewed = false;
@@ -174,5 +189,16 @@ writeFileSync(manifestPath, JSON.stringify(manifest));
 const validCli = spawnSync(process.execPath, [preflightCli, manifestPath], { encoding: 'utf8' });
 assert.equal(validCli.status, 0, validCli.stderr);
 assert.match(validCli.stdout, /пакет готов/);
+
+const bundleRoot = mkdtempSync(join(tmpdir(), 'vk-catalog-bundle-'));
+const bundled = bundleCatalog(manifestPath, bundleRoot);
+assert.deepEqual(bundled.errors, []);
+const portableManifest = JSON.parse(readFileSync(join(bundleRoot, 'catalog-manifest.json'), 'utf8'));
+assert.equal(portableManifest.appId, 54717058);
+const portableJson = JSON.stringify(portableManifest);
+assert.doesNotMatch(portableJson, /(?:^|["/])\.\.(?:["/]|$)/);
+assert.ok(readFileSync(join(bundleRoot, 'icon-576.png')).length > 0);
+assert.ok(readFileSync(join(bundleRoot, 'sources', 'icon.svg')).length > 0);
+assert.ok(readFileSync(join(bundleRoot, 'sources', 'content', '01-02-flow.png')).length > 0);
 
 console.log('catalog-preflight tests passed');

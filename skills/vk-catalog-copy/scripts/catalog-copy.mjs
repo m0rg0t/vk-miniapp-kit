@@ -58,6 +58,23 @@ export function validatePlainText(name, value, limit) {
   return { errors, characters };
 }
 
+export function validateEndUserLanguage(name, value) {
+  const errors = [];
+  const implementationTerms = [
+    /\b(?:localStorage|sessionStorage|IndexedDB|WebView|iframe)\b/iu,
+    /\bVK\s*Bridge\b/iu,
+    /\b(?:backend|frontend|back-end|front-end)\b/iu,
+    /(?:launch|стартов)(?:-|\s)*(?:params|параметр)/iu,
+    /(?:памят|хранилищ)[а-яё]*\s+браузера/iu,
+    /(?:на\s+клиенте|клиентск(?:ой|ая)\s+сторон)/iu,
+  ];
+  for (const pattern of implementationTerms) {
+    const match = String(value ?? '').match(pattern);
+    if (match) errors.push(`${name} contains implementation detail “${match[0]}”; rewrite it as a verified user benefit or omit it`);
+  }
+  return errors;
+}
+
 export function validateCopyDocument(document) {
   const requirements = document?.requirements ?? {};
   const descriptionLimit = Number(requirements.descriptionMaxCharacters);
@@ -82,6 +99,8 @@ export function validateCopyDocument(document) {
   const descriptionResult = validatePlainText('description', description, descriptionLimit);
   const shortResult = validatePlainText('shortDescription', shortDescription, shortLimit);
   errors.push(...descriptionResult.errors, ...shortResult.errors);
+  errors.push(...validateEndUserLanguage('description', description));
+  errors.push(...validateEndUserLanguage('shortDescription', shortDescription));
 
   if (document?.description?.characters !== descriptionResult.characters) {
     errors.push(`description.characters must equal ${descriptionResult.characters}`);

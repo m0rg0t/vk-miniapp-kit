@@ -10,6 +10,7 @@ import {
   countCharacters,
   normalizePlainText,
   validateCopyDocument,
+  validateEndUserLanguage,
   validatePlainText,
 } from './catalog-copy.mjs';
 
@@ -34,6 +35,17 @@ for (const invalid of ['line one\nline two', '- list item', 'Текст; 1. пу
 }
 assert.ok(validatePlainText('description', 'я'.repeat(2001), 2000).errors.length > 0);
 assert.ok(validatePlainText('shortDescription', 'я'.repeat(129), 128).errors.length > 0);
+for (const technical of [
+  'Избранное хранится в localStorage.',
+  'Приложение работает через VK Bridge и WebView.',
+  'Данные остаются в памяти браузера на клиентской стороне.',
+]) {
+  assert.ok(validateEndUserLanguage('description', technical).length > 0, technical);
+}
+assert.deepEqual(
+  validateEndUserLanguage('description', 'Сохраняйте идеи в избранное и быстро находите их при следующем визите.'),
+  [],
+);
 
 const root = mkdtempSync(join(tmpdir(), 'vk-catalog-copy-'));
 const draft = join(root, 'draft.json');

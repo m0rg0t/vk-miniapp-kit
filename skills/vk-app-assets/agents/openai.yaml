@@ -1,4 +1,4 @@
 interface:
   display_name: "Create VK App Assets"
-  short_description: "Create and preflight complete VK catalog assets"
-  default_prompt: "Use $vk-app-assets to create and preflight the complete VK Mini App catalog asset package."
+  short_description: "Bundle and preflight portable VK catalog assets"
+  default_prompt: "Use $vk-app-assets to create, bundle, and preflight a portable VK Mini App catalog package for admin autofill."

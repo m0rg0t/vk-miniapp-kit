@@ -1,4 +1,4 @@
 interface:
   display_name: "Prepare VK Catalog Copy"
-  short_description: "Create paste-ready single-line VK catalog copy"
-  default_prompt: "Use $vk-catalog-copy to prepare and validate the Description and Short description fields for this VK Mini App."
+  short_description: "Write persuasive user-focused VK catalog copy"
+  default_prompt: "Use $vk-catalog-copy to write and validate persuasive, non-technical Description and Short description fields for this VK Mini App."

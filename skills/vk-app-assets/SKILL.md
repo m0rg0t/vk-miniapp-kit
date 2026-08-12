@@ -1,6 +1,6 @@
 ---
 name: vk-app-assets
-description: "Create and preflight the complete VK Mini App catalog asset package: editable icon master, mandatory 576×576 PNG, reproducible 1120×630 catalog snippet made from the real app UI and icon, splashscreens, screenshot manifest, optional 96×96 Lottie, catalog copy, privacy links, and support contacts. Use for app identity, иконка приложения, catalog snippet/artwork, splashscreens, publication assets, or final catalog asset readiness. Read the current VK admin form first and reject missing, corrupt, wrong-size, private-data, or incomplete package entries."
+description: "Create, bundle, and preflight a complete portable VK Mini App catalog package: appId, editable icon master, mandatory 576×576 PNG, reproducible 1120×630 catalog snippet, screenshots, optional 96×96 Lottie, user-focused catalog copy, privacy links, and support contacts. Use for app identity, иконка приложения, catalog snippet/artwork, publication assets, admin autofill packages, or final catalog readiness. Read the current VK admin form first; reject missing, corrupt, wrong-size, private-data, placeholder, absolute, or package-escaping paths."
 ---
 
 # Create and preflight VK catalog assets
@@ -90,10 +90,12 @@ corner mask. Reuse the same background, main symbol, accent, and geometry in
 the splashscreen, snippet, and optional Lottie; use `vk-lottie-launch-icon` for
 the animated asset and its visual frame gate.
 
-## 4. Create the catalog manifest
+## 4. Create the source catalog manifest
 
 Copy `assets/catalog-manifest.json` into `release/catalog/`, update every path,
 and replace all placeholders with requirements copied from the current form.
+Set `appId` to the positive VK application ID from the current settings page or
+`vk-hosting-config.json`; never infer it from an unrelated app or leave it `0`.
 Point `icon.source` at the retained master SVG and `snippet.iconSource` at the
 verified `icon-576.png`. Set both `unroundedReviewed` fields only after checking
 that neither asset has a baked outer-corner mask. Set `realUiReviewed` and
@@ -108,20 +110,47 @@ capture date and engine, CSS viewport, 2× device scale, physical output, the
 synthetic-data policy, and real-UI/privacy review flags. The screenshot skill's
 verifier and the common preflight must agree before release.
 
-## 5. Run the single preflight
+The source manifest may point to runtime files outside `release/catalog/` while
+work is in progress. Do not distribute or upload that source folder directly.
+
+## 5. Build the portable admin package
+
+Bundle every referenced file into one self-contained directory:
+
+```bash
+node "$SKILL_DIR/scripts/catalog-bundle.mjs" \
+  --manifest release/catalog/catalog-manifest.json \
+  --out release/catalog-package
+```
+
+If the source manifest predates `appId`, pass the verified value once with
+`--app-id <VK_APP_ID>`, then also update the source manifest. The bundler copies
+the icon, icon master, snippet, composition source, interface/content evidence,
+screenshots, optional Lottie, copy, and local current-form evidence. It writes a
+new `catalog-manifest.json` whose file paths are relative to that JSON and never
+contain `..` or absolute paths. It rejects missing declared files, collisions,
+non-empty output directories, and required Lottie without a path.
+
+Use `release/catalog-package/` as the upload/autofill source. Zip that directory
+when a single file is needed; the manifest must remain at the archive root and
+the archive must not contain `__MACOSX` or `.DS_Store` entries.
+
+## 6. Run the single preflight
 
 ```bash
 node "$SKILL_DIR/scripts/catalog-preflight.mjs" \
-  release/catalog/catalog-manifest.json
+  release/catalog-package/catalog-manifest.json
 ```
 
 It validates PNG signature, IHDR, CRCs, compressed image data, exact dimensions,
 snippet byte budget, source evidence/privacy review, all screenshot dimensions,
 strict Lottie size/loop rules, plain-text copy limits, and required
-links/contacts. A package with 512/256/96 icons but no 576 icon fails. So do
-1120×629 and 1119×630 snippets.
+links/contacts. It also requires a positive `appId` and rejects any declared path
+that is absolute, leaves the package directory, or points to a missing file. A
+package with 512/256/96 icons but no 576 icon fails. So do 1120×629 and
+1119×630 snippets.
 
-## 6. Wire runtime identity assets only when needed
+## 7. Wire runtime identity assets only when needed
 
 Keep runtime icon/splash paths aligned with the app manifest/config. Catalog
 snippet and listing copy belong to the admin card and do not require a hosting
@@ -130,6 +159,10 @@ deploy.
 ## Done when
 
 - `catalog-preflight.mjs` prints `пакет готов` with no failures.
+- `catalog-bundle.mjs` prints `переносимый пакет готов`.
+- The delivered folder contains every referenced file, has the manifest at its
+  root, and all manifest file paths resolve inside that folder.
+- `appId` matches the target VK Mini App.
 - `icon-576.png` and `catalog-snippet-1120x630.png` exist at exact sizes.
 - Screenshot files match the current form's physical dimensions; the known
   portrait target is `600×1200` from `300×600` CSS at 2×.

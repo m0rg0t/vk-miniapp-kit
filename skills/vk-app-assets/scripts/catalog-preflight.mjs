@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { readFileSync, statSync } from 'node:fs';
-import { dirname, extname, resolve } from 'node:path';
+import { dirname, extname, isAbsolute, relative, resolve } from 'node:path';
 import { inflateSync } from 'node:zlib';
 import { pathToFileURL } from 'node:url';
 
@@ -202,9 +202,15 @@ export function inspectLottie(file, requirements) {
   return { errors, bytes, width: data.w, height: data.h, animated };
 }
 
-function absolute(base, value) {
+function absolute(base, value, label = 'path') {
   if (typeof value !== 'string' || value.trim() === '') throw new Error('path is empty');
-  return resolve(base, value);
+  if (isAbsolute(value)) throw new Error(`${label} must be relative to catalog-manifest.json`);
+  const target = resolve(base, value);
+  const fromBase = relative(base, target);
+  if (fromBase === '..' || fromBase.startsWith(`..${process.platform === 'win32' ? '\\' : '/'}`) || isAbsolute(fromBase)) {
+    throw new Error(`${label} escapes the catalog package; copy the file beside catalog-manifest.json`);
+  }
+  return target;
 }
 
 function isPlaceholder(value) {
@@ -253,6 +259,9 @@ export function preflight(manifestFile) {
   };
 
   if (manifest.schemaVersion !== 1) errors.push('schemaVersion must be 1');
+  if (!Number.isInteger(manifest.appId) || manifest.appId < 1) {
+    errors.push('appId must be a positive integer copied from the VK app settings or vk-hosting-config.json');
+  }
   if (!isDate(requirements.checkedAt)) {
     errors.push('requirements.checkedAt must be YYYY-MM-DD');
   }
@@ -264,7 +273,7 @@ export function preflight(manifestFile) {
       if (!['http:', 'https:'].includes(sourceUrl.protocol)) throw new Error('non-HTTP URL');
     } catch {
       try {
-        statSync(absolute(base, requirements.source));
+        statSync(absolute(base, requirements.source, 'requirements.source'));
       } catch (error) {
         errors.push(`requirements.source must be a current form URL or existing screenshot: ${error.message}`);
       }
@@ -285,7 +294,7 @@ export function preflight(manifestFile) {
 
   const checkImage = (label, entry, target, pngOnly, sizeBudget) => {
     try {
-      const file = absolute(base, entry?.path ?? entry);
+      const file = absolute(base, entry?.path ?? entry, `${label}.path`);
       const image = inspectImage(file, pngOnly);
       report.images.push({ label, path: file, ...image });
       if (image.width !== target?.width || image.height !== target?.height) {
@@ -309,7 +318,7 @@ export function preflight(manifestFile) {
     errors.push('icon.unroundedReviewed must be true (leave outer corners unmasked; VK applies the catalog mask)');
   }
   try {
-    const iconSource = absolute(base, icon?.source);
+    const iconSource = absolute(base, icon?.source, 'icon.source');
     statSync(iconSource);
     report.sources.iconMaster = iconSource;
     if (extname(iconSource).toLowerCase() !== '.svg') errors.push('icon source must be the retained master SVG');
@@ -333,7 +342,7 @@ export function preflight(manifestFile) {
   const snippetSources = {};
   for (const field of ['compositionSource', 'iconSource', 'interfaceSource']) {
     try {
-      const file = absolute(base, snippet?.[field]);
+      const file = absolute(base, snippet?.[field], `snippet.${field}`);
       statSync(file);
       snippetSources[field] = file;
       report.sources[`snippet${field[0].toUpperCase()}${field.slice(1)}`] = file;
@@ -351,6 +360,21 @@ export function preflight(manifestFile) {
   }
   if (snippetSources.iconSource && snippetSources.iconSource !== iconPath) {
     errors.push('snippet.iconSource must reference the verified icon-576.png');
+  }
+  if (snippet?.contentSources !== undefined) {
+    if (!Array.isArray(snippet.contentSources)) {
+      errors.push('snippet.contentSources must be an array');
+    } else {
+      snippet.contentSources.forEach((value, index) => {
+        try {
+          const file = absolute(base, value, `snippet.contentSources[${index}]`);
+          statSync(file);
+          report.sources[`snippetContentSource${index + 1}`] = file;
+        } catch (error) {
+          errors.push(`snippet.contentSources[${index}]: ${error.message}`);
+        }
+      });
+    }
   }
   if (snippet?.unroundedReviewed !== true) {
     errors.push('snippet.unroundedReviewed must be true (leave the outer 1120x630 canvas rectangular)');
@@ -405,27 +429,21 @@ export function preflight(manifestFile) {
   }
 
   const lottieEntry = manifest.assets?.lottie;
-  if (lottieEntry?.required || lottieEntry?.path) {
+  if (lottieEntry?.required && !lottieEntry?.path) {
+    errors.push('Lottie is required but assets.lottie.path is empty');
+  } else if (lottieEntry?.path) {
     try {
-      const file = absolute(base, lottieEntry.path);
-      if (!lottieEntry.required) {
-        try {
-          statSync(file);
-        } catch {
-          report.lottie = { skipped: true };
-          throw null;
-        }
-      }
+      const file = absolute(base, lottieEntry.path, 'assets.lottie.path');
       const result = inspectLottie(file, requirements.lottie ?? {});
       report.lottie = { path: file, ...result };
       errors.push(...result.errors.map((error) => `Lottie: ${error}`));
     } catch (error) {
-      if (error) errors.push(`Lottie: ${error.message}`);
+      errors.push(`Lottie: ${error.message}`);
     }
   }
 
   try {
-    const copyFile = absolute(base, manifest.copy?.path);
+    const copyFile = absolute(base, manifest.copy?.path, 'copy.path');
     const copy = JSON.parse(readFileSync(copyFile, 'utf8'));
     const copyRequirements = copy.requirements ?? {};
     if (copyRequirements.checkedAt !== requirements.checkedAt) {

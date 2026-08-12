@@ -1,5 +1,6 @@
 {
   "schemaVersion": 1,
+  "appId": 0,
   "requirements": {
     "checkedAt": "YYYY-MM-DD",
     "source": "admin-form-requirements.png",
@@ -62,8 +63,7 @@
       "privacyReviewed": false
     },
     "lottie": {
-      "required": false,
-      "path": "icon-animation.json"
+      "required": false
     }
   },
   "copy": {
