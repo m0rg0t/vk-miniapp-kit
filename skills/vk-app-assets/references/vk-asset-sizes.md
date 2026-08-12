@@ -38,7 +38,7 @@ distorts. The `--splash` / `--splash-landscape` flags keep them independent.
 |-------|---------------|-------|
 | Catalog screenshots | 600×1200 portrait (or 1200×600) physical PNG | `vk-catalog-screenshots` |
 | Animated launch icon | 96×96, ≤24 KB, Lottie JSON | `vk-lottie-launch-icon` |
-| Catalog copy | Current form limits (known defaults: 2000 / 128) | `vk-catalog-copy` |
+| Catalog description | Current form limits (known defaults: 2000 / 128) | `vk-catalog-description` |
 
 ## Catalog snippet
 

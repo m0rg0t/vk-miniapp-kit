@@ -1,9 +1,9 @@
 ---
-name: vk-catalog-copy
-description: Prepare and validate persuasive, end-user-focused VK Mini App catalog Description and Short description values as paste-ready single-line plain text with exact character counts and current admin-form limits. Use for каталог copy, продающее описание, краткое описание, store-card text, or converting technical/product drafts for VK publication. Lead with concrete user value, describe demonstrable outcomes in plain language, and reject implementation jargon, unsupported hype, line breaks, Markdown, emoji, or over-limit values.
+name: vk-catalog-description
+description: Prepare and validate persuasive, end-user-focused VK Mini App catalog Description and Short description values as paste-ready single-line plain text with exact character counts and current admin-form limits. Use for тексты каталога, описание приложения, продающее описание, краткое описание, store-card text, or converting technical/product drafts for VK publication. Lead with concrete user value, describe demonstrable outcomes in plain language, and reject implementation jargon, unsupported hype, line breaks, Markdown, emoji, or over-limit values.
 ---
 
-# Prepare VK catalog copy
+# Write VK catalog descriptions
 
 Produce two separate values that can be pasted into the current VK admin form
 without reformatting.
@@ -65,7 +65,7 @@ Create a draft JSON:
 Normalize and validate it:
 
 ```bash
-SKILL_DIR="<absolute path to the installed vk-catalog-copy skill>"
+SKILL_DIR="<absolute path to the installed vk-catalog-description skill>"
 node "$SKILL_DIR/scripts/catalog-copy.mjs" prepare \
   --input release/catalog/catalog-copy.draft.json \
   --out release/catalog/catalog-copy.json \

@@ -1,6 +1,6 @@
 ---
 name: vk-app-listing
-description: "Prepare the wider VK Mini App listing pack from the shipped product: names, category suggestions, localization, privacy-policy draft, data disclosure, moderation notes, screenshot story, support details, and catalog field inventory. Use for publication metadata, privacy text, localization, moderation submission, or organizing a catalog release. Delegate the paste-ready Description and Short description fields to vk-catalog-copy and the deterministic visual manifest/preflight to vk-app-assets; never invent features the app does not ship."
+description: "Prepare the wider VK Mini App listing pack from the shipped product: names, category suggestions, localization, privacy-policy draft, data disclosure, moderation notes, screenshot story, support details, and catalog field inventory. Use for publication metadata, privacy text, localization, moderation submission, or organizing a catalog release. Delegate the paste-ready Description and Short description fields to vk-catalog-description and the deterministic visual manifest/preflight to vk-app-assets; never invent features the app does not ship."
 ---
 
 # Prepare a VK catalog listing
@@ -22,7 +22,7 @@ Create a working directory such as `release/catalog/` and use
 1. Define one positioning sentence: audience + job + concrete outcome.
 2. Produce several concise name/short-description variants only if a product
    naming choice is still open; recommend one and explain the tradeoff briefly.
-3. Load `vk-catalog-copy` and use it for the final `Описание` and `Краткое
+3. Load `vk-catalog-description` and use it for the final `Описание` and `Краткое
    описание`. It owns one-line plain text, Markdown/emoji rejection, current
    limits, character counts, and `catalog-copy.json`.
 4. Localize by meaning, not word-for-word. Russian is the default unless the
@@ -54,7 +54,7 @@ backend are active.
 
 ## Quality checks
 
-- Require `vk-catalog-copy` validation rather than estimating or hand-counting.
+- Require `vk-catalog-description` validation rather than estimating or hand-counting.
 - Remove claims not visible in the build or supported by evidence.
 - Use consistent terminology across app UI, descriptions, captions, and policy.
 - Check capitalization, Russian typography, links, support contact, and version.

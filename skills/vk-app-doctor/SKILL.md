@@ -35,7 +35,7 @@ Read `references/checks.md` before interpreting a release result.
    - Bridge boundary and methods → `vk-bridge-recipes`;
    - mocks and automated coverage → `vk-app-test`;
    - authentication, secrets, permissions → `vk-app-security`;
-   - visual/catalog artifacts → `vk-app-assets`, `vk-catalog-copy`, screenshot,
+   - visual/catalog artifacts → `vk-app-assets`, `vk-catalog-description`, screenshot,
      Lottie, and listing skills;
    - hosting and packaging → `vk-app-publish` and `vk-miniapps-deploy`.
 3. Inspect direct file evidence before changing code. The doctor uses deliberate

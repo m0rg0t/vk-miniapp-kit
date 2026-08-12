@@ -1,6 +1,6 @@
 ---
 name: vk-miniapp-lifecycle
-description: Coordinate an entire VK Mini App delivery from a raw idea through project diagnosis, product planning, official scaffolding, VKUI-first design, VK Bridge integration, backend security, mocked local testing, publication assets and catalog copy, packaging, and release verification. Use for broad requests such as “build/ship a VK Mini App”, “сделай VK мини-приложение под ключ”, or whenever work spans multiple lifecycle phases. Resume from the current repository state and route focused work to the sibling vk-* skills instead of duplicating their detailed procedures.
+description: Coordinate an entire VK Mini App delivery from a raw idea through project diagnosis, product planning, official scaffolding, VKUI-first design, VK Bridge integration, backend security, mocked local testing, publication assets and catalog descriptions, packaging, and release verification. Use for broad requests such as “build/ship a VK Mini App”, “сделай VK мини-приложение под ключ”, or whenever work spans multiple lifecycle phases. Resume from the current repository state and route focused work to the sibling vk-* skills instead of duplicating their detailed procedures.
 ---
 
 # VK Mini App lifecycle
@@ -42,7 +42,7 @@ Use one concise delivery tracker in the app repository (for example
 7. **Prove behavior — `vk-app-test`.** Exercise the bundled runtime Bridge mock,
    controlled success/failure/event scenarios, unit/integration tests, and the
    critical browser journey.
-8. **Prepare publication — `vk-app-assets`, `vk-catalog-copy`,
+8. **Prepare publication — `vk-app-assets`, `vk-catalog-description`,
    `vk-lottie-launch-icon`, `vk-catalog-screenshots`, and `vk-app-listing`.**
    Read the current admin form, keep real UI/identity/copy consistent, and pass
    the common catalog preflight.
@@ -77,5 +77,5 @@ finish all local evidence first and record the exact remaining manual check.
 - Every applicable gate has direct current-state evidence.
 - The app can be developed outside VK with a controlled mock and tested inside
   VK before release.
-- Catalog copy and visual assets describe the behavior that actually shipped.
+- Catalog descriptions and visual assets describe the behavior that actually shipped.
 - The release artifact and remaining admin actions are explicit and reproducible.

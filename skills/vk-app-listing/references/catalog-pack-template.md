@@ -14,7 +14,7 @@ each field before final copy editing.
 ## Russian
 
 - App name (`limit: ___`):
-- Validated copy file (`vk-catalog-copy`):
+- Validated description file (`vk-catalog-description`):
 - Short description (`single line; exact count: ___ / current limit: ___`):
 - Description (`single line; exact count: ___ / current limit: ___`):
 - Category:
@@ -24,7 +24,7 @@ each field before final copy editing.
 ## English (if required)
 
 - App name (`limit: ___`):
-- Validated copy file (`vk-catalog-copy`):
+- Validated description file (`vk-catalog-description`):
 - Short description (`single line; exact count: ___ / current limit: ___`):
 - Description (`single line; exact count: ___ / current limit: ___`):
 - Category:

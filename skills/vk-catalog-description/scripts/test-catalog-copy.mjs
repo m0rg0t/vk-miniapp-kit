@@ -47,7 +47,7 @@ assert.deepEqual(
   [],
 );
 
-const root = mkdtempSync(join(tmpdir(), 'vk-catalog-copy-'));
+const root = mkdtempSync(join(tmpdir(), 'vk-catalog-description-'));
 const draft = join(root, 'draft.json');
 const output = join(root, 'catalog-copy.json');
 const cli = fileURLToPath(new URL('./catalog-copy.mjs', import.meta.url));
@@ -75,4 +75,4 @@ preparedDocument.shortDescription.characters = 17;
 writeFileSync(output, JSON.stringify(preparedDocument));
 assert.equal(spawnSync(process.execPath, [cli, 'validate', output]).status, 1);
 
-console.log('catalog-copy tests passed');
+console.log('catalog-description tests passed');

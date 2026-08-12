@@ -1,6 +1,6 @@
 ---
 name: vk-app-publish
-description: Orchestrate a VK Mini App release from current admin-form evidence through catalog preflight, build/package, version-bound VK hosting confirmation, production HTTP verification, real-client smoke testing, and submission. Use for publish, deploy, release, ship, "выложить/опубликовать приложение", "залить в каталог", or build.zip. Do not declare readiness until the common asset/copy preflight passes, and do not redeploy hosting for catalog-only icon, snippet, or description changes.
+description: Orchestrate a VK Mini App release from current admin-form evidence through catalog preflight, build/package, version-bound VK hosting confirmation, production HTTP verification, real-client smoke testing, and submission. Use for publish, deploy, release, ship, "выложить/опубликовать приложение", "залить в каталог", or build.zip. Do not declare readiness until the common asset/description preflight passes, and do not redeploy hosting for catalog-only icon, snippet, or description changes.
 ---
 
 # Publish a VK Mini App
@@ -24,7 +24,7 @@ Load the sibling owners:
 - `vk-app-assets`: mandatory `icon-576.png`, real-UI/icon
   `catalog-snippet-1120x630.png`, reproducible sources, privacy review, and the
   common manifest/preflight;
-- `vk-catalog-copy`: single-line paste-ready Description and Short description
+- `vk-catalog-description`: persuasive, single-line paste-ready Description and Short description
   with exact counts;
 - `vk-catalog-screenshots`: current-form dimensions/count, 2× CSS capture
   evidence, exact physical PNG verification, and honest demo-state review;

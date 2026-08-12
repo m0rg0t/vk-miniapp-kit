@@ -397,7 +397,7 @@ const support = docs.filter(({ text }) =>
   /support|поддержк[аи]|contact|контакт/i.test(text),
 );
 for (const [check, items, remediation] of [
-  ['catalog-copy', catalogText, 'Use vk-catalog-copy to create validated one-line copy based on shipped behavior.'],
+  ['catalog-copy', catalogText, 'Use vk-catalog-description to create validated one-line descriptions based on shipped behavior.'],
   ['catalog-manifest', catalogManifest, 'Use vk-app-assets to create and run the common catalog preflight manifest.'],
   ['privacy-evidence', privacy, 'Document the actual data behavior and public policy location.'],
   ['support-contact', support, 'Record a current support/contact destination.'],

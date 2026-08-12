@@ -40,7 +40,7 @@ For local development, use `npx skills add . --list` or
 | **vk-app-security** | Verify signed launch identity, protect secrets, harden APIs/permissions/data, and scan common risks. |
 | **vk-app-doctor** | Audit the app, tests, security, hosting, assets, and catalog readiness with one read-only command. |
 | **vk-app-listing** | Produce names, privacy/moderation text, localization, category, support details, and the wider listing pack. |
-| **vk-catalog-copy** | Produce single-line paste-ready Description and Short description values with exact counts and current-form limits. |
+| **vk-catalog-description** | Produce persuasive, paste-ready Description and Short description values with exact counts and current-form limits. |
 | **vk-miniapps-deploy** | Preflight automatic dev uploads, save a production hosting version, confirm that exact version, and verify HTTP 200 without re-uploading. |
 | **vk-app-publish** | Orchestrate catalog preflight, build/package, version-bound deploy confirmation, smoke tests, and submission. |
 
@@ -86,7 +86,7 @@ See [`AGENTS.md`](AGENTS.md) for repository-wide contribution rules and
   sensitive logging.
 - **One command summarizes readiness.** `vk-app-doctor` checks dependencies,
   Bridge/mock isolation, real test declarations, launch authentication, hosting
-  config/build output, PNG dimensions, screenshots, privacy, and catalog copy.
+  config/build output, PNG dimensions, screenshots, privacy, and catalog descriptions.
 - **One strict catalog preflight gates submission.** It validates a readable
   576×576 PNG, the 1120×630 real-UI snippet and retained sources, screenshots,
   optional Lottie, single-line copy limits, policy URL, and support contact.
@@ -169,7 +169,7 @@ npx skills add m0rg0t/vk-miniapp-kit --skill vk-app-test
 | **vk-lottie-launch-icon** | Создаёт или проверяет анимированную Lottie-иконку запуска. |
 | **vk-catalog-screenshots** | Захватывает и проверяет скриншоты для каталога VK в 2× масштабе. |
 | **vk-app-listing** | Готовит название, локализацию, категорию, политику конфиденциальности и материалы для модерации. |
-| **vk-catalog-copy** | Готовит однострочные поля описания без Markdown и показывает точные счётчики. |
+| **vk-catalog-description** | Готовит понятные продающие поля описания без Markdown и показывает точные счётчики. |
 | **vk-miniapps-deploy** | Проверяет автоматический dev-деплой, сохраняет production-версию, подтверждает код именно для неё и проверяет HTTP 200. |
 | **vk-app-publish** | Оркестрирует preflight, сборку, version-bound deploy, smoke-тесты и отправку в каталог. |
 

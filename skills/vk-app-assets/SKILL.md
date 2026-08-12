@@ -1,6 +1,6 @@
 ---
 name: vk-app-assets
-description: "Create, bundle, and preflight a complete portable VK Mini App catalog package: appId, editable icon master, mandatory 576×576 PNG, reproducible 1120×630 catalog snippet, screenshots, optional 96×96 Lottie, user-focused catalog copy, privacy links, and support contacts. Use for app identity, иконка приложения, catalog snippet/artwork, publication assets, admin autofill packages, or final catalog readiness. Read the current VK admin form first; reject missing, corrupt, wrong-size, private-data, placeholder, absolute, or package-escaping paths."
+description: "Create, bundle, and preflight a complete portable VK Mini App catalog package: appId, editable icon master, mandatory 576×576 PNG, reproducible 1120×630 catalog snippet, screenshots, optional 96×96 Lottie, user-focused catalog descriptions, privacy links, and support contacts. Use for app identity, иконка приложения, catalog snippet/artwork, publication assets, admin autofill packages, or final catalog readiness. Read the current VK admin form first; reject missing, corrupt, wrong-size, private-data, placeholder, absolute, or package-escaping paths."
 ---
 
 # Create and preflight VK catalog assets
@@ -44,7 +44,7 @@ not as permission to imitate a known app's mark.
 
 Present materially different directions only when the user needs to choose a
 brand direction. Once chosen, use one consistent identity across icon, splash,
-screenshots, and catalog copy.
+screenshots, and catalog descriptions.
 
 ## 2. Render the icon and splash set
 
@@ -101,7 +101,7 @@ verified `icon-576.png`. Set both `unroundedReviewed` fields only after checking
 that neither asset has a baked outer-corner mask. Set `realUiReviewed` and
 `privacyReviewed` only after visual inspection. Use:
 
-- `vk-catalog-copy` for `catalog-copy.json`;
+- `vk-catalog-description` for `catalog-copy.json`;
 - `vk-catalog-screenshots` for the vertical images;
 - `vk-lottie-launch-icon` when a launch animation is present.
 
