@@ -40,9 +40,10 @@ For local development, use `npx skills add . --list` or
 | **vk-app-security** | Verify signed launch identity, protect secrets, harden APIs/permissions/data, and scan common risks. |
 | **vk-app-doctor** | Audit the app, tests, security, hosting, assets, and catalog readiness with one read-only command. |
 | **vk-app-listing** | Produce names, privacy/moderation text, localization, category, support details, and the wider listing pack. |
-| **vk-catalog-description** | Produce persuasive, paste-ready Description and Short description values with exact counts and current-form limits. |
+| **vk-catalog-description** | Turn shipped value into catchy, benefit-led Description and Short description fields with exact counts and current-form limits. |
 | **vk-miniapps-deploy** | Preflight automatic dev uploads, save a production hosting version, confirm that exact version, and verify HTTP 200 without re-uploading. |
 | **vk-app-publish** | Orchestrate catalog preflight, build/package, version-bound deploy confirmation, smoke tests, and submission. |
+| **vk-app-promo-video** | Turn real app screens into a verified 9:16 promo video, storyboard, selling copy, and screenshot fallback. |
 
 Start with **`vk-miniapp-lifecycle`** for a broad request. It routes each phase
 to the focused skill and resumes from the current project state instead of
@@ -99,6 +100,9 @@ See [`AGENTS.md`](AGENTS.md) for repository-wide contribution rules and
 - **Platform facts are verified, not memorized.** Where a skill states VK's
   required sizes or a `vk-bridge` method signature, it points at the
   authoritative source so the recipe stays correct as VK evolves.
+- **Promotion stays evidence-based.** The promo-video skill builds its story
+  from shipped screens and verified claims, keeps private data out of captures,
+  and preserves still images when video rendering is unavailable.
 
 ## Validate changes
 
@@ -169,9 +173,10 @@ npx skills add m0rg0t/vk-miniapp-kit --skill vk-app-test
 | **vk-lottie-launch-icon** | Создаёт или проверяет анимированную Lottie-иконку запуска. |
 | **vk-catalog-screenshots** | Захватывает и проверяет скриншоты для каталога VK в 2× масштабе. |
 | **vk-app-listing** | Готовит название, локализацию, категорию, политику конфиденциальности и материалы для модерации. |
-| **vk-catalog-description** | Готовит понятные продающие поля описания без Markdown и показывает точные счётчики. |
+| **vk-catalog-description** | Превращает реальную пользу приложения в цепляющие продающие описания и показывает точные счётчики. |
 | **vk-miniapps-deploy** | Проверяет автоматический dev-деплой, сохраняет production-версию, подтверждает код именно для неё и проверяет HTTP 200. |
 | **vk-app-publish** | Оркестрирует preflight, сборку, version-bound deploy, smoke-тесты и отправку в каталог. |
+| **vk-app-promo-video** | Собирает из реальных экранов проверенный вертикальный проморолик, сценарий, продающий текст и набор скриншотов. |
 
 Подробные правила разработки находятся в [`AGENTS.md`](AGENTS.md), а инструкции
 для Claude Code — в [`CLAUDE.md`](CLAUDE.md).

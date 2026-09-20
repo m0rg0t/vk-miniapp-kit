@@ -85,7 +85,7 @@ writeFileSync(join(root, 'icon-animation.json'), JSON.stringify({
 
 const manifest = {
   schemaVersion: 1,
-  appId: 54717058,
+  appId: 123456,
   requirements: {
     checkedAt: '2026-07-26',
     source: 'admin-form-requirements.png',
@@ -194,7 +194,7 @@ const bundleRoot = mkdtempSync(join(tmpdir(), 'vk-catalog-bundle-'));
 const bundled = bundleCatalog(manifestPath, bundleRoot);
 assert.deepEqual(bundled.errors, []);
 const portableManifest = JSON.parse(readFileSync(join(bundleRoot, 'catalog-manifest.json'), 'utf8'));
-assert.equal(portableManifest.appId, 54717058);
+assert.equal(portableManifest.appId, 123456);
 const portableJson = JSON.stringify(portableManifest);
 assert.doesNotMatch(portableJson, /(?:^|["/])\.\.(?:["/]|$)/);
 assert.ok(readFileSync(join(bundleRoot, 'icon-576.png')).length > 0);

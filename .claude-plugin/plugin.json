@@ -1,7 +1,7 @@
 {
   "name": "vk-miniapp-kit",
-  "description": "Take VK Mini Apps from idea to catalog: build with VKUI, test and secure, preflight exact catalog assets and plain copy, then deploy with version-bound confirmation.",
-  "version": "0.5.0",
+  "description": "Take VK Mini Apps from idea to catalog and launch promotion: build with VKUI, test and secure, preflight exact catalog assets and copy, deploy with version-bound confirmation, and create real-UI promo videos.",
+  "version": "0.6.0",
   "author": {
     "name": "antonlenev"
   },
@@ -17,6 +17,8 @@
     "audit",
     "catalog",
     "screenshots",
+    "promo-video",
+    "social",
     "icons",
     "lottie",
     "preflight",

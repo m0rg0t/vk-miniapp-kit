@@ -12,7 +12,7 @@ const log = join(root, 'deploy.log');
 const stateFile = join(root, 'vk-deploy-state.json');
 const base = 'https://mock.vk.invalid';
 writeFileSync(config, JSON.stringify({
-  app_id: 54693573,
+  app_id: 424242,
   static_path: 'dist',
   endpoints: { mobile: 'index.html' },
   api_host: `${base}/method/`,
@@ -61,7 +61,7 @@ const result = await confirmDeploy({
   version: '42',
 }, { VK_DEPLOY_CONFIRM_CODE: '123456', MINI_APPS_ACCESS_TOKEN: 'token' }, mockFetch);
 assert.equal(apiCalls, 1);
-assert.equal(received.get('app_id'), '54693573');
+assert.equal(received.get('app_id'), '424242');
 assert.equal(received.get('version'), '42');
 assert.equal(received.get('code'), '123456');
 assert.equal(result.state.status, 'confirmed');

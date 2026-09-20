@@ -1,6 +1,6 @@
 ---
 name: vk-miniapp-lifecycle
-description: Coordinate an entire VK Mini App delivery from a raw idea through project diagnosis, product planning, official scaffolding, VKUI-first design, VK Bridge integration, backend security, mocked local testing, publication assets and catalog descriptions, packaging, and release verification. Use for broad requests such as “build/ship a VK Mini App”, “сделай VK мини-приложение под ключ”, or whenever work spans multiple lifecycle phases. Resume from the current repository state and route focused work to the sibling vk-* skills instead of duplicating their detailed procedures.
+description: Coordinate an entire VK Mini App delivery from a raw idea through project diagnosis, product planning, official scaffolding, VKUI-first design, VK Bridge integration, backend security, mocked local testing, publication assets and catalog descriptions, packaging, release verification, and optional launch promotion. Use for broad requests such as “build/ship a VK Mini App”, “сделай VK мини-приложение под ключ”, or whenever work spans multiple lifecycle phases. Resume from the current repository state and route focused work to the sibling vk-* skills instead of duplicating their detailed procedures.
 ---
 
 # VK Mini App lifecycle
@@ -50,6 +50,10 @@ Use one concise delivery tracker in the app repository (for example
    gates, deploy only when code/runtime assets changed, bind confirmation to the
    saved upload version, verify HTTP 200, smoke-test in a real VK client, and
    complete the current admin checklist.
+10. **Promote when requested — `vk-app-promo-video`.** After the shipped UI and
+    claims are stable, capture privacy-reviewed real screens and create a short
+    vertical video plus a still-image fallback. Promotion is optional and never
+    blocks catalog readiness.
 
 Load a sibling skill's `SKILL.md` before performing that phase. Load only the
 references needed for the current task.
@@ -79,3 +83,5 @@ finish all local evidence first and record the exact remaining manual check.
   VK before release.
 - Catalog descriptions and visual assets describe the behavior that actually shipped.
 - The release artifact and remaining admin actions are explicit and reproducible.
+- Any requested promo package uses reviewed real UI, synthetic data, and only
+  claims supported by the shipped app.

@@ -1,4 +1,4 @@
 interface:
   display_name: "Write VK Catalog Descriptions"
-  short_description: "Write persuasive VK catalog descriptions"
-  default_prompt: "Use $vk-catalog-description to write and validate persuasive, non-technical Description and Short description fields for this VK Mini App."
+  short_description: "Write catchy, benefit-led VK catalog copy"
+  default_prompt: "Use $vk-catalog-description to write and validate catchy, benefit-led Description and Short description fields that sell the shipped value without turning into a feature list."

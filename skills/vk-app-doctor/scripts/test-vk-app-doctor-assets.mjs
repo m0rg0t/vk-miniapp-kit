@@ -66,7 +66,7 @@ put('tests/app.test.js', 'test("main flow", () => {});\n');
 put('backend/auth.js', 'const vk_user_id = 1; function verifyLaunch() { return vk_user_id; }\n');
 put('docs/spec.md', '# Acceptance criteria\nPrivacy policy: https://product.company/privacy\nSupport contact: support@product.company\n');
 put('vk-hosting-config.json', JSON.stringify({
-  app_id: 54693573,
+  app_id: 123456,
   static_path: 'dist',
   endpoints: { mobile: 'index.html', mvk: 'index.html', web: 'index.html' },
 }));

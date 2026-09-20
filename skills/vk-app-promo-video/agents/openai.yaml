@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create VK App Promo Video"
+  short_description: "Create vertical VK app promo videos"
+  default_prompt: "Use $vk-app-promo-video to capture the app, write a concise selling script, and render a vertical promo video with a screenshot fallback."
