@@ -10,6 +10,12 @@ type BridgeCall = { method: string; params?: Record<string, unknown> };
 const listeners = new Set<Listener>();
 const calls: BridgeCall[] = [];
 const storage = new Map<string, string>();
+const checkedStorageKey = (method: string, key: unknown): string => {
+  if (typeof key !== 'string' || key.length === 0 || /[^A-Za-z0-9_-]/.test(key)) {
+    throw failure(method, 1, 'Invalid VK Storage key in mock: use Latin letters, digits, _ or -');
+  }
+  return key;
+};
 
 const initialScenario = (): VkMockScenarioName => {
   if (typeof window === 'undefined') return 'success';
@@ -96,12 +102,14 @@ const send = async (
         vk_ref: 'mock',
       };
     case 'VKWebAppStorageSet': {
-      const key = String(params.key ?? '');
+      const key = checkedStorageKey(method, params.key);
       storage.set(key, String(params.value ?? ''));
       return { result: true };
     }
     case 'VKWebAppStorageGet': {
-      const keys = Array.isArray(params.keys) ? params.keys.map(String) : [];
+      const keys = (Array.isArray(params.keys) ? params.keys : []).map((key) =>
+        checkedStorageKey(method, key),
+      );
       return {
         keys: keys.map((key) => ({ key, value: storage.get(key) ?? '' })),
       };

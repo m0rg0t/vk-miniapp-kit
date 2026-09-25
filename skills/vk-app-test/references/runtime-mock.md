@@ -57,6 +57,12 @@ Select an allow-listed state with `?vk_mock=<scenario>`:
 | `ads-unavailable` | Native and banner ad methods reject |
 | `storage-error` | Storage reads and writes reject |
 
+Storage keys in the runtime mock must match `^[A-Za-z0-9_-]+$`, as in the
+[VK Storage API reference](https://github.com/VKCOM/vk-mini-apps-api/blob/master/docs/classes/vkminiappapi.md#storage-methods).
+Both `VKWebAppStorageSet` and `VKWebAppStorageGet` reject invalid names, so
+`iskra:prefs:v1` fails locally and `iskra_prefs_v1` round-trips. This checks
+key naming; verify real persistence in a VK client before release.
+
 Unknown values fall back to `success`; they are never interpreted as method
 names or executable input.
 

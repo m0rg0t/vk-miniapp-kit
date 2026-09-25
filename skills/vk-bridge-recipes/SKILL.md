@@ -47,6 +47,11 @@ Each reference has verified signatures, a working snippet, and the gotchas:
 | Share a link / publish a story | `references/share.md` | `share`, `vkBridgeSend('VKWebAppShowStoryBox', …)` |
 | Persist per-user data | `references/storage.md` | `storageSet` / `storageGet` / `storageGetKeys` |
 
+For VK Storage, use nonempty keys with only Latin letters, digits, `_`, and
+`-` (`^[A-Za-z0-9_-]+$`); `:` is invalid. Read the source links and
+existing-user recovery steps in `references/storage.md` before changing saved
+data.
+
 ## Build it with TDD
 
 This is real production code — follow red-green-refactor. The dev mock makes

@@ -76,14 +76,29 @@ const MOCKS: Record<string, unknown> = {
 
 // Tiny in-memory store so StorageSet/Get actually round-trip in dev.
 const memStore = new Map<string, string>();
+const checkedStorageKey = (method: string, key: unknown): string => {
+  if (typeof key !== 'string' || key.length === 0 || /[^A-Za-z0-9_-]/.test(key)) {
+    throw {
+      error_type: `${method}Failed`,
+      error_data: {
+        error_code: 1,
+        error_reason: 'Invalid VK Storage key in mock: use Latin letters, digits, _ or -',
+      },
+    };
+  }
+  return key;
+};
 
 export function getMockResponse<T>(method: string, params: Record<string, unknown> = {}): T {
   if (method === 'VKWebAppStorageSet') {
-    memStore.set(String(params.key), String(params.value));
+    const key = checkedStorageKey(method, params.key);
+    memStore.set(key, String(params.value));
     return { result: true } as T;
   }
   if (method === 'VKWebAppStorageGet') {
-    const keys = (params.keys as string[]) ?? [];
+    const keys = (Array.isArray(params.keys) ? params.keys : []).map((key) =>
+      checkedStorageKey(method, key),
+    );
     return { keys: keys.map((key) => ({ key, value: memStore.get(key) ?? '' })) } as T;
   }
   if (method === 'VKWebAppStorageGetKeys') {
