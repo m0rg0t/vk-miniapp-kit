@@ -5,13 +5,13 @@
     "name": "antonlenev"
   },
   "metadata": {
-    "description": "End-to-end VK Mini Apps toolkit: planning, VKUI, Bridge mocks, security, tests, strict catalog preflight, persuasive copy, version-bound deploy, publishing, and real-UI promo videos."
+    "description": "End-to-end VK Mini Apps toolkit: planning, VKUI, Bridge mocks, OK adaptation, security, tests, catalog preflight, copy, version-bound deploy, publishing, and real-UI promo videos."
   },
   "plugins": [
     {
       "name": "vk-miniapp-kit",
       "source": "./",
-      "description": "Take a VK Mini App from idea to catalog and promotion: build and test it, preflight exact catalog materials, deploy and confirm a saved hosting version, then create a real-UI promo video.",
+      "description": "Take a VK Mini App from idea to catalog and promotion: build and test it, adapt for Odnoklassniki, preflight catalog materials, deploy and confirm a saved hosting version, then create a real-UI promo video.",
       "author": {
         "name": "antonlenev"
       },
@@ -32,7 +32,9 @@
         "icons",
         "lottie",
         "preflight",
-        "deploy"
+        "deploy",
+        "ok",
+        "odnoklassniki"
       ]
     }
   ]

@@ -1,7 +1,7 @@
 {
   "name": "vk-miniapp-kit",
-  "description": "Take VK Mini Apps from idea to catalog and launch promotion: build with VKUI, test and secure, preflight exact catalog assets and copy, deploy with version-bound confirmation, and create real-UI promo videos.",
-  "version": "0.6.0",
+  "description": "Take VK Mini Apps from idea to catalog and launch promotion: build with VKUI, test and secure, adapt for Odnoklassniki, preflight catalog assets and copy, deploy with version-bound confirmation, and create real-UI promo videos.",
+  "version": "0.7.0",
   "author": {
     "name": "antonlenev"
   },
@@ -22,6 +22,8 @@
     "icons",
     "lottie",
     "preflight",
-    "deploy"
+    "deploy",
+    "ok",
+    "odnoklassniki"
   ]
 }
