@@ -1,7 +1,8 @@
 # vk-miniapp-kit
 
 An installable Agent Skills toolkit for taking a [VK Mini
-App](https://dev.vk.com/mini-apps) from an idea to a tested catalog release.
+App](https://dev.vk.com/mini-apps) from an idea to a tested catalog release, including adaptation for
+[Odnoklassniki](https://apiok.ru/apps/vk) when requested.
 It works with Codex, Claude Code, Cursor, and the other agents supported by the
 open [`skills`](https://github.com/vercel-labs/skills) CLI.
 
@@ -36,6 +37,7 @@ For local development, use `npx skills add . --list` or
 | **vk-app-scaffold** | Bootstrap a new VK Mini App on the current official React + VKUI + Bridge + router + Vite stack. |
 | **vk-app-design** | Design and implement native-feeling, adaptive, accessible flows with VKUI. |
 | **vk-bridge-recipes** | Add vk-bridge features (init, ads, analytics, theme, share, storage) with a dev-mock fallback and prod-visible diagnostics. |
+| **vk-app-ok-support** | Adapt an existing VK app for Odnoklassniki: platform links, native stories, sharing, ads, privacy, and real-client checks. |
 | **vk-app-test** | Run local, unit, integration, and browser tests with a bundled Bridge 3 runtime mock and controlled scenarios. |
 | **vk-app-security** | Verify signed launch identity, protect secrets, harden APIs/permissions/data, and scan common risks. |
 | **vk-app-doctor** | Audit the app, tests, security, hosting, assets, and catalog readiness with one read-only command. |
@@ -49,6 +51,14 @@ Start with **`vk-miniapp-lifecycle`** for a broad request. It routes each phase
 to the focused skill and resumes from the current project state instead of
 forcing a greenfield workflow. Install the complete toolkit when using the
 lifecycle coordinator because it delegates detailed phases to sibling skills.
+
+For an existing app that needs Odnoklassniki support, use
+**`vk-app-ok-support`** directly. It preserves VK behavior and separates local
+OK previews from verified web/Android/iOS client support.
+
+```bash
+npx skills add m0rg0t/vk-miniapp-kit --skill vk-app-ok-support
+```
 
 ## Repository layout
 
@@ -133,7 +143,8 @@ fixtures whenever those resources change.
 `vk-miniapp-kit` — набор Agent Skills для полного цикла разработки
 VK Mini Apps: от идеи и продуктового плана до реализации на VKUI, локального
 тестирования с runtime-моками VK Bridge, проверки безопасности и готовности,
-подготовки материалов для каталога и публикации.
+подготовки материалов для каталога и публикации, а также адаптации существующих
+приложений для Одноклассников.
 Навыки работают с Codex, Claude Code, Cursor и другими агентами, которые
 поддерживает открытый CLI `skills`.
 
@@ -157,6 +168,10 @@ npx skills add m0rg0t/vk-miniapp-kit --skill vk-app-test
 набор: этот навык координирует этапы и передаёт специализированную работу
 остальным навыкам.
 
+Для добавления поддержки Одноклассников в готовое приложение используйте
+**`vk-app-ok-support`**: он сохраняет поведение VK и отдельно проверяет OK web,
+mobile web, Android и iOS.
+
 ### Состав набора
 
 | Навык | Назначение |
@@ -166,6 +181,7 @@ npx skills add m0rg0t/vk-miniapp-kit --skill vk-app-test
 | **vk-app-scaffold** | Создаёт проект на актуальном официальном стеке React + VKUI + VK Bridge. |
 | **vk-app-design** | Проектирует адаптивный и доступный интерфейс на VKUI. |
 | **vk-bridge-recipes** | Добавляет инициализацию, рекламу, темы, шаринг, аналитику и хранилище VK Bridge. |
+| **vk-app-ok-support** | Адаптирует VK-приложение для OK: ссылки и интерфейс, истории в мобильных клиентах, шаринг, рекламу, аналитику и проверки настоящих клиентов. |
 | **vk-app-test** | Настраивает локальную разработку, встроенный runtime-мок Bridge 3, Vitest и браузерные сценарии. |
 | **vk-app-security** | Проверяет подпись параметров запуска, защищает секреты, API, разрешения и пользовательские данные. |
 | **vk-app-doctor** | Одной командой проверяет проект, тесты, безопасность, хостинг, ассеты и готовность к каталогу. |

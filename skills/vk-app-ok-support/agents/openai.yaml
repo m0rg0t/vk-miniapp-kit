@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Odnoklassniki Support"
+  short_description: "Adapt VK Mini Apps for OK with real-client checks"
+  default_prompt: "Use $vk-app-ok-support to adapt this VK Mini App for Odnoklassniki, preserve VK behavior, and verify platform-specific flows."

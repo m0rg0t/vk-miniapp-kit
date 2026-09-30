@@ -9,6 +9,11 @@ Wire VK features in cleanly: one centralized service that mocks in dev (so the
 app runs in a plain browser), consistent timeout/error handling, and always-on
 diagnostics for the things you can only debug inside the VK client.
 
+For Odnoklassniki adaptation, load **`vk-app-ok-support`** alongside this skill.
+It owns OK client policy, public links, story payload differences, and real-client
+checks. Apply its platform-specific rules instead of assuming VK behavior,
+VK-only share URLs, or diagnostic payload logging is portable to OK.
+
 ## The pattern (set this up once)
 
 Panels and hooks must never branch on environment. They call
