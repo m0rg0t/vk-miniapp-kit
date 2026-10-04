@@ -39,6 +39,8 @@ For local development, use `npx skills add . --list` or
 | **vk-bridge-recipes** | Add vk-bridge features (init, ads, analytics, theme, share, storage) with a dev-mock fallback and prod-visible diagnostics. |
 | **vk-app-ok-support** | Adapt an existing VK app for Odnoklassniki: platform links, native stories, sharing, ads, privacy, and real-client checks. |
 | **vk-app-test** | Run local, unit, integration, and browser tests with a bundled Bridge 3 runtime mock and controlled scenarios. |
+| **vk-gameplay-acceptance** | Prove a game's first meaningful action, playable loop, content validity, progression/reload, and rendered input with revision-bound evidence. |
+| **vk-app-resilience** | Reproduce and repair stale async results, cancellation/startup stalls, lost saves, and client/backend compatibility regressions. |
 | **vk-app-security** | Verify signed launch identity, protect secrets, harden APIs/permissions/data, and scan common risks. |
 | **vk-app-doctor** | Audit the app, tests, security, hosting, assets, and catalog readiness with one read-only command. |
 | **vk-app-listing** | Produce names, privacy/moderation text, localization, category, support details, and the wider listing pack. |
@@ -51,6 +53,12 @@ Start with **`vk-miniapp-lifecycle`** for a broad request. It routes each phase
 to the focused skill and resumes from the current project state instead of
 forcing a greenfield workflow. Install the complete toolkit when using the
 lifecycle coordinator because it delegates detailed phases to sibling skills.
+
+Use **`vk-gameplay-acceptance`** for a playable game milestone and
+**`vk-app-resilience`** for a focused state/recovery failure. Both reuse the
+existing test harness and include copyable evidence templates. They distinguish
+local fixtures, browser input, real services, and native clients; missing
+required evidence stays open instead of becoming a release claim.
 
 For an existing app that needs Odnoklassniki support, use
 **`vk-app-ok-support`** directly. It preserves VK behavior and separates local
@@ -107,6 +115,12 @@ See [`AGENTS.md`](AGENTS.md) for repository-wide contribution rules and
 - **VKUI is the default UI layer.** The design skill first reuses VKUI and
   `@vkontakte/icons`, then adds custom CSS only when the product genuinely needs
   it.
+- **Gameplay acceptance is observable.** Verify a real action, result/retry,
+  preserved content and progression, reload, and inspected rendered behavior.
+  A build or start-screen screenshot alone does not prove a playable milestone.
+- **Resilience preserves intent and data.** Controlled event-order scenarios
+  expose stale completion, duplicate effects, lost updates, and old-client
+  migration hazards without imposing a new runtime or game architecture.
 - **Platform facts are verified, not memorized.** Where a skill states VK's
   required sizes or a `vk-bridge` method signature, it points at the
   authoritative source so the recipe stays correct as VK evolves.
@@ -183,6 +197,8 @@ mobile web, Android и iOS.
 | **vk-bridge-recipes** | Добавляет инициализацию, рекламу, темы, шаринг, аналитику и хранилище VK Bridge. |
 | **vk-app-ok-support** | Адаптирует VK-приложение для OK: ссылки и интерфейс, истории в мобильных клиентах, шаринг, рекламу, аналитику и проверки настоящих клиентов. |
 | **vk-app-test** | Настраивает локальную разработку, встроенный runtime-мок Bridge 3, Vitest и браузерные сценарии. |
+| **vk-gameplay-acceptance** | Проверяет первое реальное действие, полный игровой цикл, уровни/контент, прогресс и перезагрузку, сохраняя доказательства для точной ревизии. |
+| **vk-app-resilience** | Воспроизводит и исправляет гонки асинхронных действий, зависания, потерю сохранений и несовместимость клиентов/бэкенда. |
 | **vk-app-security** | Проверяет подпись параметров запуска, защищает секреты, API, разрешения и пользовательские данные. |
 | **vk-app-doctor** | Одной командой проверяет проект, тесты, безопасность, хостинг, ассеты и готовность к каталогу. |
 | **vk-app-assets** | Создаёт и проверяет полный пакет ассетов: иконку 576×576, сниппет 1120×630, скриншоты и общий манифест. |

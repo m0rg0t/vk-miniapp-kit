@@ -41,7 +41,11 @@ Use one concise delivery tracker in the app repository (for example
    permissions, and review data/API abuse paths.
 7. **Prove behavior — `vk-app-test`.** Exercise the bundled runtime Bridge mock,
    controlled success/failure/event scenarios, unit/integration tests, and the
-   critical browser journey.
+   critical browser journey. For a game's playable milestone, use
+   `vk-gameplay-acceptance` to prove the first action, complete loop, content,
+   progression, and rendered input. For interrupted/overlapping operations,
+   lost progress, or version-boundary changes, use `vk-app-resilience` for the
+   focused state/recovery contract. Keep evidence tied to the final revision.
 8. **Prepare publication — `vk-app-assets`, `vk-catalog-description`,
    `vk-lottie-launch-icon`, `vk-catalog-screenshots`, and `vk-app-listing`.**
    Read the current admin form, keep real UI/identity/copy consistent, and pass
@@ -70,6 +74,8 @@ Do not claim a later gate proves an earlier one:
 | Security | Signed launch identity, server-only secrets, authorization, and data handling are evidenced |
 | Local QA | Mocked success, decline/error, and event scenarios pass |
 | UX QA | Main flow works at compact mobile and desktop/web widths, light and dark |
+| Gameplay, when applicable | Player-visible loop, content/progression invariants, recovery/reload, and inspected rendered input evidence |
+| Resilience, when affected | Interrupted/overlapping actions, preserved saves, and applicable client/runtime compatibility proved at the final revision |
 | Catalog | Current-form evidence and common preflight prove 576 icon, 1120×630 real-UI snippet, single-line copy, policy/contact, Lottie when used, and screenshots |
 | Release | Strict release doctor, production build, saved/confirmed deploy version, HTTP 200, real-client smoke test, and admin checklist |
 
