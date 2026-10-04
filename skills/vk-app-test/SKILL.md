@@ -65,6 +65,12 @@ mode and automate the critical core loop. Vary launch parameters, appearance,
 viewport, and returning-user data. Capture failure artifacts on the first
 failed step.
 
+For a game-specific acceptance milestone, load `vk-gameplay-acceptance` to
+define the playable loop, content/progression invariants, and input/visual proof.
+For a reproduced race, lost save, cancellation, or migration problem, load
+`vk-app-resilience` to select controlled event-order scenarios. These skills
+reuse this harness rather than replacing it.
+
 Use the browser tool already available in the environment; do not introduce a
 second browser framework solely for one test if an equivalent runner exists.
 For a one-off local investigation, interactive browser control is enough. For a

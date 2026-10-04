@@ -1,0 +1,4 @@
+interface:
+  display_name: "VK App Resilience"
+  short_description: "Protect async flows, saves, and client compatibility"
+  default_prompt: "Use $vk-app-resilience to reproduce this state/recovery failure, make the smallest repair, and verify preserved behavior."
