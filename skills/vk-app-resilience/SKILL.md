@@ -1,6 +1,6 @@
 ---
 name: vk-app-resilience
-description: Diagnose and harden VK Mini App state across overlapping or cancelled async actions, startup stalls, concurrent saves, reload/reset, and old-client or backend compatibility. Use for lost progress, stuck controls, stale results, retry races, migration regressions, or resilience acceptance. Reuse vk-app-test for the harness and vk-bridge-recipes for platform APIs; do not activate a broad audit for an unrelated small UI change.
+description: Diagnose and harden VK Mini App state across overlapping or cancelled async actions, startup stalls, concurrent saves, reload/reset, and old-client or backend compatibility. Use for lost progress, stuck controls, stale results, double rewards, retry races, migration regressions, or resilience acceptance, including “пропадает прогресс”, “зависает после отмены”, “гонка запросов”. Reuse vk-app-test for the harness and vk-bridge-recipes for platform APIs; do not activate a broad audit for an unrelated small UI change.
 ---
 
 # Preserve state across interruption and change
@@ -37,9 +37,14 @@ Distinguish these contracts before changing them:
   endpoints, and migration/runtime assumptions.
 
 Read [references/state-and-storage.md](references/state-and-storage.md) only for
-the relevant async, persistence, or cross-layer boundary. Keep API details
-single-sourced in sibling `vk-bridge-recipes`; use current installed package
-types and official documentation for changed version-specific behavior.
+the relevant async, persistence, or cross-layer boundary. For a concrete
+ownership guard, serialized delta writer, and deferred-promise/fake-timer test
+shape, read [references/async-patterns.md](references/async-patterns.md) and
+adapt it to the project's existing architecture. Keep API details single-sourced
+in sibling `vk-bridge-recipes` (VK Storage keys and responses:
+`../vk-bridge-recipes/references/storage.md` in a full toolkit install); use
+current installed package types and official documentation for changed
+version-specific behavior.
 
 ## Implement and prove the smallest repair
 
