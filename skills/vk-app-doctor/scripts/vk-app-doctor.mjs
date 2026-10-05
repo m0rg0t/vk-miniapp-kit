@@ -175,6 +175,37 @@ add(
   'Bind the exact Bridge alias only when command === serve and mode === vk-mock.',
 );
 
+// Followed links between app sections open as an external site in mobile VK
+// clients (a known moderation rejection). Flag internal href values and
+// location-based section changes; leave external, mailto/tel, and bare
+// fragment links alone.
+const internalTarget = String.raw`(?:\/(?!\/)|\.{1,2}\/|\?|#[!/]|(?![a-z][a-z0-9+.-]*:|\/\/|#)[\w-])`;
+const internalHref = new RegExp(
+  String.raw`<(?!(?:link|use|image|base)\b)[A-Za-z][\w.]*\b[^<]*?\bhref\s*=\s*(?:\{\s*)?["'\x60]` +
+    internalTarget,
+);
+const locationNavigation = new RegExp(
+  String.raw`\b(?:location\.href\s*=|location\.(?:assign|replace)\s*\(|window\.open\s*\()\s*["'\x60]` +
+    internalTarget,
+);
+const markupFiles = allFiles
+  .filter((path) => extname(path) === '.html')
+  .map((path) => ({ path, text: readText(path) }));
+const internalLinks = [...sources, ...markupFiles].filter(({ path, text }) =>
+  !/\.(?:test|spec)\.[jt]sx?$/.test(path) &&
+  !/^vite\.config\.[cm]?[jt]s$/.test(basename(path)) &&
+  (internalHref.test(text) || locationNavigation.test(text)),
+);
+add(
+  'platform',
+  internalLinks.length ? 'warn' : 'ok',
+  'internal-links',
+  internalLinks.length
+    ? internalLinks.map(({ path }) => rel(path)).slice(0, 5).join(', ')
+    : 'no internal href or location-based section change found',
+  'Switch sections through the router from onClick; mobile VK clients open followed links as an external site (vk-app-design host-navigation reference).',
+);
+
 const testFiles = sources.filter(({ path }) => /\.(?:test|spec)\.[jt]sx?$/.test(path));
 const testCases = testFiles.reduce(
   (total, { text }) => total + [...text.matchAll(/\b(?:test|it)(?:\.\w+)?\s*\(/g)].length,

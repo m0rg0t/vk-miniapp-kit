@@ -65,6 +65,12 @@ mode and automate the critical core loop. Vary launch parameters, appearance,
 viewport, and returning-user data. Capture failure artifacts on the first
 failed step.
 
+For a game-specific acceptance milestone, load `vk-gameplay-acceptance` to
+define the playable loop, content/progression invariants, and input/visual proof.
+For a reproduced race, lost save, cancellation, or migration problem, load
+`vk-app-resilience` to select controlled event-order scenarios. These skills
+reuse this harness rather than replacing it.
+
 Use the browser tool already available in the environment; do not introduce a
 second browser framework solely for one test if an equivalent runner exists.
 For a one-off local investigation, interactive browser control is enough. For a
@@ -75,7 +81,9 @@ them with `vk-app-plan` before inventing selectors or a “core” journey.
 ## Layer 4: real-client handoff
 
 Mocks cannot prove ads, permissions, host overlays, safe-area behavior, or
-client-specific events. Produce a short smoke-test list with the exact VK client
+client-specific events. Always include two moderation checks: on iOS and Android
+VK, every section switch stays inside the app (no internal browser), and no app
+control sits under the client's menu/close buttons. Produce a short smoke-test list with the exact VK client
 URL/build, device/platform, accounts or preconditions, and expected diagnostics.
 Record results before release.
 

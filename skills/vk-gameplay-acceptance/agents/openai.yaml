@@ -1,0 +1,4 @@
+interface:
+  display_name: "VK Gameplay Acceptance"
+  short_description: "Prove playable loops, progress, and game content"
+  default_prompt: "Use $vk-gameplay-acceptance to verify this game's playable milestone and report revision-bound evidence and remaining gaps."

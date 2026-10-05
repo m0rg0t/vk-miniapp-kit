@@ -14,7 +14,11 @@ Make the app feel native to VK while preserving the product's own identity.
    [`references/vkui-sources.md`](references/vkui-sources.md); the separate
    `vkui` skill is optional, never an implicit dependency.
 2. Draw a small route/panel and state map. Identify the primary action on each
-   screen and keep navigation compatible with VK back behavior.
+   screen and keep navigation compatible with VK back behavior. Read
+   [`references/host-navigation-and-controls.md`](references/host-navigation-and-controls.md)
+   before building navigation or a header: in-app sections must switch
+   through the router, never through `<a href>`, and app controls must stay
+   clear of the VK client's own buttons.
 3. Choose VKUI primitives before custom components. Read
    `references/vkui-patterns.md` for mappings and implementation gates.
 4. Implement one vertical slice at a time:
@@ -41,6 +45,11 @@ Make the app feel native to VK while preserving the product's own identity.
   background or a phone-only fixed width.
 - Avoid replacing a coherent existing design system merely to satisfy a library
   preference. Integrate VKUI where it improves host consistency.
+- Never navigate between app sections with `<a href>`, an `href` prop on a VKUI
+  component, or `location` assignments. Mobile VK clients open these as an
+  external site, and moderation rejects the app.
+- Keep the top-right header corner free of app controls on mobile; the VK
+  client draws its menu/close buttons there.
 - Never guess a component name or prop from memory. Match implementation to the
   version installed in the target app.
 
@@ -50,6 +59,8 @@ Make the app feel native to VK while preserving the product's own identity.
 - VKUI is used for applicable primitives and custom behavior has a clear reason.
 - Compact/regular widths, light/dark appearance, keyboard/focus basics, and long
   Russian text have been checked.
+- Section changes keep the same document, and no app control sits under the
+  VK client's buttons; real-client confirmation is handed to `vk-app-test`.
 - Typecheck/build pass and the critical flow is ready for `vk-app-test`.
 
 ## Bundled references
@@ -58,3 +69,6 @@ Make the app feel native to VK while preserving the product's own identity.
   skill routing and the fallback source order for version-specific APIs.
 - [`references/vkui-patterns.md`](references/vkui-patterns.md) — component,
   layout, appearance, state, and interaction patterns.
+- [`references/host-navigation-and-controls.md`](references/host-navigation-and-controls.md)
+  — router-only section navigation and clearance from the VK client's buttons,
+  both known moderation rejection reasons.
