@@ -1,6 +1,6 @@
 ---
 name: vk-gameplay-acceptance
-description: Verify a VK Mini App game's playable milestone through the first meaningful action, complete play/retry loop, level or content validity, progression and reload, with rendered input and revision-bound evidence. Use for gameplay acceptance, game regressions, or “проверь, что в игру реально можно играть”. Use vk-app-test for the general test harness and Bridge mocks; this skill defines the game-specific acceptance contract.
+description: Verify a VK Mini App game's playable milestone through the first meaningful action, complete play/retry loop, level or content validity, progression and reload, with rendered input and revision-bound evidence. Use for gameplay acceptance, game regressions, unsolvable or broken levels, controls that stop responding after a result screen, or “проверь, что в игру реально можно играть”. Use vk-app-test for the general test harness and Bridge mocks; this skill defines the game-specific acceptance contract.
 ---
 
 # Accept a playable game milestone
@@ -41,7 +41,8 @@ and evidence in the target project's existing QA documentation.
 
 1. Run the existing checks and a supported local build with explicit synthetic
    data. Keep production behavior and any mock boundary identifiable. Load
-   sibling `vk-app-test` for harness/mocks rather than creating another runner.
+   sibling `vk-app-test` (`../vk-app-test/SKILL.md` in a full toolkit install)
+   for harness/mocks rather than creating another runner.
 2. Enter from the actual start flow. Confirm onboarding, daily bonuses, loading,
    and optional host services do not trap the player before the first action.
    For a deep link, preserve its intended destination through initialization.
@@ -62,7 +63,9 @@ and evidence in the target project's existing QA documentation.
    before the fix do not prove the final behavior. Verify that scene/media
    meaning matches the game state, not just that an image downloaded.
 
-Use [references/content-and-progression.md](references/content-and-progression.md)
+Use [references/rendered-input.md](references/rendered-input.md) for browser
+input recipes that exercise real hit testing, touch, gestures, and overlay
+recovery. Use [references/content-and-progression.md](references/content-and-progression.md)
 when changing levels, generators, authored content, completion, rewards, or
 save semantics. Keep logical validity and player-visible usability as separate
 proofs; neither substitutes for the other.
