@@ -12,9 +12,11 @@ Tailor this matrix to the product brief. Do not keep irrelevant rows.
 | Component | loading, empty, error, success | accessible UI queries |
 | Journey | first-use core loop | browser trace/screenshot on failure |
 | Journey | returning user/persisted state | browser test |
+| Navigation | every section switch keeps the same document | browser marker check |
 | Launch | mobile + desktop platform, locale, deep link | parameterized test |
 | Visual | compact + regular, light + dark | screenshots/manual evidence |
 | Real client | permissions, ads, host overlays, safe areas | signed smoke-test note |
+| Real client | iOS/Android: sections never open the internal browser; no app control under the client's buttons | signed smoke-test note |
 
 ## Critical browser journey
 
@@ -25,6 +27,33 @@ Tailor this matrix to the product brief. Do not keep irrelevant rows.
 5. Reload or revisit and assert the intended persisted state.
 6. Repeat the key permission/Bridge step with a decline or unavailable response.
 7. Assert a usable fallback and no unhandled error.
+
+## Section navigation stays in the document
+
+Mobile VK clients open a followed link as an external site, so moderation
+rejects in-app sections reached through `<a href>`. Assert that switching every
+section keeps the same JavaScript document:
+
+```ts
+test('sections switch without reloading the document', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    (window as unknown as { __spaMarker?: number }).__spaMarker = 1;
+  });
+  for (const name of ['Planets', 'Saved', 'Today']) {
+    await page.getByRole('button', { name }).click();
+    await expect(page.getByRole('heading', { name })).toBeVisible();
+    expect(
+      await page.evaluate(() => (window as unknown as { __spaMarker?: number }).__spaMarker),
+    ).toBe(1);
+  }
+  await expect(page.locator('a[href^="/"], a[href^="?"], a[href^="#/"]')).toHaveCount(0);
+});
+```
+
+Query the navigation controls as buttons/tabs; a `link` role there usually
+means a followed link. This check cannot see the VK client's own buttons, so
+keep the real-client row for overlap.
 
 ## Quality rules
 

@@ -115,6 +115,9 @@ See [`AGENTS.md`](AGENTS.md) for repository-wide contribution rules and
 - **VKUI is the default UI layer.** The design skill first reuses VKUI and
   `@vkontakte/icons`, then adds custom CSS only when the product genuinely needs
   it.
+- **Navigation stays inside the app.** Sections switch through the router, never
+  through `<a href>`, and app controls stay clear of the VK client's buttons.
+  Both are known moderation rejection reasons; the doctor flags internal links.
 - **Gameplay acceptance is observable.** Verify a real action, result/retry,
   preserved content and progression, reload, and inspected rendered behavior.
   A build or start-screen screenshot alone does not prove a playable milestone.

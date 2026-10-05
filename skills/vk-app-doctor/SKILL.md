@@ -33,6 +33,7 @@ Read `references/checks.md` before interpreting a release result.
    - product evidence → `vk-app-plan`;
    - stack/project structure → `vk-app-scaffold`;
    - Bridge boundary and methods → `vk-bridge-recipes`;
+   - `internal-links`, header/control layout → `vk-app-design`;
    - mocks and automated coverage → `vk-app-test`;
    - game loop, level content, and progression evidence → `vk-gameplay-acceptance`;
    - races, lost saves, stalled startup, and schema compatibility → `vk-app-resilience`;

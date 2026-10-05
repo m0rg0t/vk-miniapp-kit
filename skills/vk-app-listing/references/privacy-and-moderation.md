@@ -46,5 +46,18 @@ Give a reviewer:
 - known non-blocking limitations;
 - support contact and build identifier.
 
+Check known technical rejection reasons before submission:
+
+- in-app sections reached through `<a href>` open as an external site in
+  mobile VK clients (on iOS, in the internal browser); the app must switch
+  sections through a router;
+- app controls in the top-right header corner are covered by the client's
+  menu/close buttons; move them, or choose "Над окном" in Настройки →
+  Отображение and record it.
+
+Both are owned by `vk-app-design` (`references/host-navigation-and-controls.md`).
+After a rejection, quote the moderator's points in the delivery tracker, map
+each one to a fix and its real-client evidence, then resubmit.
+
 Do not hide a required permission, external purchase, generated content, or
 data transfer in marketing copy.

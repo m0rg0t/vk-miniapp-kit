@@ -6,12 +6,26 @@ artifact conventions; keep project-specific exceptions explicit.
 | Category | Development mode | Release mode |
 |---|---|---|
 | Project | package, current VK dependencies, scripts, source entry | same |
-| Platform | init, centralized Bridge calls, serve-only mock isolation | same |
+| Platform | init, centralized Bridge calls, serve-only mock isolation, no internal `href`/`location` section navigation | same; `internal-links` blocks under `--strict` |
 | Tests | real test declarations, browser runner, acceptance criteria | warnings become release blockers under `--strict` |
 | Security | no client secret patterns, signed launch authentication evidence | verifier and privacy evidence expected when a backend/user identity exists |
 | Hosting | parse config when present | config, endpoints, output entry required |
 | Assets | validate recognized files when present | 576 icon, 1120×630 snippet, splash, and ≥3 consistent screenshots required; common preflight also requires capture evidence |
 | Catalog | recognize copy/privacy/support/manifest evidence | all required; run the stronger `vk-app-assets` common preflight separately |
+
+## Internal links
+
+`internal-links` warns when non-test source or static HTML outside build output
+contains a followed link to an app section: an `href` (on `<a>` or any JSX
+component, such as VKUI `Cell` or `TabbarItem`) whose literal value is
+root-relative, relative, a query, or a hash route (`#/…`, `#!…`), or a
+`location.href =`, `location.assign()`, `location.replace()`, or `window.open()`
+call with such a literal. Mobile VK clients open these as an external site, and
+moderation rejects the app. External URLs, `mailto:`/`tel:`, bare `#` and
+in-page `#id` fragments, `<link>`/`<use>`/`<image>`/`<base>`, and dynamic
+values are not flagged. Route through the router from `onClick` instead; see
+`vk-app-design/references/host-navigation-and-controls.md`. The static check
+cannot see the host buttons, so real-client checks remain required.
 
 ## Exit codes
 
