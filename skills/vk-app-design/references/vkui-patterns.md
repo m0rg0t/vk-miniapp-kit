@@ -22,6 +22,8 @@ Confirm exact component names and props against the installed VKUI version.
   not only CSS width.
 - Keep content readable on desktop; avoid stretching forms and prose edge to edge.
 - Account for host header, keyboard, bottom controls, and safe-area insets.
+  Keep the top-right header corner free of app controls on mobile, where the VK
+  client draws its menu/close buttons.
 - Test long labels, large dynamic type/zoom, and Russian pluralization.
 
 ## Appearance
@@ -47,6 +49,8 @@ unexpectedly.
 ## Interaction and navigation
 
 - Make browser/VK back behavior reverse the user's last navigation step.
+- Switch sections through the router from `onClick`, never through `<a href>`
+  or an `href` prop; see `host-navigation-and-controls.md`.
 - Put destructive actions behind confirmation with specific consequence text.
 - Prevent duplicate submissions while a request is pending.
 - Restore focus after modal/popout close where practical.
@@ -56,6 +60,8 @@ unexpectedly.
 
 - No raw HTML control recreates a suitable VKUI primitive without a reason.
 - The core action is visible without competing primary buttons.
+- No in-app section is reached through a followed link, and no app control is
+  covered by the VK client's buttons.
 - All interactive elements work by keyboard in desktop web.
 - Light/dark and compact/regular combinations are visually checked.
 - Loading, empty, error, and decline screenshots or test states are available.

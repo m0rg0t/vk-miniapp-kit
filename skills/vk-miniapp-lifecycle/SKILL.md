@@ -73,7 +73,7 @@ Do not claim a later gate proves an earlier one:
 | Platform | `VKWebAppInit` and required Bridge methods have fail-open handling |
 | Security | Signed launch identity, server-only secrets, authorization, and data handling are evidenced |
 | Local QA | Mocked success, decline/error, and event scenarios pass |
-| UX QA | Main flow works at compact mobile and desktop/web widths, light and dark |
+| UX QA | Main flow works at compact mobile and desktop/web widths, light and dark; sections switch through the router without followed links, and no app control sits under the VK client's buttons |
 | Gameplay, when applicable | Player-visible loop, content/progression invariants, recovery/reload, and inspected rendered input evidence |
 | Resilience, when affected | Interrupted/overlapping actions, preserved saves, and applicable client/runtime compatibility proved at the final revision |
 | Catalog | Current-form evidence and common preflight prove 576 icon, 1120×630 real-UI snippet, single-line copy, policy/contact, Lottie when used, and screenshots |

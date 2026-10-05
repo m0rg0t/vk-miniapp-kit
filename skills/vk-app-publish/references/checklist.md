@@ -36,6 +36,12 @@ URL or screenshot path in the common catalog manifest.
 - [ ] Privacy text matches actual identifiers, permissions, storage, analytics,
       ads, retention, and deletion controls.
 - [ ] Reviewer steps/test data and known platform limitations are explicit.
+- [ ] No app section is reached through `<a href>`, an `href` prop, or a
+      `location` change; doctor `internal-links` is ok, and on iOS no section
+      opens the client's internal browser (known moderation rejection).
+- [ ] With the current control-button layout, no app control sits under the VK
+      client's menu/close buttons; if "Над окном" (above the window) was chosen
+      in Настройки → Отображение, that admin setting is recorded.
 
 ## Build and hosting
 
@@ -62,6 +68,8 @@ URL or screenshot path in the common catalog manifest.
 
 - [ ] Production URL works in an ordinary browser.
 - [ ] App opens inside a real VK client; launch params/theme/core flow work.
+- [ ] On iOS and Android VK, every section switch stays inside the app, and
+      every header/app control is visible and tappable beside the host buttons.
 - [ ] Permission decline, unavailable methods, timeout, invalid authentication,
       and unauthorized API access fail safely.
 - [ ] If the VK-client check could not be run, the final report says so instead
