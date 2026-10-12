@@ -8,6 +8,8 @@ Tailor this matrix to the product brief. Do not keep irrelevant rows.
 | Unit | pure validation/state/storage serialization | focused tests |
 | Bridge service | init and every required method succeeds | response assertions |
 | Bridge service | decline/error/unavailable/timeout | fail-open assertions |
+| Sharing (if used) | confirmed cancellation, empty response, error, long pending dialog | request counts and usable controls; no automatic second share/copy/manual panel |
+| Sharing (if used) | unsupported native method, explicit copy, clipboard rejection | correct link/text and product-specific feedback/manual-copy policy |
 | Events | appearance/view/config update | subscribe/unsubscribe assertions |
 | Component | loading, empty, error, success | accessible UI queries |
 | Journey | first-use core loop | browser trace/screenshot on failure |
@@ -26,7 +28,24 @@ Tailor this matrix to the product brief. Do not keep irrelevant rows.
 4. Assert the promised result, route, and analytics event.
 5. Reload or revisit and assert the intended persisted state.
 6. Repeat the key permission/Bridge step with a decline or unavailable response.
-7. Assert a usable fallback and no unhandled error.
+7. Assert the intended recovery and no unhandled error. Cancellation may require
+   returning quietly to the same screen, not invoking a fallback.
+
+## Share/story cancellation
+
+Use realistic installed-SDK responses (Bridge 3 share arrays, story results),
+and separately control unavailable support, confirmed dismissal, rejection and
+timeout. Observe Bridge and clipboard requests as well as rendered UI: a mock
+does not show the native message composer, so a screenshot alone can miss an
+unwanted second request. After dismissal, verify unchanged progress, reenabled
+controls, focus/navigation, and no competing dialog or manual URL panel.
+
+Hold the interactive response longer than the former short API timeout using
+fake timers, then resolve it; verify no early fallback and timer cleanup. For
+quiet copying, wait for and validate clipboard contents, then assert absence of
+the toast rather than retaining an old toast assertion. Reset clipboard state
+between cases. Keep actual native open/cancel verification separate; do not send
+real messages or publish stories merely to test cancellation.
 
 ## Section navigation stays in the document
 

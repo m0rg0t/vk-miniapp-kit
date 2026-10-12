@@ -67,6 +67,11 @@ example in `references/ads.md` for the shape. Use **`vk-app-test`** when the use
 needs the full local harness, the official `@vkontakte/vk-bridge-mock` package,
 scenario control, browser tests, or a release test matrix.
 
+For the bundled service, copy [assets/vkBridge.test.ts](assets/vkBridge.test.ts) beside `vkBridge.ts` and
+run it with the project's Vitest and installed Bridge types when changing the
+template. It checks interactive waiting, timer cleanup, structured rejection,
+receive-only subscriptions, and mock/storage behavior.
+
 ## Three facts that save hours
 
 - **`VKWebAppCheckBannerAd` is not an availability check** — it reports whether
@@ -87,4 +92,6 @@ scenario control, browser tests, or a release test matrix.
 - The service is installed (or extended) and `initVkBridge()` runs at startup.
 - The requested feature works through `vkBridgeService.*`, with tests covering
   the success and fail-open paths.
+- Share/story dismissal ends that action without an automatic second dialog or
+  clipboard/manual-link fallback; use the sharing reference for response and UX policy.
 - Nothing branches on environment outside `vkBridge.ts`.

@@ -42,27 +42,32 @@ export async function vkBridgeSend<T>(
   params: Record<string, unknown> = {},
   options: VkBridgeOptions = {}
 ): Promise<T | null> {
-  const { timeout = 5000, mockDelay = 150 } = options;
+  // Human-operated dialogs need a different budget from short API requests.
+  const interactive = method === 'VKWebAppShare' || method === 'VKWebAppShowStoryBox';
+  const { timeout = interactive ? 120000 : 5000, mockDelay = 150 } = options;
 
   if (isDevMode()) {
     await new Promise((resolve) => setTimeout(resolve, mockDelay));
     return getMockResponse<T>(method, params);
   }
 
+  let timer: ReturnType<typeof setTimeout> | undefined;
   try {
     const shouldTimeout = typeof timeout === 'number' && timeout > 0;
     if (shouldTimeout) {
       return await Promise.race([
         vkBridge.send(method as never, params as never) as Promise<T>,
-        new Promise<null>((_, reject) =>
-          setTimeout(() => reject(new Error(`VK Bridge timeout: ${method}`)), timeout)
-        ),
+        new Promise<null>((_, reject) => {
+          timer = setTimeout(() => reject(new Error(`VK Bridge timeout: ${method}`)), timeout);
+        }),
       ]);
     }
     return await (vkBridge.send(method as never, params as never) as Promise<T>);
   } catch (error) {
     logger.error(`[VK Bridge] Error in ${method}:`, error);
     return null;
+  } finally {
+    clearTimeout(timer);
   }
 }
 
@@ -112,8 +117,8 @@ export const vkBridgeService = {
   hideBannerAd: () => vkBridgeSend<BannerAdResponse>('VKWebAppHideBannerAd'),
 
   // Sharing
-  share: (link?: string) =>
-    vkBridgeSend<Array<{ type: string }>>('VKWebAppShare', link ? { link } : {}),
+  share: (link?: string, options: VkBridgeOptions = {}) =>
+    vkBridgeSend<Array<{ type: string }>>('VKWebAppShare', link ? { link } : {}, options),
 
   // Cloud storage (per-user key/value)
   storageSet: (key: string, value: string) =>

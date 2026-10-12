@@ -48,7 +48,8 @@ Return structured states such as `unavailable`, `declined`, `failed`, and
 A Promise timeout does not cancel a native dialog. Do not automatically retry
 interactive actions on timeout. Prevent duplicate clicks while pending and
 avoid opening a competing share flow when the original editor may still be
-active. A timeout fallback can offer passive manual copy with clear status.
+active. An explicit alternative action can offer manual copy with clear status;
+do not display it automatically after a dismissed or unconfirmed editor.
 
 ## Sharing and cancellation
 
@@ -75,9 +76,11 @@ payments, permissions, or every OK API error. Retain separate application
 handling for browser `AbortError` cancellation.
 
 Confirmed cancellation is quiet: reenable the control without an error toast
-or a second dialog. For unavailable/failed methods, try an appropriate browser
-share/copy flow or offer a manual dialog containing the exact public text and
-link. Web Share/Clipboard may be unavailable in an iframe, denied, or require
+or a second dialog. Check availability before attempting native sharing. For
+unsupported methods, an explicit browser share/copy path may fit; after a failed
+or timed-out native attempt, offer a user-selected alternative rather than
+automatically invoking it. Keep the exact public text and link. Web
+Share/Clipboard may be unavailable in an iframe, denied, or require
 fresh user activation; offer a user-clicked copy button/manual selection.
 Support close button, Escape, focus return, and the app's back behavior.
 

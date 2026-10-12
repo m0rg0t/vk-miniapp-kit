@@ -16,10 +16,41 @@ two supported choices above.
 
 ```ts
 const result = await vkBridgeService.share('https://vk.com/app<APP_ID>');
-// result?.type indicates how the user shared (or null if cancelled/failed)
+// Bridge 3 returns an array: result?.map(item => item.type).
+// An empty array is a dismissed share; null is an unconfirmed/failed attempt.
 ```
 
 Omit the argument to share the app's own URL (VK fills it in).
+
+Normalize the installed SDK's response and any verified legacy host responses
+inside the existing service. A truthy empty array or arbitrary object is not
+proof of sharing. The OK adapter's host-specific normalization belongs to
+`vk-app-ok-support`; do not apply its observed error-code mappings to every API.
+
+## Cancellation ends the chosen action
+
+Determine method availability before opening the native dialog. Preserve
+separate application outcomes for `unavailable`, confirmed dismissal, response,
+and failure/timeout. If the service collapses rejection/timeout to `null`, do not
+reinterpret that ambiguous result as unavailable or confirmed cancellation.
+
+After an offered share/story dialog closes, do not automatically call another
+share method, open messages, write the clipboard, or expose a manual URL panel.
+An error or timeout may leave the original dialog open. Offer an explicit retry
+or alternative action if appropriate; require a fresh user action to invoke it.
+Keep controls usable, clear obsolete fallback panels, and return focus. Do not
+claim an invitation or story was sent from an editor-open response.
+
+Use a human-interaction timeout rather than the generic network budget. The
+bundled service defaults share/story calls to 120 seconds; this is a configurable
+starting point, not a VK requirement. A Promise timeout does not close native UI;
+clear its timer when the request settles and prevent duplicate pending actions.
+
+When no native method is available, an explicit browser share/copy/manual path
+may fit the product. Honor its feedback policy: a request for quiet copying means
+no copied-link toast; do not make that preference mandatory for other products.
+For Web Share, handle `AbortError` as cancellation rather than falling through
+to copying. Clipboard permission failure can expose user-selected manual copy.
 
 ## Share through a story
 
@@ -36,9 +67,8 @@ const result = await vkBridgeSend<{ result: true }>('VKWebAppShowStoryBox', {
   },
 });
 
-if (!result) {
-  // Decline, unavailable editor, or Bridge failure: keep the app usable.
-}
+// After this attempt, keep the app usable; do not chain a link share or copy
+// from result === null or result?.result === false.
 ```
 
 Use a publicly reachable PNG or JPEG for an image background, or pass a
@@ -51,7 +81,7 @@ that the editor opened, not that the story was published.
 - Sharing opens VK-native UI; there's nothing to render in dev (the mock returns
   a canned result so your success path still runs).
 - Treat unavailable methods, user cancellation, and Bridge errors as normal
-  fail-open states. Do not silently fall back to a wall post.
+  fail-open states. Cancellation does not request another sharing surface.
 - Build share URLs as `https://vk.com/app<APP_ID>` (optionally `#<hash>` for deep
   links your router reads on launch).
 
