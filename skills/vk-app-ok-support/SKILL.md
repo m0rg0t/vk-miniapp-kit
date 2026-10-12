@@ -1,6 +1,6 @@
 ---
 name: vk-app-ok-support
-description: Adapt an existing VK Mini App to run in Odnoklassniki (OK, Одноклассники) while preserving VK behavior. Use for adding OK support, auditing vk_client=ok behavior, or fixing platform-specific sharing, stories, links, ads, launch data, and real-client compatibility. Extend the existing app and Bridge service; platform publication and deployment are separate actions.
+description: Adapt an existing VK Mini App to run in Odnoklassniki (OK, Одноклассники) while preserving VK behavior. Use for adding OK support, auditing vk_client=ok behavior, or fixing VK branding leaks, OK moderation rejections, platform-specific sharing, stories, links, ads, launch data, and real-client compatibility. Extend the existing app and Bridge service; platform publication and deployment are separate actions.
 ---
 
 # VK Mini App support in Odnoklassniki
@@ -36,9 +36,12 @@ changing runtime behavior. Keep these invariants:
   client variant. These browser values do not authenticate anyone.
 - Use a configured clean OK app URL for sharing. Never share `location.href`
   or copy signed launch query parameters into navigation, logs, or analytics.
-- Hide the VK community link and VK-only app promotions in OK, including the
-  initial HTML/first render. Use a provided OK contact if one exists; do not
-  invent a community or merely rename a VK link.
+- Remove VK/ВКонтакте branding from every app-owned user-facing OK surface,
+  including the initial render, settings/theme captions, errors, accessibility
+  labels, and generated media. Read and complete
+  [references/branding-audit.md](references/branding-audit.md); hiding community
+  links and promotions alone is insufficient. Preserve technical SDK names and
+  VK behavior; use a provided OK contact without inventing one.
 - Initialize Bridge once; bound initialization and support checks. Load core
   content independently of optional profile, capability, and ad requests.
 - Require a real host and method support for native calls. A standalone
@@ -73,7 +76,9 @@ node --test "$SKILL_DIR/scripts/test-platform-policy.mjs"
 Read [references/verification.md](references/verification.md) for unit,
 browser, real-client, privacy, and release checks. Cover VK regressions as well
 as OK. Make a fake-positive web story capability an explicit test, alongside
-native OK support and unchanged VK stories.
+native OK support and unchanged VK stories. Treat the branding audit as a
+required gate: source search, rendered OK UI, and visual assets need separate
+evidence; an empty search result alone cannot prove absence of VK mentions.
 
 Record separate results for OK desktop web, mobile web, Android, and iOS.
 Unknown/untested clients remain unverified. Test the real share editor and
@@ -108,8 +113,9 @@ check whether a requested push triggers an automatic hosting release.
 
 ## Done when
 
-The implementation preserves VK, renders a clean OK interface before native
-capabilities resolve, handles unsupported/declined/timed-out calls, passes
+The implementation preserves VK, completes the user-facing VK branding audit,
+renders a clean OK interface before native capabilities resolve, handles
+unsupported/declined/timed-out calls, passes
 relevant local tests and build, and has an app-specific report recording real
 client results and exact remaining checks. Claim OK release readiness only
 for clients and publication requirements supported by direct evidence.

@@ -153,8 +153,12 @@ Hide VK community and VK-only outbound promotion controls before the first OK
 render. A static app can start with HTML `hidden` then reveal in allowed
 contexts; a component app can gate the first render from synchronously parsed
 context. Renaming a VK community link still exposes VK and fails this policy.
-Check onboarding, footer, settings, dialogs, and generated media too. If the
-support contact is absent, report the gap and preserve available app flows.
+Complete [the branding audit](branding-audit.md) for all app-owned text,
+links, accessibility labels, and visual assets. Theme captions such as
+“как в VK” are user-facing branding even without a VK link. Select neutral
+copy or accurate platform-specific copy from the same platform context as
+the rest of the UI, including initial HTML and failure states. If the support
+contact is absent, report the gap and preserve available app flows.
 
 Sanitize every analytics page view and custom event, not only the initial one.
 Explicitly remove query/hash from both the document URL and referrer. Do not

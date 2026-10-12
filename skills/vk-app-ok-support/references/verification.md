@@ -7,6 +7,10 @@ baseline, not a substitute for integration tests of the target service/UI.
 
 Cover these meaningful behaviors:
 
+- OK renders no user-facing VK mentions in shared controls (especially theme
+  selection), accessibility labels, fallback errors, or generated share text;
+  VK retains its intended copy. Test first render and delayed/failed Bridge
+  states, including a saved theme restored on launch.
 - Mixed launch parameters select OK correctly; no markers select standalone.
   Configured public links never include signed launch query values.
 - Concurrent init-dependent requests initialize once; repeated probes share
@@ -40,7 +44,7 @@ allow-listed and development/test-only; production must resolve the real SDK.
 | Context | Required behavior |
 |---|---|
 | Standalone, no launch params | Main flow works, no hanging native calls, browser/manual sharing |
-| Standalone OK UI preview | VK community/promos absent from first paint; clean OK links; useful content |
+| Standalone OK UI preview | All app-owned VK branding absent from first paint and subsequent states; clean OK links; useful content |
 | Mock OK desktop/mobile web, story support falsely true | No story CTA; link share still available |
 | Mock native OK with supported stories | Story CTA, sanitized payload, cancel/failure paths |
 | Mock VK | Existing links, community policy, stories, recommendations preserved |
@@ -51,6 +55,12 @@ archive/navigation/back behavior, footer accessibility, repeat clicks, and
 manual copy-dialog keyboard behavior where these exist in the product. Test
 sharing the app before content selection separately from sharing selected
 content. Load a normal production build without mocks at least once.
+
+Complete [the branding audit](branding-audit.md) across all routes and
+interactive states, including the theme picker, before marking OK UI clean.
+Check rendered text/accessibility attributes and actual media separately.
+Repeat against the production build; classify remaining source/bundle hits
+by OK reachability rather than demanding a shared bundle contain no VK code.
 
 A forced `vk_client=ok` on localhost proves UI routing only. Do not report it
 as authenticated OK launch, native story, ad fill, or moderation evidence.
@@ -109,6 +119,9 @@ Write a concise report in the target repository, for example
 - Date, configured public VK/OK links, and implemented platform behavior.
 - Sources for facts; explicitly label observed client quirks and product choices.
 - Commands/results for unit, browser, and build checks, noting mock vs real SDK.
+- Branding audit: searched paths/patterns, classified remaining hits, routes
+  and states inspected, media checked, regression results, and any uncovered
+  remote content or untested surface. Include build evidence when released.
 - A row per actual client, build tested, real outcomes, and untested flows.
 - Remaining native devices, support/contact, admin/moderation, or deployment
   steps; do not collapse these into “OK works”.
