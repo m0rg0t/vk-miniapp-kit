@@ -164,6 +164,63 @@ function compatibilityWarnings(data) {
   return warnings;
 }
 
+/**
+ * Conservative "exporter-shaped" form. Evidence (2026-11-15): the VK admin refused a
+ * hand-written icon that rendered fine in lottie-web and accepted the same picture once it
+ * was rewritten this way. The single decisive field was not isolated, so every item is
+ * reported; `normalize-lottie.mjs` applies all of them at once.
+ */
+export function uploadFormWarnings(data, rawText = '') {
+  const warnings = [];
+  const seen = new Set();
+  const add = (message) => {
+    if (!seen.has(message)) {
+      seen.add(message);
+      warnings.push(message);
+    }
+  };
+  // eslint-disable-next-line no-control-regex
+  const nonAscii = rawText.match(/[^\x00-\x7F]/u);
+  if (nonAscii) {
+    const index = rawText.indexOf(nonAscii[0]);
+    const context = rawText.slice(Math.max(0, index - 24), index + 24).replace(/\s+/g, ' ');
+    add(`upload form: file contains non-ASCII characters (first near "${context}"); use ASCII-only names`);
+  }
+  if (!Array.isArray(data.assets)) add('upload form: top-level "assets" array is missing (use [])');
+
+  const missing = (item, keys) => keys.filter((key) => item[key] === undefined);
+  const walkShapeItems = (items, path) => {
+    if (!Array.isArray(items)) return;
+    for (let index = 0; index < items.length; index += 1) {
+      const item = items[index];
+      if (!item || typeof item !== 'object') continue;
+      const here = `${path}[${index}]`;
+      const required = {
+        fl: ['c', 'o', 'r'],
+        st: ['c', 'o', 'w', 'lc', 'lj', 'ml'],
+        el: ['p', 's', 'd'],
+        rc: ['p', 's', 'r', 'd'],
+        gr: ['it', 'np'],
+        tr: ['p', 'a', 's', 'r', 'o', 'sk', 'sa'],
+      }[item.ty];
+      if (required) {
+        const absent = missing(item, required);
+        if (absent.length) add(`upload form: ${here} (${item.ty}) lacks explicit ${absent.map((key) => `"${key}"`).join(', ')}`);
+      }
+      if (item.ty === 'gr') walkShapeItems(item.it, `${here}.it`);
+    }
+  };
+
+  for (const [index, layer] of (Array.isArray(data.layers) ? data.layers : []).entries()) {
+    if (!layer || typeof layer !== 'object') continue;
+    const absent = missing(layer, ['ddd', 'ind', 'ty', 'nm', 'sr', 'ks', 'ao', 'ip', 'op', 'st', 'bm']);
+    if (absent.length) add(`upload form: layers[${index}] lacks explicit ${absent.map((key) => `"${key}"`).join(', ')}`);
+    if (layer.ddd !== undefined && layer.ddd !== 0) add(`upload form: layers[${index}].ddd must be 0`);
+    if (layer.ty === 4) walkShapeItems(layer.shapes, `layers[${index}].shapes`);
+  }
+  return warnings;
+}
+
 function loopWarnings(data) {
   let animated = 0;
   const offenders = [];
@@ -196,7 +253,8 @@ function loopWarnings(data) {
 
 export function inspectLottie(file, options = {}) {
   const bytes = statSync(file).size;
-  const data = JSON.parse(readFileSync(file, 'utf8'));
+  const rawText = readFileSync(file, 'utf8');
+  const data = JSON.parse(rawText);
   const errors = [];
   for (const key of REQUIRED_FIELDS) {
     if (data[key] === undefined) errors.push(`missing required field "${key}"`);
@@ -214,6 +272,7 @@ export function inspectLottie(file, options = {}) {
     loop,
     layerOrderWarnings: layerOrderWarnings(data),
     compatibilityWarnings: compatibilityWarnings(data),
+    uploadFormWarnings: uploadFormWarnings(data, rawText),
     width: data.w,
     height: data.h,
   };
@@ -222,7 +281,7 @@ export function inspectLottie(file, options = {}) {
 export function run(argv = process.argv.slice(2)) {
   const file = argv[0];
   if (!file || file.startsWith('--')) {
-    console.error('usage: validate-lottie.mjs <path.json> [--width 96] [--height 96] [--max-kb 24] [--strict-loop] [--strict-layer-order]');
+    console.error('usage: validate-lottie.mjs <path.json> [--width 96] [--height 96] [--max-kb 24] [--strict-loop] [--strict-layer-order] [--strict-compatible-subset] [--strict-upload-form]');
     return 2;
   }
   const targetW = Number(arg(argv, 'width', 96));
@@ -231,6 +290,7 @@ export function run(argv = process.argv.slice(2)) {
   const strictLoop = argv.includes('--strict-loop');
   const strictLayerOrder = argv.includes('--strict-layer-order');
   const strictCompatibility = argv.includes('--strict-compatible-subset');
+  const strictUploadForm = argv.includes('--strict-upload-form');
 
   let result;
   try {
@@ -245,6 +305,7 @@ export function run(argv = process.argv.slice(2)) {
     ...(strictLoop ? result.loop.warnings : []),
     ...(strictLayerOrder ? result.layerOrderWarnings : []),
     ...(strictCompatibility ? result.compatibilityWarnings : []),
+    ...(strictUploadForm ? result.uploadFormWarnings : []),
   ];
 
   if (result.bytes <= maxBytes) console.log(`✓ size ${(result.bytes / 1024).toFixed(1)} KB ≤ ${maxBytes / 1024} KB`);
@@ -267,6 +328,12 @@ export function run(argv = process.argv.slice(2)) {
   }
   for (const warning of result.layerOrderWarnings) (strictLayerOrder ? console.error : console.warn)(`${strictLayerOrder ? '✗' : '⚠'} ${warning}`);
   for (const warning of result.compatibilityWarnings) (strictCompatibility ? console.error : console.warn)(`${strictCompatibility ? '✗' : '⚠'} ${warning}`);
+  if (result.uploadFormWarnings.length) {
+    for (const warning of result.uploadFormWarnings) (strictUploadForm ? console.error : console.warn)(`${strictUploadForm ? '✗' : '⚠'} ${warning}`);
+    if (!strictUploadForm) console.warn('⚠ run normalize-lottie.mjs to rewrite the file in the form the VK uploader accepted');
+  } else {
+    console.log('✓ upload form: ASCII-only, explicit layer and shape fields');
+  }
 
   if (failures.length === 0) {
     console.log('✓ structural Lottie checks passed');

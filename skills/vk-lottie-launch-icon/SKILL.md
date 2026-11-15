@@ -28,7 +28,10 @@ node "$SKILL_DIR/scripts/validate-lottie.mjs" \
 ```
 
 It checks size, JSON validity, required fields, 96×96 dimensions, and rejects
-any animated property whose loop seam drifts (start ≠ end). It warns when a
+any animated property whose loop seam drifts (start ≠ end). It also reports
+"upload form" findings — non-ASCII names and omitted default layer/shape fields
+— which `--strict-upload-form` turns into failures; fix them with
+`normalize-lottie.mjs` (see step 6 below). It warns when a
 topmost opaque shape is large enough to cover later layers, and can make that
 warning a failure with `--strict-layer-order`. Override targets with
 `--width/--height/--max-kb` only after reading the current admin form.
@@ -52,7 +55,23 @@ warning a failure with `--strict-layer-order`. Override targets with
 5. **Validate** with the script above and fix every hard failure and layer-order
    warning. Keep an opaque background at the end of `layers`; the array is
    front-to-back, so the first layer is visually above the next one.
-6. **Record** the path and current form limits in the project's release/catalog
+6. **Normalize for the uploader.** Hand-written or generator-written JSON often
+   omits fields a real exporter writes and may carry non-ASCII names. The VK
+   admin refused such a file that rendered correctly in `lottie-web`, and
+   accepted the same picture after this rewrite, so always run it before upload:
+
+   ```bash
+   node "$SKILL_DIR/scripts/normalize-lottie.mjs" path/to/icon-animation.json \
+     --name launch-icon
+   node "$SKILL_DIR/scripts/validate-lottie.mjs" path/to/icon-animation.json \
+     --strict-loop --strict-layer-order --strict-upload-form
+   ```
+
+   The normalizer keeps geometry, colours and keyframes; it only writes ASCII
+   names, explicit default fields and 2-decimal floats. If a generator script
+   produces the file, call the normalizer at the end of that script so a
+   regeneration cannot bring the sparse form back.
+7. **Record** the path and current form limits in the project's release/catalog
    manifest. The common `vk-app-assets` preflight rechecks Lottie strictly.
 
 ### C. Mandatory visual check
@@ -85,7 +104,8 @@ branded badge. Do not stack both unintentionally.
 ## Done when
 
 - The file passes `validate-lottie.mjs` with no hard failures or loop-seam
-  warnings; use `--strict-loop --strict-layer-order` for the release check.
+  warnings; use `--strict-loop --strict-layer-order --strict-upload-form` for
+  the release check.
 - Size ≤ 24 KB, dimensions 96×96.
 - `preview-lottie.mjs` has produced and a human/agent has inspected the `ip`,
   middle, and `op - 1` SVG-rendered frames.

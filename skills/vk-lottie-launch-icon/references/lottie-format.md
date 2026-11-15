@@ -85,11 +85,37 @@ drifts. The player commonly treats `op` as an exclusive end, so inspect the
 frame at `op - 1` in addition to the keyframe at `op`. Design motions that
 return home: grow→shrink→grow, fade in→out→in, rotate a full 360°, etc.
 
+## Upload form
+
+Rendering correctly in `lottie-web` does not guarantee that the VK admin form
+accepts the file. Observed on 2026-11-15: a hand-generated 96×96, 7 KB icon
+with `"ddd": 0` on every layer, valid in the SVG and canvas renderers, was
+refused on upload; the same animation was accepted after it was rewritten in
+the form a real exporter produces. All of these changed together, so the one
+decisive item is not known — apply the whole set:
+
+- ASCII only: top-level `nm`, layer and shape names, and the file bytes (the
+  refused file had a Cyrillic name with an em dash);
+- top level: `assets: []`, `markers: []`, `ddd: 0`;
+- every layer: `ddd: 0`, `ind`, `ty`, `nm`, `sr`, `ks`, `ao`, `ip`, `op`, `st`,
+  `bm`;
+- shape items with their defaults written out: fill `r` (fill rule) and `o`;
+  stroke `lc`, `lj`, `ml`; ellipse and rectangle `d` (direction), rectangle
+  `r`; group `np`; group transform `p`, `a`, `s`, `r`, `o`, `sk`, `sa`;
+- floats rounded to two decimals.
+
+`scripts/normalize-lottie.mjs` applies exactly this without changing geometry,
+colours or keyframes, and `validate-lottie.mjs --strict-upload-form` checks it.
+VK's own page states only the 24 KB limit, 96×96, and `"ddd": 0` per layer for
+iOS, so treat this list as field evidence, not as a documented rule, and extend
+it when the uploader refuses another file.
+
 ## Keeping it under 24 KB
 
 - Prefer shape layers over embedded images (no base64 blobs).
 - Few layers, few keyframes; reuse colours.
-- Round coordinates; drop unused properties.
+- Round coordinates. Do not drop the default fields listed under "Upload form":
+  they cost about 1–2 KB and the uploader may require them.
 - 96×96 needs no precision beyond integers.
 
 ## Static/animated identity and background mode
