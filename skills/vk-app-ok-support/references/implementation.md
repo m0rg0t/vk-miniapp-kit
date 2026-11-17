@@ -3,7 +3,7 @@
 ## Platform context and public links
 
 Resolve context once in the service and expose it to the UI. Give `vk_client=ok`
-precedence over ordinary VK parameters. In the reference app, `vk_platform` or
+precedence over ordinary VK parameters. In an earlier adapted app, `vk_platform` or
 `vk_app_id` without the OK marker selected VK; no launch markers selected a
 standalone website. Preserve a different established standalone policy if the
 product needs it.
@@ -35,7 +35,7 @@ Memoize the initialization promise so concurrent profile/ads/capability calls
 wait for the same `VKWebAppInit`. Memoize method probes within the current
 client session, with a way to refresh if the host context actually changes.
 
-Use bounded waiting. The reference app used 8 seconds for initialization,
+Use bounded waiting. An earlier adapted app used 8 seconds for initialization,
 2 seconds for support checks, and 120 seconds for interactive dialogs. These
 are tuning choices, not OK requirements. Adapt them to the product and avoid
 using a short network timeout for a user editing a story or choosing a share.
@@ -60,7 +60,7 @@ Bridge link method accepts arbitrary text just because Web Share does.
 
 Normalize responses against installed SDK types and observed legacy hosts:
 
-| Result | Handling in the reference adapter |
+| Result | Recommended handling |
 |---|---|
 | Nonempty Bridge 3 array with a recognized share `type` | Success |
 | Legacy object with recognized `type`, or `{ result: true }` | Success |
@@ -166,7 +166,7 @@ contact is absent, report the gap and preserve available app flows.
 Sanitize every analytics page view and custom event, not only the initial one.
 Explicitly remove query/hash from both the document URL and referrer. Do not
 spread raw launch context, errors, profiles, or iframe attributes into payloads.
-The reference Umami integration disabled automatic tracking and sent an
+One tested Umami integration disabled automatic tracking and sent an
 explicit pathname plus a referrer restricted to HTTP(S) origin/path (dropping
 credentials/query/hash). Use the equivalent supported controls for the target
 analytics product and inspect the outgoing payloads.

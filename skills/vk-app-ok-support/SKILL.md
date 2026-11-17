@@ -85,10 +85,9 @@ Unknown/untested clients remain unverified. Test the real share editor and
 cancel it; actual feed/story publication is a separate user action. Retain
 sanitized evidence without raw iframe launch URLs, session tokens, or profiles.
 
-For an example of the entire adaptation and the evidence limits, read
-[references/compatibility.md](references/compatibility.md).
-Its historical observations are useful failure cases, not current guarantees
-for another app.
+Real-client failure cases from an earlier adaptation are summarized in
+[references/compatibility.md](references/compatibility.md); treat them as
+historical observations, not current guarantees for another app.
 
 ## Scope and sibling skills
 

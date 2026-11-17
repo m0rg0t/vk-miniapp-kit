@@ -9,7 +9,7 @@ platform capabilities and publication forms can change.
   starting point for OK differences.
 - [VK Bridge source and releases](https://github.com/VKCOM/vk-bridge) and the
   target project's installed types define the SDK shapes you actually compile
-  against. The reference adaptation used Bridge **3.0.2**; do not force that
+  against. An earlier adaptation used Bridge **3.0.2**; do not force that
   version on another app.
 - [Story method](https://dev.vk.com/ru/bridge/VKWebAppShowStoryBox),
   [share method](https://dev.vk.com/ru/bridge/VKWebAppShare), and
@@ -43,7 +43,7 @@ particular, a public OK URL uses an OK ID while a method may still expect a VK
 ID. Verify identifiers independently for each call. Namespace persisted server
 identity by platform; an OK profile ID is not a VK user ID.
 
-## Observations and policies from the reference adaptation
+## Observations and policies from an earlier adaptation
 
 These are separate from documented guarantees:
 
