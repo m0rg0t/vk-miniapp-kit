@@ -218,4 +218,9 @@ mobile web, Android и iOS.
 
 ## License
 
-MIT
+[Apache License 2.0](LICENSE). При распространении или создании производных
+работ сохраняйте файл [`NOTICE`](NOTICE) с указанием оригинального репозитория
+[m0rg0t/vk-miniapp-kit](https://github.com/m0rg0t/vk-miniapp-kit).
+
+Licensed under the Apache License 2.0. Redistributions and derivative works
+must keep the [`NOTICE`](NOTICE) file crediting the original repository.

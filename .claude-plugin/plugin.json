@@ -1,11 +1,11 @@
 {
   "name": "vk-miniapp-kit",
   "description": "Take VK Mini Apps from idea to catalog and promotion: build with VKUI, prove gameplay and resilient state, test and secure, adapt for Odnoklassniki, preflight assets and copy, and deploy with version-bound confirmation.",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "author": {
     "name": "antonlenev"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "keywords": [
     "vk",
     "vk-mini-apps",
