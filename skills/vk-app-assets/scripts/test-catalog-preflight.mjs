@@ -132,6 +132,24 @@ const run = (value) => {
 
 assert.deepEqual(run(manifest), []);
 
+// Растровый мастер иконки: квадратный PNG не меньше 1024 px допустим (SKILL.md), меньший или неквадратный — нет.
+writeFileSync(join(root, 'icon-master-1024.png'), png(1024, 1024));
+writeFileSync(join(root, 'icon-master-512.png'), png(512, 512));
+writeFileSync(join(root, 'icon-master-wide.png'), png(1200, 1024));
+writeFileSync(join(root, 'icon-master.jpg'), Buffer.from([0xff, 0xd8, 0xff, 0xd9]));
+const rasterMaster = structuredClone(manifest);
+rasterMaster.assets.icon.source = 'icon-master-1024.png';
+assert.deepEqual(run(rasterMaster), [], 'square PNG master ≥1024 is accepted');
+const smallMaster = structuredClone(manifest);
+smallMaster.assets.icon.source = 'icon-master-512.png';
+assert.ok(run(smallMaster).some((error) => error.includes('at least 1024')));
+const wideMaster = structuredClone(manifest);
+wideMaster.assets.icon.source = 'icon-master-wide.png';
+assert.ok(run(wideMaster).some((error) => error.includes('square')));
+const jpegMaster = structuredClone(manifest);
+jpegMaster.assets.icon.source = 'icon-master.jpg';
+assert.ok(run(jpegMaster).some((error) => error.includes('icon source must be')));
+
 const missingAppId = structuredClone(manifest);
 delete missingAppId.appId;
 assert.ok(run(missingAppId).some((error) => error.includes('appId')));

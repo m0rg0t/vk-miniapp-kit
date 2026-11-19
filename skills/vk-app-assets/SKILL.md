@@ -96,8 +96,10 @@ Copy `assets/catalog-manifest.json` into `release/catalog/`, update every path,
 and replace all placeholders with requirements copied from the current form.
 Set `appId` to the positive VK application ID from the current settings page or
 `vk-hosting-config.json`; never infer it from an unrelated app or leave it `0`.
-Point `icon.source` at the retained master SVG and `snippet.iconSource` at the
-verified `icon-576.png`. Set both `unroundedReviewed` fields only after checking
+Point `icon.source` at the retained master — the SVG, or for generated art a
+square PNG of at least 1024×1024 with its prompt kept beside it (preflight
+rejects other formats, non-square or smaller masters) — and `snippet.iconSource`
+at the verified `icon-576.png`. Set both `unroundedReviewed` fields only after checking
 that neither asset has a baked outer-corner mask. Set `realUiReviewed` and
 `privacyReviewed` only after visual inspection. Use:
 

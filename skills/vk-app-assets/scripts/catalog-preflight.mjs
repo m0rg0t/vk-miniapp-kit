@@ -321,8 +321,20 @@ export function preflight(manifestFile) {
     const iconSource = absolute(base, icon?.source, 'icon.source');
     statSync(iconSource);
     report.sources.iconMaster = iconSource;
-    if (extname(iconSource).toLowerCase() !== '.svg') errors.push('icon source must be the retained master SVG');
-    else if (!/<svg\b/i.test(readFileSync(iconSource, 'utf8'))) errors.push('icon source is not readable SVG content');
+    const ext = extname(iconSource).toLowerCase();
+    if (ext === '.svg') {
+      if (!/<svg\b/i.test(readFileSync(iconSource, 'utf8'))) errors.push('icon source is not readable SVG content');
+    } else if (ext === '.png') {
+      // Raster master (e.g. from image generation) is allowed: square and at least 1024 px, as SKILL.md states.
+      const master = inspectPng(iconSource);
+      if (master.width !== master.height) {
+        errors.push(`icon source PNG must be square; got ${master.width}x${master.height}`);
+      } else if (master.width < 1024) {
+        errors.push(`icon source PNG must be at least 1024x1024; got ${master.width}x${master.height}`);
+      }
+    } else {
+      errors.push('icon source must be the retained master SVG or a square PNG of at least 1024x1024');
+    }
   } catch (error) {
     errors.push(`icon.source: ${error.message}`);
   }
