@@ -216,6 +216,21 @@ mobile web, Android и iOS.
 Подробные правила разработки находятся в [`AGENTS.md`](AGENTS.md), а инструкции
 для Claude Code — в [`CLAUDE.md`](CLAUDE.md).
 
+## Repository maintenance checks
+
+Run `npm run check` with Node 22 or 24. The root package has no npm dependencies
+and is private. Checks parse JSON metadata, validate skill identities, syntax-
+check shell/Node scripts and run every checked-in fixture suite. SVG/image
+fixtures need `rsvg-convert`, ImageMagick and FFmpeg; CI provisions those tools.
+No skills are installed into an agent's configuration and no live app, hosting,
+storage or transcription service is called by this suite.
+
+The readiness scripts recognize the built-in `node --test` runner and test files
+under `src/`, `test/`, `tests/` and `__tests__/`, including ESM/CommonJS TypeScript
+and JavaScript extensions. Missing React/VKUI prerequisites and empty test files
+still produce their original failures/warnings; this is not a framework-policy
+change or a replacement for real-client release checks.
+
 ## License
 
 [Apache License 2.0](LICENSE). При распространении или создании производных

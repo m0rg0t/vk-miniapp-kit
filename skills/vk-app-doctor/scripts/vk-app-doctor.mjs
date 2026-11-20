@@ -63,7 +63,7 @@ const parseJson = (path) => {
   }
 };
 
-const sourceExtensions = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs']);
+const sourceExtensions = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts']);
 const allFiles = walk(root);
 const sourceFiles = allFiles.filter((path) => sourceExtensions.has(extname(path)));
 const sources = sourceFiles.map((path) => ({ path, text: readText(path) }));
@@ -158,7 +158,7 @@ const unsafeAliases = viteConfigs.filter((path) => {
   return hasMockAlias && !(modeBound && serveOnly);
 });
 const appMockImports = sources.filter(({ path, text }) =>
-  !/\.(?:test|spec)\.[jt]sx?$/.test(path) &&
+  !/\.(?:test|spec)\.(?:[cm]?[jt]s|[jt]sx)$/.test(path) &&
   !/^vite\.config\.[cm]?[jt]s$/.test(basename(path)) &&
   !/test|mock/i.test(rel(path)) &&
   /vk-bridge-mock|vkBridgeRuntimeMock/.test(text),
@@ -192,7 +192,7 @@ const markupFiles = allFiles
   .filter((path) => extname(path) === '.html')
   .map((path) => ({ path, text: readText(path) }));
 const internalLinks = [...sources, ...markupFiles].filter(({ path, text }) =>
-  !/\.(?:test|spec)\.[jt]sx?$/.test(path) &&
+  !/\.(?:test|spec)\.(?:[cm]?[jt]s|[jt]sx)$/.test(path) &&
   !/^vite\.config\.[cm]?[jt]s$/.test(basename(path)) &&
   (internalHref.test(text) || locationNavigation.test(text)),
 );
@@ -206,7 +206,7 @@ add(
   'Switch sections through the router from onClick; mobile VK clients open followed links as an external site (vk-app-design host-navigation reference).',
 );
 
-const testFiles = sources.filter(({ path }) => /\.(?:test|spec)\.[jt]sx?$/.test(path));
+const testFiles = sources.filter(({ path }) => /\.(?:test|spec)\.(?:[cm]?[jt]s|[jt]sx)$/.test(path));
 const testCases = testFiles.reduce(
   (total, { text }) => total + [...text.matchAll(/\b(?:test|it)(?:\.\w+)?\s*\(/g)].length,
   0,
@@ -459,3 +459,4 @@ if (json) {
 }
 
 process.exit(counts.fail > 0 || (strict && counts.warn > 0) ? 1 : 0);
+

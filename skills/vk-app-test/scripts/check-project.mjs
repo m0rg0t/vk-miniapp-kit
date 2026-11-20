@@ -73,13 +73,16 @@ if (!existsSync(packagePath)) {
       );
     }
 
+    const nativeNodeTests = /^node(?:\s+--[\w-]+(?:=\S+)?)*\s+--test(?:\s|$)/.test(projectPackage.scripts?.test ?? '');
     const testRunner = ['vitest', 'jest'].find((name) => deps[name]);
     const installedTestRunner = testRunner ? installedPackage(testRunner) : null;
-    add(testRunner && installedTestRunner ? 'ok' : 'warn', 'test-runner', testRunner
+    add(nativeNodeTests || (testRunner && installedTestRunner) ? 'ok' : 'warn', 'test-runner', nativeNodeTests
+      ? `built-in node:test runner (${process.version})`
+      : testRunner
       ? installedTestRunner
         ? `${testRunner} declared ${deps[testRunner]}; installed ${installedTestRunner.version}`
         : `${testRunner} declared ${deps[testRunner]}, but not installed`
-      : 'no Vitest/Jest dependency declared');
+      : 'no built-in Node test command or Vitest/Jest dependency declared');
 
     const browserRunner = ['@playwright/test', 'playwright', 'cypress'].find((name) => deps[name]);
     const installedBrowserRunner = browserRunner ? installedPackage(browserRunner) : null;
@@ -94,7 +97,7 @@ if (!existsSync(packagePath)) {
   }
 }
 
-const codeExtensions = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'];
+const codeExtensions = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.mts', '.cts'];
 const files = walk(join(root, 'src'), codeExtensions);
 const sources = files.map((path) => ({
   path,
@@ -112,7 +115,7 @@ const startupInit = sources.filter(({ path, text }) => {
   const outsideService = !/services?|bridge/i.test(relative(join(root, 'src'), path));
   return outsideService &&
     (/initVkBridge\s*\(/.test(text) || /(?:vkBridge|bridge)\.send\s*\(\s*['"]VKWebAppInit/.test(text)) &&
-    !/\.(test|spec)\.[jt]sx?$/.test(name);
+    !/\.(test|spec)\.(?:[cm]?[jt]s|[jt]sx)$/.test(name);
 });
 add(startupInit.length ? 'ok' : 'warn', 'bridge-init-startup-call', startupInit.length
   ? startupInit.map(({ path }) => relative(root, path)).join(', ')
@@ -149,7 +152,11 @@ if (mockBridgeRange) {
     `app declares Bridge ${declaredDependencies['@vkontakte/vk-bridge']}; installed mock expects ${mockBridgeRange}`);
 }
 
-const testFiles = sources.filter(({ path }) => /\.(test|spec)\.[jt]sx?$/.test(path));
+const testSources = [...new Set([
+  ...files,
+  ...['test', 'tests', '__tests__'].flatMap((directory) => walk(join(root, directory), codeExtensions)),
+])].map((path) => ({ path, text: readFileSync(path, 'utf8') }));
+const testFiles = testSources.filter(({ path }) => /\.(test|spec)\.(?:[cm]?[jt]s|[jt]sx)$/.test(path));
 const testCases = testFiles.reduce(
   (count, { text }) => count + [...text.matchAll(/\b(?:test|it)(?:\.\w+)?\s*\(/g)].length,
   0
@@ -158,7 +165,7 @@ add(testCases ? 'ok' : 'warn', 'test-cases', testCases
   ? `${testCases} test case declaration(s) across ${testFiles.length} file(s)`
   : testFiles.length
     ? `${testFiles.length} test/spec file(s), but no test()/it() declarations`
-    : 'no test/spec files found under src');
+    : 'no test/spec files found under src or root test directories');
 
 const rawBridge = matching(/\b(?:vkBridge|bridge)\.send\s*\(/);
 add(rawBridge.length <= 1 ? 'ok' : 'warn', 'bridge-boundary', rawBridge.length
@@ -208,3 +215,4 @@ if (json) {
 const hasFailure = results.some(({ level }) => level === 'fail');
 const hasWarning = results.some(({ level }) => level === 'warn');
 process.exit(hasFailure || (strict && hasWarning) ? 1 : 0);
+
